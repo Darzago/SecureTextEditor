@@ -121,6 +121,8 @@ public class TextEditor extends TextArea{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialFileName(documentName + ".txt");
 		
+		
+		
 		//Sets the datatype that is displayed in the filechooser
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text file (*.txt)", "*.txt");
 		fileChooser.getExtensionFilters().add(extFilter);

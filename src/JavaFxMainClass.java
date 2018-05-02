@@ -15,7 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class TestClass extends Application{
+public class JavaFxMainClass extends Application{
 
 	public static void main(String[] args) {
 		launch(args);
