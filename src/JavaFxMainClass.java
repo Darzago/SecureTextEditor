@@ -41,7 +41,7 @@ public class JavaFxMainClass extends Application{
 			MenuItem menuOpenItem = new MenuItem("Open");
 			menuOpenItem.setOnAction(new EventHandler<ActionEvent>() {
 	            public void handle(ActionEvent t) {
-	            	editor.openFile();
+	            	editor.openFileDialogue();
 	            }
 	        });
 			

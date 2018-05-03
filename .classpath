@@ -6,5 +6,6 @@
 			<accessrule kind="accessible" pattern="javafx/**"/>
 		</accessrules>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Joel/Desktop/bcprov-jdk15on-159.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -13,8 +13,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javax.crypto.*;
 
 public class TextEditor extends TextArea{
 	
@@ -32,6 +32,8 @@ public class TextEditor extends TextArea{
 	//Flag that shows if there is unsaved progress
 	private boolean textHasChanged = false;
 	
+	FileManager fileManager = new FileManager();
+	
 	public void newFileDialogue()
 	{
 		if(textHasChanged)
@@ -44,6 +46,22 @@ public class TextEditor extends TextArea{
 		else 
 		{
 			newFile();
+		}
+	}
+	
+	//TODO Code duplication --
+	public void openFileDialogue()
+	{
+		if(textHasChanged)
+		{
+			if(displaySaveAlert())
+			{
+				openFile();
+			}
+		}
+		else 
+		{
+			openFile();
 		}
 	}
 	
@@ -61,7 +79,7 @@ public class TextEditor extends TextArea{
 	/**
 	 * Opens a file from the file system
 	 */
-	public void openFile()
+	private void openFile()
 	{
     	FileChooser fileChooser = new FileChooser();
     	File fileToOpen = fileChooser.showOpenDialog(null);
@@ -71,46 +89,11 @@ public class TextEditor extends TextArea{
     		String openFileName = fileToOpen.getAbsolutePath();
     		
     		this.documentOrigin = openFileName;
-	    	try {
-	    		
-	    		this.setText("");
-				FileReader reader = new FileReader(openFileName);
-				BufferedReader bufferdReader = new BufferedReader(reader);
-				
-				String lineToRead = "";
-				
-				lineToRead = bufferdReader.readLine();
-				
-				while(lineToRead != null)
-				{
-					this.setText(this.getText()  + lineToRead);
-					addParagraph();
-					lineToRead = bufferdReader.readLine();
-				}
-				
-				updateTitle(fileToOpen.getName());
-				bufferdReader.close();
-				
-			} catch (FileNotFoundException e) {
-				System.err.println("FILE WAS NOT FOUND");
-				e.printStackTrace();
-			} catch (IOException e) {
-				System.err.println("LINE READING ERROR");
-				e.printStackTrace();
-			}
+    		
+    		this.setText(fileManager.openFileFromPath(openFileName));
+    		
+    		updateTitle(fileToOpen.getName());
     	}
-	}
-	
-	/**
-	 * Adds a paragraph to the current content of the textEditor
-	 * Used to load in the file with correct paragraphing
-	 */
-	private void addParagraph()
-	{
-		if(!this.getText().equals(""))
-		{
-			this.setText(this.getText() + "\n");
-		}
 	}
 	
 	/**
@@ -121,16 +104,16 @@ public class TextEditor extends TextArea{
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setInitialFileName(documentName + ".txt");
 		
-		
-		
 		//Sets the datatype that is displayed in the filechooser
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text file (*.txt)", "*.txt");
 		fileChooser.getExtensionFilters().add(extFilter);
 		
-		
 		File fileToSave = fileChooser.showSaveDialog(null);
 		changeFileOrigin(fileToSave);
-		saveFileInPath(fileToSave);
+		
+		fileManager.saveFileInPath(fileToSave, this.getText());
+		myStage.setTitle(documentName);
+		updateTitle(fileToSave.getName());
 	}
 	
 	/**
@@ -138,11 +121,12 @@ public class TextEditor extends TextArea{
 	 */
 	public void saveFile()
 	{
-		File fileToSave;
 		if(documentOrigin != null)
-		{
-			fileToSave = new File(documentOrigin);
-			saveFileInPath(fileToSave);
+		{			
+			File fileToWrite = new File(documentOrigin);
+			fileManager.saveFileInPath(fileToWrite, this.getText());
+			myStage.setTitle(documentName);
+			updateTitle(fileToWrite.getName());
 		}
 		else
 		{
@@ -151,29 +135,7 @@ public class TextEditor extends TextArea{
 		
 	}
 	
-	/**
-	 * Writes the content into a file
-	 * @param path File to be written
-	 */
-	private void saveFileInPath(File path)
-	{
-		if(path != null){
-			try {
-				FileWriter fileWriter = new FileWriter(path);
-				fileWriter.write(this.getText());
-				
-				myStage.setTitle(documentName);
-				
-				fileWriter.close();
-				
-				updateTitle(path.getName());
-				
-			} catch (IOException e) {
-				System.err.println("FILE WRITING EXCEPTION");
-				e.printStackTrace();
-			}
-		}
-	}
+
 
 	/**
 	 * Changes the origin directory of the file if the new directory is not null
