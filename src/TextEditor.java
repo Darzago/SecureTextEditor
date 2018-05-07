@@ -1,11 +1,6 @@
-import java.io.BufferedReader;
+import java.beans.XMLEncoder;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Optional;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
@@ -14,7 +9,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javax.crypto.*;
 
 public class TextEditor extends TextArea{
 	
@@ -34,8 +28,14 @@ public class TextEditor extends TextArea{
 	
 	FileManager fileManager = new FileManager();
 	
+	private PaddingType selectedPadding = PaddingType.none;
+	
+	private EncryptionType selectedEncryption;
+	
 	public void newFileDialogue()
 	{
+		
+
 		if(textHasChanged)
 		{
 			if(displaySaveAlert())
@@ -70,6 +70,8 @@ public class TextEditor extends TextArea{
 	 */
 	private void newFile()
 	{
+		fileManager.writeConfig();
+		fileManager.loadConfig("test.xml");
 		this.setText("");
 		textHasChanged = false;
 		this.documentOrigin = null;
