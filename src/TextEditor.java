@@ -1,5 +1,7 @@
 import java.beans.XMLEncoder;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,6 +29,8 @@ public class TextEditor extends TextArea{
 	private boolean textHasChanged = false;
 	
 	FileManager fileManager = new FileManager();
+	
+	List<FileData> dataList = new ArrayList<FileData>();
 	
 	private PaddingType selectedPadding = PaddingType.none;
 	
@@ -70,8 +74,10 @@ public class TextEditor extends TextArea{
 	 */
 	private void newFile()
 	{
-		fileManager.writeConfig();
+		fileManager.writeConfig(dataList);
 		fileManager.loadConfig("test.xml");
+		
+		
 		this.setText("");
 		textHasChanged = false;
 		this.documentOrigin = null;
@@ -178,6 +184,7 @@ public class TextEditor extends TextArea{
 		    }
 		});
 		
+		//Create and modify an alert object
 		saveQuitAlert = new Alert(AlertType.CONFIRMATION);
 		saveQuitAlert.setGraphic(null);
 		saveQuitAlert.setTitle("Warning");

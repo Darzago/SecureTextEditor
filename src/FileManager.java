@@ -4,6 +4,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -79,7 +81,7 @@ public class FileManager {
 		}
 	}
 	
-	public void writeConfig()
+	public void writeConfig(List<FileData> dataList)
 	{
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -90,20 +92,32 @@ public class FileManager {
 			Element rootElement = config.createElement("STEConfig");
 			config.appendChild(rootElement);
 			
-			//options
-			Element optionsElement = config.createElement("options");
-			rootElement.appendChild(optionsElement);
-			
-			//encryption
-			Element encryptionElement = config.createElement("encryption");
-			optionsElement.appendChild(encryptionElement);
-			encryptionElement.appendChild(config.createTextNode("AES"));
-			
-			//filename
-			Element fileNameElement = config.createElement("fileName");
-			fileNameElement.appendChild(config.createTextNode("Peter Hans.txt"));
-			rootElement.appendChild(fileNameElement);
-			
+			for(FileData filedata : dataList){
+				//options
+				Element fileElement = config.createElement("file");
+				rootElement.appendChild(fileElement);
+				
+				//encryption
+				Element encryptionElement = config.createElement("encryption");
+				fileElement.appendChild(encryptionElement);
+				encryptionElement.appendChild(config.createTextNode(filedata.getEncryptionType() + ""));
+				
+				//filename
+				Element pathElement = config.createElement("filePath");
+				pathElement.appendChild(config.createTextNode(filedata.getFilePath()));
+				rootElement.appendChild(pathElement);
+				
+				//hash value
+				Element hashElement = config.createElement("hashValue");
+				hashElement.appendChild(config.createTextNode(filedata.getHashValue()));
+				rootElement.appendChild(pathElement);
+				
+				//hash value
+				Element paddingElement = config.createElement("padding");
+				paddingElement.appendChild(config.createTextNode(filedata.getPaddingType() + ""));
+				rootElement.appendChild(pathElement);
+				
+			}
 			
 			TransformerFactory transformerFactory = TransformerFactory.newInstance();
 			transformerFactory.setAttribute("indent-number", 2);
@@ -126,9 +140,10 @@ public class FileManager {
 		
 	}
 	
-	public void loadConfig(String path)
+	public List<FileData> loadConfig(String path)
 	{
-		
+		List<FileData> dataList = new ArrayList<FileData>();
+	
 		try {
 			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -148,13 +163,7 @@ public class FileManager {
 					
 					System.out.println("encryption : " + eElement.getAttribute("encryption"));
 					System.out.println("encryption : " + eElement.getElementsByTagName("encryption").item(0).getTextContent());
-					/*
-					System.out.println("Staff id : " + eElement.getAttribute("id"));
-					System.out.println("First Name : " + eElement.getElementsByTagName("firstname").item(0).getTextContent());
-					System.out.println("Last Name : " + eElement.getElementsByTagName("lastname").item(0).getTextContent());
-					System.out.println("Nick Name : " + eElement.getElementsByTagName("nickname").item(0).getTextContent());
-					System.out.println("Salary : " + eElement.getElementsByTagName("salary").item(0).getTextContent());
-					*/
+
 				}
 			}
 			
@@ -168,6 +177,8 @@ public class FileManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return dataList;
 	}
 	
 }
