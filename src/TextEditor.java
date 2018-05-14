@@ -32,14 +32,14 @@ public class TextEditor extends TextArea{
 	
 	List<FileData> dataList = new ArrayList<FileData>();
 	
-	private PaddingType selectedPadding = PaddingType.none;
+	private PaddingType selectedPadding = PaddingType.NoPadding;
 	
 	private EncryptionType selectedEncryption;
 	
 	public void newFileDialogue()
 	{
 		
-		FileData testdata = new FileData(PaddingType.none,EncryptionType.none,new File("Peter.txt"),"hashValue");
+		FileData testdata = new FileData(PaddingType.NoPadding,EncryptionType.none,new File("Peter.txt"),"hashValue");
 		dataList.add(testdata);
 		//fileManager.writeConfig(dataList);
 		

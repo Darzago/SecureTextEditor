@@ -1,4 +1,4 @@
 
 public enum PaddingType {
-none, 
+NoPadding, 
 }

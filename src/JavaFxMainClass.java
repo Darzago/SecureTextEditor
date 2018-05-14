@@ -99,7 +99,7 @@ public class JavaFxMainClass extends Application{
 		ComboBox<PaddingType> paddingDropDown = new ComboBox<PaddingType> ();
 		
 		paddingDropDown.getItems().addAll(PaddingType.values());
-		paddingDropDown.setValue(PaddingType.none);
+		paddingDropDown.setValue(PaddingType.NoPadding);
 		
 		HBox encryptionOptionsBox = new HBox(encryptionLabel, encryptionDropDown, paddingLabel, paddingDropDown);
 		encryptionOptionsBox.setAlignment(Pos.CENTER);
