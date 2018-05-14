@@ -39,7 +39,12 @@ public class TextEditor extends TextArea{
 	public void newFileDialogue()
 	{
 		
-
+		FileData testdata = new FileData(PaddingType.none,EncryptionType.none,new File("Peter.txt"),"hashValue");
+		dataList.add(testdata);
+		//fileManager.writeConfig(dataList);
+		
+		//fileManager.loadConfig("test.xml");
+		
 		if(textHasChanged)
 		{
 			if(displaySaveAlert())
@@ -74,8 +79,6 @@ public class TextEditor extends TextArea{
 	 */
 	private void newFile()
 	{
-		fileManager.writeConfig(dataList);
-		fileManager.loadConfig("test.xml");
 		
 		
 		this.setText("");
@@ -92,7 +95,7 @@ public class TextEditor extends TextArea{
     	FileChooser fileChooser = new FileChooser();
     	File fileToOpen = fileChooser.showOpenDialog(null);
     	
-    	
+    	//if claus eprevents an error if the user pressed on the x of the 'save' dialogue
     	if(fileToOpen != null){
     		String openFileName = fileToOpen.getAbsolutePath();
     		
@@ -117,11 +120,18 @@ public class TextEditor extends TextArea{
 		fileChooser.getExtensionFilters().add(extFilter);
 		
 		File fileToSave = fileChooser.showSaveDialog(null);
-		changeFileOrigin(fileToSave);
 		
-		fileManager.saveFileInPath(fileToSave, this.getText());
-		myStage.setTitle(documentName);
-		updateTitle(fileToSave.getName());
+		//if claus eprevents an error if the user pressed on the x of the save dialogue
+		if(fileToSave!= null){
+			
+			changeFileOrigin(fileToSave);
+			
+			fileManager.saveFileInPath(fileToSave, this.getText());
+			
+			myStage.setTitle(documentName);
+			
+			updateTitle(fileToSave.getName());
+		}
 	}
 	
 	/**

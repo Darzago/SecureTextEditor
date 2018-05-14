@@ -105,17 +105,17 @@ public class FileManager {
 				//filename
 				Element pathElement = config.createElement("filePath");
 				pathElement.appendChild(config.createTextNode(filedata.getFilePath()));
-				rootElement.appendChild(pathElement);
+				fileElement.appendChild(pathElement);
 				
 				//hash value
 				Element hashElement = config.createElement("hashValue");
 				hashElement.appendChild(config.createTextNode(filedata.getHashValue()));
-				rootElement.appendChild(pathElement);
+				fileElement.appendChild(hashElement);
 				
 				//hash value
 				Element paddingElement = config.createElement("padding");
 				paddingElement.appendChild(config.createTextNode(filedata.getPaddingType() + ""));
-				rootElement.appendChild(pathElement);
+				fileElement.appendChild(paddingElement);
 				
 			}
 			
@@ -142,6 +142,8 @@ public class FileManager {
 	
 	public List<FileData> loadConfig(String path)
 	{
+		//TODO SAX Parser
+		
 		List<FileData> dataList = new ArrayList<FileData>();
 	
 		try {
@@ -161,8 +163,12 @@ public class FileManager {
 
 					Element eElement = (Element) nNode;
 					
-					System.out.println("encryption : " + eElement.getAttribute("encryption"));
-					System.out.println("encryption : " + eElement.getElementsByTagName("encryption").item(0).getTextContent());
+					
+					for (int i = 0; i < 1; i++) {
+						System.out.println("encryption : " + eElement.getAttribute("encryption"));
+						System.out.println("encryption : " + eElement.getElementsByTagName("file").item(0));
+					}
+					
 
 				}
 			}

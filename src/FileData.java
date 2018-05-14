@@ -1,6 +1,9 @@
 import java.io.File;
 
 public class FileData {
+	
+	//Maybe store a seperate .xml file for each text file, using the generated hash value as name? 
+	
 	PaddingType paddingType;
 	EncryptionType encryptionType;
 	File filePath;

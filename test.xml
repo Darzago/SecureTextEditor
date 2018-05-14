@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <STEConfig>
-<options>
-<encryption>AES</encryption>
-</options>
-<fileName>Peter Hans.txt</fileName>
+<file>
+<encryption>none</encryption>
+<filePath>Peter.txt</filePath>
+<hashValue>hashValue</hashValue>
+<padding>none</padding>
+</file>
 </STEConfig>
