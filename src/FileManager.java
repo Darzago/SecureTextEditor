@@ -26,6 +26,10 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import Enums.EncryptionMode;
+import Enums.EncryptionType;
+import Enums.PaddingType;
+
 /**
  * Saves and loads files and configs
  * @author Joel
@@ -82,15 +86,11 @@ public class FileManager {
 	{
 		if(path != null){
 			try {
-				
-				
-				BufferedOutputStream bos = null;
-				
 				//create an object of FileOutputStream
 				FileOutputStream fos = new FileOutputStream(path);
 
 				//create an object of BufferedOutputStream
-				bos = new BufferedOutputStream(fos);
+				BufferedOutputStream bos = new BufferedOutputStream(fos);
 				
 				bos.write(cryptoManager.encryptString(fileContent, encryptionType, encryptionMode, paddingType));
 				

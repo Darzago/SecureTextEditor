@@ -1,6 +1,10 @@
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import Enums.EncryptionMode;
+import Enums.EncryptionType;
+import Enums.PaddingType;
+
 /**
  * Used to de and encrypt data
  * @author Joel
@@ -120,6 +124,11 @@ public class CryptoManager {
 	private byte[] generateKey()
 	{
 	return new byte[0];
+	}
+	
+	private boolean isWeakKey()
+	{
+		return true;
 	}
 	
 }

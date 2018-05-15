@@ -1,5 +1,8 @@
 import java.io.File;
 
+import Enums.EncryptionType;
+import Enums.PaddingType;
+
 public class FileData {
 	
 	//Maybe store a seperate .xml file for each text file, using the generated hash value as name? 

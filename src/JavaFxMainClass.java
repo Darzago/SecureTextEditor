@@ -1,3 +1,6 @@
+import Enums.EncryptionMode;
+import Enums.EncryptionType;
+import Enums.PaddingType;
 import javafx.application.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -101,6 +104,8 @@ public class JavaFxMainClass extends Application{
 			//Event thet gets called if the value of the dropdown changes/is reassigned
 			encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
 	            public void handle(ActionEvent t) {
+	            	
+	            	//TODO change other dropdown options depending on the encryption
 	            	editor.setEncryptionType(encryptionDropDown.getValue());
 	            }
 	        });
@@ -109,7 +114,7 @@ public class JavaFxMainClass extends Application{
 		encryptionDropDown.getItems().addAll(EncryptionType.values());
 		
 		
-		Label modeLabel = new Label("  Mode:  ");
+		Label modeLabel = new Label("Mode:  ");
 			ComboBox<EncryptionMode> modeDropDown = new ComboBox<EncryptionMode> ();
 			//Event thet gets called if the value of the dropdown changes/is reassigned
 			modeDropDown.setOnAction(new EventHandler<ActionEvent>() {
@@ -121,7 +126,7 @@ public class JavaFxMainClass extends Application{
 		modeDropDown.getItems().addAll(EncryptionMode.values());
 		
 		
-		Label paddingLabel = new Label("  Padding:  ");
+		Label paddingLabel = new Label("Padding:  ");
 			ComboBox<PaddingType> paddingDropDown = new ComboBox<PaddingType> ();
 			paddingDropDown.setOnAction(new EventHandler<ActionEvent>() {
 	            public void handle(ActionEvent t) {

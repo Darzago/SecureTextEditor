@@ -1,3 +1,6 @@
+import Enums.EncryptionMode;
+import Enums.EncryptionType;
+import Enums.PaddingType;
 
 public class TestClass {
 
