@@ -1,4 +1,6 @@
 import javafx.application.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -31,7 +33,7 @@ public class JavaFxMainClass extends Application{
 		
 		Stage encryptionOptionStage = new Stage();
 		
-		TextEditor editor = new TextEditor(primaryStage);
+		TextEditor editor = new TextEditor(primaryStage, EncryptionType.none, EncryptionMode.ECB , PaddingType.NoPadding);
 		
 		TabPane tabPane = new TabPane();
 		MenuBar menuBar = new MenuBar();
@@ -92,11 +94,25 @@ public class JavaFxMainClass extends Application{
 		Label encryptionLabel = new Label("Encryption:  ");
 		ComboBox<EncryptionType> encryptionDropDown = new ComboBox<EncryptionType> ();
 		
+		encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	editor.setEncryptionType(encryptionDropDown.getValue());
+            }
+        });
+		
+		
 		encryptionDropDown.getItems().addAll(EncryptionType.values());
 		encryptionDropDown.setValue(EncryptionType.none);
 		
 		Label paddingLabel = new Label("  Padding:  ");
 		ComboBox<PaddingType> paddingDropDown = new ComboBox<PaddingType> ();
+		
+		paddingDropDown.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	editor.setPaddingType(paddingDropDown.getValue());
+            }
+        });
+		
 		
 		paddingDropDown.getItems().addAll(PaddingType.values());
 		paddingDropDown.setValue(PaddingType.NoPadding);
@@ -109,9 +125,14 @@ public class JavaFxMainClass extends Application{
 		
 		GridPane encryptionButtonsBox = new GridPane();
 			Button closeButton = new Button("Close");
+			
 			encryptionButtonsBox.add(closeButton, 1, 0);
-			Button applyButton = new Button("Apply");
-			encryptionButtonsBox.add(applyButton, 0, 0);
+			closeButton.setOnAction(new EventHandler<ActionEvent>() {
+	            public void handle(ActionEvent t) {
+	            	encryptionOptionStage.close();
+	            }
+	        });
+			
 		encryptionButtonsBox.setPadding(new Insets(10, 10, 10, 10));
 		encryptionButtonsBox.setHgap(10);
 		encryptionButtonsBox.setAlignment(Pos.CENTER_RIGHT);

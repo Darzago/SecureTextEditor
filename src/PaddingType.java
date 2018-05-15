@@ -1,4 +1,4 @@
 
 public enum PaddingType {
-NoPadding, 
+NoPadding, PKCS7Padding
 }

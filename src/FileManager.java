@@ -1,9 +1,14 @@
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +31,13 @@ import org.xml.sax.SAXException;
 
 public class FileManager {
 	
-	public String openFileFromPath(String filePath)
+	CryptoManager cryptoManager = new CryptoManager();
+	
+	public String openFileFromPath(String fileLocation, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType)
 	{
     	try {
     		
-    		
+    		/*
 			FileReader reader = new FileReader(filePath);
 			BufferedReader bufferdReader = new BufferedReader(reader);
 			
@@ -47,13 +54,21 @@ public class FileManager {
 			}
 			
 			bufferdReader.close();
+			*/
+    		
+    		Path filePath = Paths.get(fileLocation);
+    		byte[] readByteArray= Files.readAllBytes(filePath);
+    		
+			return cryptoManager.decryptString(readByteArray, encryptionType, encryptionMode, paddingType);
 			
-			return readText;
 		} catch (FileNotFoundException e) {
 			System.err.println("FILE WAS NOT FOUND");
 			e.printStackTrace();
 		} catch (IOException e) {
 			System.err.println("LINE READING ERROR");
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
@@ -65,14 +80,23 @@ public class FileManager {
 	 * Writes the content into a file
 	 * @param path File to be written
 	 */
-	public void saveFileInPath(File path, String fileContent)
+	public void saveFileInPath(File path, String fileContent, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
 	{
 		if(path != null){
 			try {
-				FileWriter fileWriter = new FileWriter(path);
-				fileWriter.write(fileContent);
 				
-				fileWriter.close();
+				
+				BufferedOutputStream bos = null;
+				
+				//create an object of FileOutputStream
+				FileOutputStream fos = new FileOutputStream(path);
+
+				//create an object of BufferedOutputStream
+				bos = new BufferedOutputStream(fos);
+				
+				bos.write(cryptoManager.encryptString(fileContent, encryptionType, encryptionMode, paddingType));
+				
+				bos.close();
 				
 			} catch (IOException e) {
 				System.err.println("FILE WRITING EXCEPTION");

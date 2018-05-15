@@ -32,9 +32,26 @@ public class TextEditor extends TextArea{
 	
 	List<FileData> dataList = new ArrayList<FileData>();
 	
-	private PaddingType selectedPadding = PaddingType.NoPadding;
+	private PaddingType selectedPadding ;
 	
 	private EncryptionType selectedEncryption;
+	
+	private EncryptionMode selectedMode;
+	
+	public void setPaddingType(PaddingType paddingType)
+	{
+		this.selectedPadding = paddingType;
+	}
+	
+	public void setEncryptionType(EncryptionType encryptionType)
+	{
+		this.selectedEncryption = encryptionType;
+	}
+	
+	public void setEncryptionMode(EncryptionMode encryptionMode)
+	{
+		this.selectedMode = encryptionMode;
+	}
 	
 	public void newFileDialogue()
 	{
@@ -95,13 +112,13 @@ public class TextEditor extends TextArea{
     	FileChooser fileChooser = new FileChooser();
     	File fileToOpen = fileChooser.showOpenDialog(null);
     	
-    	//if claus eprevents an error if the user pressed on the x of the 'save' dialogue
+    	//if clause prevents an error if the user pressed the x of the 'save' dialogue
     	if(fileToOpen != null){
     		String openFileName = fileToOpen.getAbsolutePath();
     		
     		this.documentOrigin = openFileName;
     		
-    		this.setText(fileManager.openFileFromPath(openFileName));
+    		this.setText(fileManager.openFileFromPath(openFileName, selectedEncryption, selectedMode, selectedPadding));
     		
     		updateTitle(fileToOpen.getName());
     	}
@@ -126,7 +143,12 @@ public class TextEditor extends TextArea{
 			
 			changeFileOrigin(fileToSave);
 			
-			fileManager.saveFileInPath(fileToSave, this.getText());
+			try {
+				fileManager.saveFileInPath(fileToSave, this.getText(), selectedEncryption, selectedMode, selectedPadding);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			myStage.setTitle(documentName);
 			
@@ -141,8 +163,13 @@ public class TextEditor extends TextArea{
 	{
 		if(documentOrigin != null)
 		{			
-			File fileToWrite = new File(documentOrigin);
-			fileManager.saveFileInPath(fileToWrite, this.getText());
+			File fileToWrite = new File(documentOrigin); 
+			try {
+				fileManager.saveFileInPath(fileToWrite, this.getText(), selectedEncryption, selectedMode, selectedPadding);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			myStage.setTitle(documentName);
 			updateTitle(fileToWrite.getName());
 		}
@@ -176,11 +203,14 @@ public class TextEditor extends TextArea{
 	 * Constructor
 	 * Sets the stage and adds a listener to detect if the content of the text area has changed
 	 */
-	TextEditor(Stage _myStage)
+	TextEditor(Stage _myStage, EncryptionType _encryptionType, EncryptionMode _selectedMode,  PaddingType _selectedPadding)
 	{
 		this.myStage = _myStage;
 		updateTitle(defaultName);
 		this.setPrefRowCount(999999);
+		this.selectedEncryption = _encryptionType;
+		this.selectedPadding = _selectedPadding;
+		this.selectedMode = _selectedMode;
 		
 		TextEditor copy = this;
 		this.textProperty().addListener(new ChangeListener<String>() {
