@@ -1,4 +1,3 @@
-import java.beans.XMLEncoder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +11,11 @@ import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+/**
+ * Implements the logic of the editor 
+ * @author Joel
+ *
+ */
 public class TextEditor extends TextArea{
 	
 	public final String title = "Secure Text Editor - ";
@@ -38,26 +42,42 @@ public class TextEditor extends TextArea{
 	
 	private EncryptionMode selectedMode;
 	
+	/**
+	 * Sets the currently selected padding type
+	 * @param paddingType padding type to be set
+	 */
 	public void setPaddingType(PaddingType paddingType)
 	{
 		this.selectedPadding = paddingType;
 	}
 	
+	/**
+	 * Sets the currently selected encryption type
+	 * @param encryptionType encryption type to be set
+	 */
 	public void setEncryptionType(EncryptionType encryptionType)
 	{
 		this.selectedEncryption = encryptionType;
 	}
 	
+	
+	/**
+	 * Sets the currently selected encryption mode
+	 * @param encryptionMode encryption mode to be set
+	 */
 	public void setEncryptionMode(EncryptionMode encryptionMode)
 	{
 		this.selectedMode = encryptionMode;
 	}
 	
+	/**
+	 * Displays a new window if the current file has been changed but not saved, otherwise opens the new file
+	 */
 	public void newFileDialogue()
 	{
 		
-		FileData testdata = new FileData(PaddingType.NoPadding,EncryptionType.none,new File("Peter.txt"),"hashValue");
-		dataList.add(testdata);
+		//FileData testdata = new FileData(PaddingType.NoPadding,EncryptionType.none,new File("Peter.txt"),"hashValue");
+		//dataList.add(testdata);
 		//fileManager.writeConfig(dataList);
 		
 		//fileManager.loadConfig("test.xml");
@@ -75,7 +95,10 @@ public class TextEditor extends TextArea{
 		}
 	}
 	
-	//TODO Code duplication --
+	/**
+	 * Displays a new window if the current file has been changed but not saved, otherwise creates a new file
+	 * TODO Code duplication
+	 */
 	public void openFileDialogue()
 	{
 		if(textHasChanged)
@@ -96,8 +119,6 @@ public class TextEditor extends TextArea{
 	 */
 	private void newFile()
 	{
-		
-		
 		this.setText("");
 		textHasChanged = false;
 		this.documentOrigin = null;
@@ -105,7 +126,7 @@ public class TextEditor extends TextArea{
 	}
 	
 	/**
-	 * Opens a file from the file system
+	 * Opens a file from the file system and displays it in the editor
 	 */
 	private void openFile()
 	{
@@ -125,12 +146,12 @@ public class TextEditor extends TextArea{
 	}
 	
 	/**
-	 * Saves the current content of the editor in a specified directory using the filechooser
+	 * Saves the current content of the editor in a user specified directory using the filechooser
 	 */
 	public void saveFileAs()
 	{
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.setInitialFileName(documentName + ".txt");
+		fileChooser.setInitialFileName(documentName);
 		
 		//Sets the datatype that is displayed in the filechooser
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text file (*.txt)", "*.txt");
@@ -202,6 +223,10 @@ public class TextEditor extends TextArea{
 	/**
 	 * Constructor
 	 * Sets the stage and adds a listener to detect if the content of the text area has changed
+	 * @param _myStage main stage 
+	 * @param _encryptionType currently selected {@link EncryptionType}
+	 * @param _selectedMode currently selected {@link EncryptionMode}
+	 * @param _selectedPadding currently selected {@link PaddingType}
 	 */
 	TextEditor(Stage _myStage, EncryptionType _encryptionType, EncryptionMode _selectedMode,  PaddingType _selectedPadding)
 	{

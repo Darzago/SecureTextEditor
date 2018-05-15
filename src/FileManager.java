@@ -1,10 +1,7 @@
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -29,33 +26,26 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+/**
+ * Saves and loads files and configs
+ * @author Joel
+ *
+ */
 public class FileManager {
 	
 	CryptoManager cryptoManager = new CryptoManager();
 	
+	/**
+	 * Opens and decrypts a file from the given filepath using the given settings
+	 * @param fileLocation file to be opened
+	 * @param encryptionType encryption type to be used to decrypt
+	 * @param encryptionMode encryption mode to be used to decrypt
+	 * @param paddingType padding type to be used to decrypt
+	 * @return decoded content of the file
+	 */
 	public String openFileFromPath(String fileLocation, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType)
 	{
     	try {
-    		
-    		/*
-			FileReader reader = new FileReader(filePath);
-			BufferedReader bufferdReader = new BufferedReader(reader);
-			
-			String lineToRead = "";
-			String readText = "";
-			
-			lineToRead = bufferdReader.readLine();
-			
-			while(lineToRead != null)
-			{
-				readText = readText + lineToRead;
-				readText = readText + "\n";
-				lineToRead = bufferdReader.readLine();
-			}
-			
-			bufferdReader.close();
-			*/
-    		
     		Path filePath = Paths.get(fileLocation);
     		byte[] readByteArray= Files.readAllBytes(filePath);
     		
@@ -79,6 +69,14 @@ public class FileManager {
 	/**
 	 * Writes the content into a file
 	 * @param path File to be written
+	 */
+	
+	/**
+	 * Writes (and encodes) the current content of the editor into a file 
+	 * @param path File to be written
+	 * @param encryptionType encryption type to be used to encrypt
+	 * @param encryptionMode encryption mode to be used to encrypt
+	 * @param paddingType padding type to be used to encrypt
 	 */
 	public void saveFileInPath(File path, String fileContent, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
 	{
@@ -105,6 +103,10 @@ public class FileManager {
 		}
 	}
 	
+	/**
+	 * Write config data
+	 * @param dataList data to be written into a config
+	 */
 	public void writeConfig(List<FileData> dataList)
 	{
 		try {
@@ -164,6 +166,11 @@ public class FileManager {
 		
 	}
 	
+	/**
+	 * Loads a config.xml 
+	 * @param path Path of the .xml
+	 * @return List of the read data
+	 */
 	public List<FileData> loadConfig(String path)
 	{
 		//TODO SAX Parser

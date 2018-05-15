@@ -1,6 +1,4 @@
 import javafx.application.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,10 +16,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * Builds the scene tree and creates event handler
+ * @author Joel
+ *
+ */
 public class JavaFxMainClass extends Application{
 
 	public static void main(String[] args) {
@@ -68,6 +70,7 @@ public class JavaFxMainClass extends Application{
 	        });
 		fileMenu.getItems().addAll(menuNewItem, menuOpenItem, menuSaveItem, menuSaveAsItem);
 		
+		//Menu for encryption options
 		Menu encryptionMenu = new Menu("Encryption");
 			MenuItem encryptions = new MenuItem("Options");
 			encryptions.setOnAction(new EventHandler<ActionEvent>() {
@@ -91,38 +94,57 @@ public class JavaFxMainClass extends Application{
         layoutMainWindow.setFillWidth(true);
 		Scene mainWindow = new Scene(layoutMainWindow, 600, 400);
 		
+		//Label for the encryption dropdown
 		Label encryptionLabel = new Label("Encryption:  ");
-		ComboBox<EncryptionType> encryptionDropDown = new ComboBox<EncryptionType> ();
-		
-		encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-            	editor.setEncryptionType(encryptionDropDown.getValue());
-            }
-        });
-		
-		
+			ComboBox<EncryptionType> encryptionDropDown = new ComboBox<EncryptionType> ();
+			
+			//Event thet gets called if the value of the dropdown changes/is reassigned
+			encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
+	            public void handle(ActionEvent t) {
+	            	editor.setEncryptionType(encryptionDropDown.getValue());
+	            }
+	        });
+			
+			encryptionDropDown.setValue(EncryptionType.none);
 		encryptionDropDown.getItems().addAll(EncryptionType.values());
-		encryptionDropDown.setValue(EncryptionType.none);
+		
+		
+		Label modeLabel = new Label("  Mode:  ");
+			ComboBox<EncryptionMode> modeDropDown = new ComboBox<EncryptionMode> ();
+			//Event thet gets called if the value of the dropdown changes/is reassigned
+			modeDropDown.setOnAction(new EventHandler<ActionEvent>() {
+	            public void handle(ActionEvent t) {
+	            	editor.setEncryptionMode(modeDropDown.getValue());
+	            }
+	        });
+			modeDropDown.setValue(EncryptionMode.ECB);
+		modeDropDown.getItems().addAll(EncryptionMode.values());
+		
 		
 		Label paddingLabel = new Label("  Padding:  ");
-		ComboBox<PaddingType> paddingDropDown = new ComboBox<PaddingType> ();
-		
-		paddingDropDown.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-            	editor.setPaddingType(paddingDropDown.getValue());
-            }
-        });
-		
-		
-		paddingDropDown.getItems().addAll(PaddingType.values());
+			ComboBox<PaddingType> paddingDropDown = new ComboBox<PaddingType> ();
+			paddingDropDown.setOnAction(new EventHandler<ActionEvent>() {
+	            public void handle(ActionEvent t) {
+	            	editor.setPaddingType(paddingDropDown.getValue());
+	            }
+	        });
+			paddingDropDown.getItems().addAll(PaddingType.values());
 		paddingDropDown.setValue(PaddingType.NoPadding);
 		
-		HBox encryptionOptionsBox = new HBox(encryptionLabel, encryptionDropDown, paddingLabel, paddingDropDown);
-		encryptionOptionsBox.setAlignment(Pos.CENTER);
+		//Adds all dropdown menus and labels to a GridPane
+		GridPane encryptionGridPane = new GridPane();
+		encryptionGridPane.add(encryptionLabel, 0, 0);
+		encryptionGridPane.add(encryptionDropDown, 0, 1);
+		encryptionGridPane.add(modeLabel, 1, 0);
+		encryptionGridPane.add(modeDropDown, 1, 1);
+		encryptionGridPane.add(paddingLabel, 2, 0);
+		encryptionGridPane.add(paddingDropDown, 2, 1);
 		
-		encryptionOptionsBox.setFillHeight(true);
-		encryptionOptionsBox.setPadding(new Insets(10, 10, 10, 10));
+		encryptionGridPane.setHgap(10);
+		encryptionGridPane.setAlignment(Pos.CENTER);
+		encryptionGridPane.setPadding(new Insets(10, 0, 0, 0));
 		
+		//Adds button(s) below the dropdown menus 
 		GridPane encryptionButtonsBox = new GridPane();
 			Button closeButton = new Button("Close");
 			
@@ -137,9 +159,10 @@ public class JavaFxMainClass extends Application{
 		encryptionButtonsBox.setHgap(10);
 		encryptionButtonsBox.setAlignment(Pos.CENTER_RIGHT);
 		
-		VBox optionGeneralLayout = new VBox(encryptionOptionsBox, encryptionButtonsBox);
 		
-		Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 350, 100);
+		VBox optionGeneralLayout = new VBox(encryptionGridPane, encryptionButtonsBox);
+		
+		Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 320, 100);
 		encryptionOptionStage.setScene(encryptionOptionWindow);
 		encryptionOptionStage.setTitle("Encryption Options");
 		encryptionOptionStage.getIcons().add(new Image("gear-256.png"));
