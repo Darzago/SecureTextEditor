@@ -12,6 +12,8 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -24,11 +26,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
-import Enums.EncryptionMode;
-import Enums.EncryptionType;
-import Enums.PaddingType;
+import enums.EncryptionMode;
+import enums.EncryptionType;
+import enums.PaddingType;
 
 /**
  * Saves and loads files and configs
@@ -167,42 +171,49 @@ public class FileManager {
 	}
 	
 	/**
+	 * TODO
 	 * Loads a config.xml 
 	 * @param path Path of the .xml
 	 * @return List of the read data
 	 */
 	public List<FileData> loadConfig(String path)
-	{
-		//TODO SAX Parser
-		
+	{	
 		List<FileData> dataList = new ArrayList<FileData>();
-	
+		
+		
 		try {
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-			Document loadedConfig = docBuilder.parse(new File(path));
 			
-			NodeList nList = loadedConfig.getElementsByTagName("STEConfig");
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			SAXParser saxParser = factory.newSAXParser();
 			
-			
-			Node nNode;
-			for(int nodeIndex = 0; nodeIndex < nList.getLength(); nodeIndex ++)
+			DefaultHandler handler = new DefaultHandler() 
 			{
-				 nNode = nList.item(nodeIndex);
+				boolean bEncryption = false;
 				
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-					Element eElement = (Element) nNode;
-					
-					
-					for (int i = 0; i < 1; i++) {
-						System.out.println("encryption : " + eElement.getAttribute("encryption"));
-						System.out.println("encryption : " + eElement.getElementsByTagName("file").item(0));
+				public void startElement(String uri, String localName,String qName, Attributes attributes) throws SAXException 
+				{
+					System.out.println("Start Element :" + qName);
+	
+					if (qName.equalsIgnoreCase("ENCRYPTION")) {
+						bEncryption = true;
 					}
-					
-
 				}
-			}
+				
+				public void endElement(String uri, String localName, String qName) throws SAXException 
+				{
+					System.out.println("End Element :" + qName);
+				}
+
+				public void characters(char ch[], int start, int length) throws SAXException 
+				{
+					if (bEncryption) {
+						System.out.println("Encryption Type : " + new String(ch, start, length));
+						bEncryption = false;
+					}
+				}	
+			};
+			
+		saxParser.parse(path, handler);
 			
 		} catch (ParserConfigurationException e) {
 			// TODO Auto-generated catch block
@@ -214,6 +225,7 @@ public class FileManager {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		
 		return dataList;
 	}

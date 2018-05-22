@@ -1,6 +1,6 @@
-import Enums.EncryptionMode;
-import Enums.EncryptionType;
-import Enums.PaddingType;
+import enums.EncryptionMode;
+import enums.EncryptionType;
+import enums.PaddingType;
 import javafx.application.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,6 +35,8 @@ public class JavaFxMainClass extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		//TODO Undecorated window
 		
 		Stage encryptionOptionStage = new Stage();
 		

@@ -3,9 +3,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import Enums.EncryptionMode;
-import Enums.EncryptionType;
-import Enums.PaddingType;
+import enums.EncryptionMode;
+import enums.EncryptionType;
+import enums.PaddingType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;

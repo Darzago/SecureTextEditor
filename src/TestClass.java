@@ -1,18 +1,22 @@
-import Enums.EncryptionMode;
-import Enums.EncryptionType;
-import Enums.PaddingType;
+import java.nio.charset.Charset;
+
+import enums.EncryptionType;
 
 public class TestClass {
 
 	public static void main(String[] args) {
 		
-		CryptoManager cmana = new CryptoManager();
-		
 		try {
 			
-			byte[] getOutpu = cmana.encryptString("Peterfjopaj", EncryptionType.DES, EncryptionMode.ECB, PaddingType.PKCS7Padding);
-			System.out.println(new String(getOutpu, "UTF-8"));
-			System.out.println(cmana.decryptString(getOutpu, EncryptionType.DES, EncryptionMode.ECB, PaddingType.PKCS7Padding));
+			String hallo = "Lulilil";
+			
+			System.out.println(new String(hallo.getBytes(), "UTF-8"));
+			
+			FileManager test = new FileManager();
+			test.loadConfig("test.xml");
+			
+			EncryptionType test2 = EncryptionType.valueOf("AES");
+			System.out.println(test2);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

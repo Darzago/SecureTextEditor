@@ -2,9 +2,9 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import Enums.EncryptionMode;
-import Enums.EncryptionType;
-import Enums.PaddingType;
+import enums.EncryptionMode;
+import enums.EncryptionType;
+import enums.PaddingType;
 
 /**
  * Used to de and encrypt data
@@ -44,6 +44,8 @@ public class CryptoManager {
 	 */
 	public byte[] encryptString(String input, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
 	{ 
+		
+		//TODO base 64?
 		
 		byte[] inputByteArray = input.getBytes();
 		
@@ -90,6 +92,7 @@ public class CryptoManager {
 	 * @throws Exception
 	 * 
 	 * TODO Hard coded keys & Ivs
+	 * 		Cipher-Based I/O ?
 	 */
 	public String decryptString(byte[] input, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
 	{

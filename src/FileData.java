@@ -1,7 +1,8 @@
 import java.io.File;
 
-import Enums.EncryptionType;
-import Enums.PaddingType;
+import enums.EncryptionMode;
+import enums.EncryptionType;
+import enums.PaddingType;
 
 public class FileData {
 	
@@ -9,6 +10,7 @@ public class FileData {
 	
 	PaddingType paddingType;
 	EncryptionType encryptionType;
+	EncryptionMode encryptionMode;
 	File filePath;
 	String hashValue;	
 	
