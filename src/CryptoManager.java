@@ -51,26 +51,17 @@ public class CryptoManager {
 		
 		IvParameterSpec ivSpec;
 		
-		switch(encryptionType){
-			case AES:
-				keyToUse = hardAESKey;
-			break;
-			case DES:
-				keyToUse = hardDESKey;
-			break;
-			case none:
-				return input.getBytes();
-			default:
-			break;
-				
-		}
+		
+		keyToUse = getMatchingKey(encryptionType);
+		
+		if(keyToUse == null)
+			return input.getBytes();
 		
 		SecretKeySpec key = new SecretKeySpec(keyToUse, encryptionType.toString());
 		
 		Cipher cipher = Cipher.getInstance(encryptionType.toString() + "/" + encryptionMode.toString() + "/" + paddingType.toString(), "BC");
 		
-		/////////////////////////////////////
-		if(encryptionMode == EncryptionMode.CBC || encryptionMode == EncryptionMode.CTS)
+		if(encryptionMode.usesIV())
 		{
 			ivSpec = new IvParameterSpec(getMatchingIV(encryptionType));
 			cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
@@ -79,8 +70,6 @@ public class CryptoManager {
 		{
 			cipher.init(Cipher.ENCRYPT_MODE, key);
 		}
-		/////////////////////////////////////
-		
 		
 		byte[] cipherText = new byte[cipher.getOutputSize(inputByteArray.length)];
 		
@@ -100,7 +89,7 @@ public class CryptoManager {
 	 * @return Decrypted String
 	 * @throws Exception
 	 * 
-	 * TODO Hard coded keys
+	 * TODO Hard coded keys & Ivs
 	 */
 	public String decryptString(byte[] input, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
 	{
@@ -108,26 +97,15 @@ public class CryptoManager {
 		byte[] keyToUse = hardDESKey;
 		IvParameterSpec ivSpec;
 		
-		
-		switch(encryptionType){
-			case AES:
-				keyToUse = hardAESKey;
-			break;
-			case DES:
-				keyToUse = hardDESKey;
-			break;
-			case none:
-				return new String(input, "UTF-8");
-			default:
-			break;
-				
-		}
+		keyToUse = getMatchingKey(encryptionType);
+		if(keyToUse == null)
+			return new String(input, "UTF-8");
 		
 		SecretKeySpec key = new SecretKeySpec(keyToUse, encryptionType.toString());
 		
 		Cipher cipher = Cipher.getInstance(encryptionType.toString() + "/" + encryptionMode.toString() + "/" + paddingType.toString(), "BC");
 		
-		if(encryptionMode == EncryptionMode.CBC || encryptionMode == EncryptionMode.CTS)
+		if(encryptionMode.usesIV())
 		{
 			ivSpec = new IvParameterSpec(getMatchingIV(encryptionType));
 			cipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
@@ -147,20 +125,29 @@ public class CryptoManager {
 	}
 	
 	/**
-	 * TODO
-	 * Generate Key
-	 * @return
+	 * Gets a key matching the fitting length depending on the encryption type
+	 * @param encryption encryption to be used
+	 * @return key 
 	 */
-	private byte[] generateKey()
+	private byte[] getMatchingKey(EncryptionType encryption)
 	{
-	return new byte[0];
+		switch(encryption)
+		{
+		case AES:
+			return hardAESKey;
+		case DES:
+			return hardDESKey;
+		case none:
+		default:
+		return null;
+		}
 	}
 	
-	private boolean isWeakKey()
-	{
-		return true;
-	}
-	
+	/**
+	 * Gets an iv matching the fitting length depending on the encryption type
+	 * @param encryption encryption to be used
+	 * @return iv 
+	 */
 	private byte[] getMatchingIV(EncryptionType encryption)
 	{
 		switch(encryption)
