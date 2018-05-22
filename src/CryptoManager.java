@@ -1,4 +1,5 @@
 import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import Enums.EncryptionMode;
@@ -24,6 +25,12 @@ public class CryptoManager {
             0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
             0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17 };
     
+    byte[]  hardIv8Bytes = new byte[] { 
+    		0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00 };
+    byte[]  hardIv16Bytes = new byte[] { 
+    		0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00,
+    		0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00 };
+    
 	/**
 	 * Encrypts a given string with the desired encryption, encryption mode and padding type 
 	 * @param input String to be encrypted
@@ -41,6 +48,8 @@ public class CryptoManager {
 		byte[] inputByteArray = input.getBytes();
 		
 		byte[] keyToUse = hardDESKey;
+		
+		IvParameterSpec ivSpec;
 		
 		switch(encryptionType){
 			case AES:
@@ -60,7 +69,18 @@ public class CryptoManager {
 		
 		Cipher cipher = Cipher.getInstance(encryptionType.toString() + "/" + encryptionMode.toString() + "/" + paddingType.toString(), "BC");
 		
-		cipher.init(Cipher.ENCRYPT_MODE, key);
+		/////////////////////////////////////
+		if(encryptionMode == EncryptionMode.CBC || encryptionMode == EncryptionMode.CTS)
+		{
+			ivSpec = new IvParameterSpec(getMatchingIV(encryptionType));
+			cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
+		}
+		else
+		{
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+		}
+		/////////////////////////////////////
+		
 		
 		byte[] cipherText = new byte[cipher.getOutputSize(inputByteArray.length)];
 		
@@ -86,6 +106,8 @@ public class CryptoManager {
 	{
 		byte[] inputByteArray = input;
 		byte[] keyToUse = hardDESKey;
+		IvParameterSpec ivSpec;
+		
 		
 		switch(encryptionType){
 			case AES:
@@ -105,7 +127,15 @@ public class CryptoManager {
 		
 		Cipher cipher = Cipher.getInstance(encryptionType.toString() + "/" + encryptionMode.toString() + "/" + paddingType.toString(), "BC");
 		
-		cipher.init(Cipher.DECRYPT_MODE, key);
+		if(encryptionMode == EncryptionMode.CBC || encryptionMode == EncryptionMode.CTS)
+		{
+			ivSpec = new IvParameterSpec(getMatchingIV(encryptionType));
+			cipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
+		}
+		else
+		{
+			cipher.init(Cipher.DECRYPT_MODE, key);
+		}
 		
 		byte[] cipherText = new byte[cipher.getOutputSize(inputByteArray.length)];
 		
@@ -129,6 +159,20 @@ public class CryptoManager {
 	private boolean isWeakKey()
 	{
 		return true;
+	}
+	
+	private byte[] getMatchingIV(EncryptionType encryption)
+	{
+		switch(encryption)
+		{
+		case DES:
+			return hardIv8Bytes;
+		case AES:
+			return hardIv16Bytes;
+		case none:
+		default:
+			return null;
+		}
 	}
 	
 }

@@ -1,5 +1,5 @@
 package Enums;
 
 public enum EncryptionMode {
-ECB
+ECB, CBC, CTS
 }

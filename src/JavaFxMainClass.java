@@ -167,7 +167,7 @@ public class JavaFxMainClass extends Application{
 		
 		VBox optionGeneralLayout = new VBox(encryptionGridPane, encryptionButtonsBox);
 		
-		Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 320, 100);
+		Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 370, 130);
 		encryptionOptionStage.setScene(encryptionOptionWindow);
 		encryptionOptionStage.setTitle("Encryption Options");
 		encryptionOptionStage.getIcons().add(new Image("gear-256.png"));
