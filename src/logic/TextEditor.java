@@ -1,3 +1,4 @@
+package logic;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,8 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import persistence.FileData;
+import persistence.FileManager;
 
 /**
  * Implements the logic of the editor 
@@ -232,7 +235,7 @@ public class TextEditor extends TextArea{
 	 * @param _selectedMode currently selected {@link EncryptionMode}
 	 * @param _selectedPadding currently selected {@link PaddingType}
 	 */
-	TextEditor(Stage _myStage, EncryptionType _encryptionType, EncryptionMode _selectedMode,  PaddingType _selectedPadding)
+	public TextEditor(Stage _myStage, EncryptionType _encryptionType, EncryptionMode _selectedMode,  PaddingType _selectedPadding)
 	{
 		this.myStage = _myStage;
 		updateTitle(defaultName);

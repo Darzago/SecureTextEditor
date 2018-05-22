@@ -1,3 +1,4 @@
+package persistence;
 import java.io.File;
 
 import enums.EncryptionMode;

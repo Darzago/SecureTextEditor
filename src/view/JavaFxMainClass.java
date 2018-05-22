@@ -1,3 +1,4 @@
+package view;
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.PaddingType;
@@ -21,6 +22,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import logic.TextEditor;
 
 /**
  * Builds the scene tree and creates event handler

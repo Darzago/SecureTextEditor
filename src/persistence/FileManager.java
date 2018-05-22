@@ -1,3 +1,4 @@
+package persistence;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,6 +34,7 @@ import org.xml.sax.helpers.DefaultHandler;
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.PaddingType;
+import logic.CryptoManager;
 
 /**
  * Saves and loads files and configs

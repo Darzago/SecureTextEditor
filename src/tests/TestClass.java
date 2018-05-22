@@ -1,6 +1,8 @@
+package tests;
 import java.nio.charset.Charset;
 
 import enums.EncryptionType;
+import persistence.FileManager;
 
 public class TestClass {
 
