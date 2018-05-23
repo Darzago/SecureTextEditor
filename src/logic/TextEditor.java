@@ -3,7 +3,6 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
-
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.PaddingType;
@@ -14,6 +13,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import persistence.FileData;
@@ -64,6 +66,35 @@ public class TextEditor extends TextArea{
 		}
 	}
 	
+	public void writeListInGrid(GridPane pane)
+	{
+		Text nameText = new Text("Name:");
+		nameText.setUnderline(true);
+		pane.add(nameText, 0, 0);
+		
+		Text typeText = new Text("Type:");
+		typeText.setUnderline(true);
+		pane.add(typeText, 1, 0);
+		
+		Text modeText = new Text("Mode:");
+		modeText.setUnderline(true);
+		pane.add(modeText, 2, 0);
+		
+		Text paddingText = new Text("Padding:");
+		paddingText.setUnderline(true);
+		pane.add(paddingText, 3, 0);
+				
+		int i = 1;
+		for(FileData data : dataList)
+		{
+			pane.add(new Text(data.getFilePath()), 0, i);
+			pane.add(new Text(data.getEncryptionType().toString()), 1, i);
+			pane.add(new Text(data.getEncryptionMode().toString()), 2, i);
+			pane.add(new Text(data.getPaddingType().toString()), 3, i);
+			i++;
+		}
+	}
+	
 	/**
 	 * Displays a new window if the current file has been changed but not saved, otherwise creates a new file
 	 * TODO Code duplication
@@ -104,33 +135,62 @@ public class TextEditor extends TextArea{
     	
     	//if clause prevents an error if the user pressed the x of the 'save' dialogue
     	if(fileToOpen != null){
-    		String openFileName = fileToOpen.getAbsolutePath();
+
     		
-    		this.documentOrigin = openFileName;
+    		try {
+        		String openFileName = fileToOpen.getAbsolutePath();
+        		
+        		this.documentOrigin = openFileName;
+        		
+        		findAndOpenFileData(fileToOpen);
+        		
+				this.setText(FileManager.openFileFromPath(openFileName, encryptionTypeBox.getValue(), encryptionModeBox.getValue(), paddingTypeBox.getValue()));
+				
+				updateTitle(fileToOpen.getName());
+			} 
+    		catch (Exception e) 
+    		{
+    			showError(e);
+				e.printStackTrace();
+			}
     		
-    		findFileData(fileToOpen);
     		
-    		this.setText(FileManager.openFileFromPath(openFileName, encryptionTypeBox.getValue(), encryptionModeBox.getValue(), paddingTypeBox.getValue()));
-    		
-    		updateTitle(fileToOpen.getName());
     	}
 	}
 	
-	private void findFileData(File file)
+	private void findAndOpenFileData(File file)
 	{
+		boolean fileFound = false;
+		
 		Iterator<FileData> iterator = dataList.iterator();
-		while (iterator.hasNext()){
+		while (iterator.hasNext())
+		{
 	         FileData currentlyViewedData = iterator.next();
 
 	         if(currentlyViewedData.getFilePath().equals(file.getName()))
 				{
+	        	 	fileFound = true;
 					System.out.println("Datei erkannt!");
 					this.encryptionTypeBox.setValue(currentlyViewedData.getEncryptionType());
 					this.encryptionModeBox.setValue(currentlyViewedData.getEncryptionMode());
 					this.paddingTypeBox.setValue(currentlyViewedData.getPaddingType());
 				}
 			}
-		 
+		
+		if(!fileFound)
+		{
+			try 
+			{
+				dataList.add(new FileData(paddingTypeBox.getValue(), encryptionTypeBox.getValue(), encryptionModeBox.getValue(), file.getName()));
+				
+				FileManager.writeConfig(dataList);
+			} 
+			catch (Exception e) 
+			{
+				showError(e);
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**
@@ -150,36 +210,45 @@ public class TextEditor extends TextArea{
 		//if claus eprevents an error if the user pressed on the x of the save dialogue
 		if(fileToSave!= null){
 			
-			changeFileOrigin(fileToSave);
-			
 			try {
+				changeFileOrigin(fileToSave);
+				
 				updateFileData(new FileData(paddingTypeBox.getValue(), 	encryptionTypeBox.getValue(), encryptionModeBox.getValue(), fileToSave.getName()));
 				FileManager.saveFileInPath(fileToSave, this.getText(), 	encryptionTypeBox.getValue(), encryptionModeBox.getValue(), paddingTypeBox.getValue());
+				
+				myStage.setTitle(documentName);
+				
+				updateTitle(fileToSave.getName());
+				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				showError(e);
 				e.printStackTrace();
 			}
-			
-			myStage.setTitle(documentName);
-			
-			updateTitle(fileToSave.getName());
 		}
 	}
 	
 	private void updateFileData(FileData fileData)
 	{
-		Iterator<FileData> iterator = dataList.iterator();
-		while (iterator.hasNext()){
+		try 
+		{
+			Iterator<FileData> iterator = dataList.iterator();
+			while (iterator.hasNext()){
 
-	         FileData currentlyViewedData = iterator.next();
+		         FileData currentlyViewedData = iterator.next();
 
-	         if(currentlyViewedData.getFilePath().equals(fileData.getFilePath()))
-				{
-					iterator.remove();
+		         if(currentlyViewedData.getFilePath().equals(fileData.getFilePath()))
+					{
+						iterator.remove();
+					}
 				}
-			}
-		dataList.add(fileData);
-		FileManager.writeConfig(dataList);
+			dataList.add(fileData);
+			FileManager.writeConfig(dataList);
+		} 
+		catch (Exception e) 
+		{
+			showError(e);
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -190,15 +259,19 @@ public class TextEditor extends TextArea{
 		if(documentOrigin != null)
 		{			
 			File fileToWrite = new File(documentOrigin); 
-			try {
+			try 
+			{
 				updateFileData(new FileData(paddingTypeBox.getValue(), encryptionTypeBox.getValue(), encryptionModeBox.getValue(), fileToWrite.getName()));
 				FileManager.saveFileInPath(fileToWrite, this.getText(), encryptionTypeBox.getValue(), encryptionModeBox.getValue(), paddingTypeBox.getValue());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				myStage.setTitle(documentName);
+				updateTitle(fileToWrite.getName());
+			} 
+			catch (Exception e) 
+			{
+				showError(e);
 				e.printStackTrace();
 			}
-			myStage.setTitle(documentName);
-			updateTitle(fileToWrite.getName());
+			
 		}
 		else
 		{
@@ -243,7 +316,15 @@ public class TextEditor extends TextArea{
 		this.paddingTypeBox = paddingDropDown;
 		this.encryptionModeBox = encryptionModeDropDown;
 		
-		dataList = FileManager.loadConfig();
+		try 
+		{
+			dataList = FileManager.loadConfig();
+		} 
+		catch (Exception e) 
+		{
+			showError(e);
+			e.printStackTrace();
+		}
 		
 		TextEditor copy = this;
 		this.textProperty().addListener(new ChangeListener<String>() {
@@ -283,6 +364,28 @@ public class TextEditor extends TextArea{
 		}
 		return false;
 	}
+	
+    private void showError(Exception e) {
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setTitle("Error alert");
+        alert.setHeaderText(e.getMessage());
+        
+        String stackTrace = "";
+        for(StackTraceElement element : e.getStackTrace())
+        {
+        	stackTrace += element.toString() + "\n";
+        }
+        
+        TextArea textArea = new TextArea();
+        textArea.setText(stackTrace);
+ 
+        VBox dialogPaneContent = new VBox(textArea);
+ 
+        // Set content for Dialog Pane
+        alert.getDialogPane().setContent(dialogPaneContent);
+ 
+        alert.showAndWait();
+    }
 	
 	
 }

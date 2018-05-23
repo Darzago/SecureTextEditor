@@ -52,27 +52,13 @@ public class FileManager {
 	 * @param encryptionMode encryption mode to be used to decrypt
 	 * @param paddingType padding type to be used to decrypt
 	 * @return decoded content of the file
+	 * @throws Exception 
 	 */
-	public static String openFileFromPath(String fileLocation, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType)
+	public static String openFileFromPath(String fileLocation, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
 	{
-    	try {
-    		Path filePath = Paths.get(fileLocation);
-    		byte[] readByteArray= Files.readAllBytes(filePath);
-    		
-			return CryptoManager.decryptString(readByteArray, encryptionType, encryptionMode, paddingType);
-			
-		} catch (FileNotFoundException e) {
-			System.err.println("FILE WAS NOT FOUND");
-			e.printStackTrace();
-		} catch (IOException e) {
-			System.err.println("LINE READING ERROR");
-			e.printStackTrace();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	return null;
+    	Path filePath = Paths.get(fileLocation);
+    	byte[] readByteArray= Files.readAllBytes(filePath);
+    	return CryptoManager.decryptString(readByteArray, encryptionType, encryptionMode, paddingType);
 	}
 	
 	
@@ -91,21 +77,15 @@ public class FileManager {
 	public static void saveFileInPath(File path, String fileContent, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
 	{
 		if(path != null){
-			try {
-				//create an object of FileOutputStream
-				FileOutputStream fos = new FileOutputStream(path);
+			//create an object of FileOutputStream
+			FileOutputStream fos = new FileOutputStream(path);
 
-				//create an object of BufferedOutputStream
-				BufferedOutputStream bos = new BufferedOutputStream(fos);
-				
-				bos.write(CryptoManager.encryptString(fileContent, encryptionType, encryptionMode, paddingType));
-				
-				bos.close();
-				
-			} catch (IOException e) {
-				System.err.println("FILE WRITING EXCEPTION");
-				e.printStackTrace();
-			}
+			//create an object of BufferedOutputStream
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			
+			bos.write(CryptoManager.encryptString(fileContent, encryptionType, encryptionMode, paddingType));
+			
+			bos.close();
 		}
 	}
 	
@@ -113,63 +93,50 @@ public class FileManager {
 	 * Write config data
 	 * @param dataList data to be written into a config
 	 */
-	public static void writeConfig(List<FileData> dataList)
+	public static void writeConfig(List<FileData> dataList) throws Exception
 	{
-		try {
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-			Document config = docBuilder.newDocument();
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+		Document config = docBuilder.newDocument();
+		
+		//Root element
+		Element rootElement = config.createElement("STEDATA");
+		config.appendChild(rootElement);
+		
+		for(FileData filedata : dataList){
+			//options
+			Element fileElement = config.createElement("file");
+			rootElement.appendChild(fileElement);
 			
-			//Root element
-			Element rootElement = config.createElement("STEDATA");
-			config.appendChild(rootElement);
+			//encryption
+			Element encryptionElement = config.createElement("encryption");
+			fileElement.appendChild(encryptionElement);
+			encryptionElement.appendChild(config.createTextNode(filedata.getEncryptionType() + ""));
 			
-			for(FileData filedata : dataList){
-				//options
-				Element fileElement = config.createElement("file");
-				rootElement.appendChild(fileElement);
-				
-				//encryption
-				Element encryptionElement = config.createElement("encryption");
-				fileElement.appendChild(encryptionElement);
-				encryptionElement.appendChild(config.createTextNode(filedata.getEncryptionType() + ""));
-				
-				//encryption mode
-				Element hashElement = config.createElement("encryptionMode");
-				hashElement.appendChild(config.createTextNode(filedata.getEncryptionMode() + ""));
-				fileElement.appendChild(hashElement);
-				
-				//padding type
-				Element paddingElement = config.createElement("paddingType");
-				paddingElement.appendChild(config.createTextNode(filedata.getPaddingType() + ""));
-				fileElement.appendChild(paddingElement);
-				
-				//filepath
-				Element pathElement = config.createElement("filePath");
-				pathElement.appendChild(config.createTextNode(filedata.getFilePath()));
-				fileElement.appendChild(pathElement);
-				
-			}
+			//encryption mode
+			Element hashElement = config.createElement("encryptionMode");
+			hashElement.appendChild(config.createTextNode(filedata.getEncryptionMode() + ""));
+			fileElement.appendChild(hashElement);
 			
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			transformerFactory.setAttribute("indent-number", 2);
-			Transformer transformer = transformerFactory.newTransformer();
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			DOMSource source = new DOMSource(config);
-			StreamResult result = new StreamResult(new File(configPath));
-			transformer.transform(source, result);
+			//padding type
+			Element paddingElement = config.createElement("paddingType");
+			paddingElement.appendChild(config.createTextNode(filedata.getPaddingType() + ""));
+			fileElement.appendChild(paddingElement);
 			
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//filepath
+			Element pathElement = config.createElement("filePath");
+			pathElement.appendChild(config.createTextNode(filedata.getFilePath()));
+			fileElement.appendChild(pathElement);
+			
 		}
 		
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		transformerFactory.setAttribute("indent-number", 2);
+		Transformer transformer = transformerFactory.newTransformer();
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		DOMSource source = new DOMSource(config);
+		StreamResult result = new StreamResult(new File(configPath));
+		transformer.transform(source, result);		
 	}
 	
 	/**
@@ -178,93 +145,72 @@ public class FileManager {
 	 * @param path Path of the .xml
 	 * @return List of the read data
 	 */
-	public static List<FileData> loadConfig()
+	public static List<FileData> loadConfig() throws Exception
 	{	
-		List<FileData> dataList = new ArrayList<FileData>();
-		try {
+		List<FileData> dataList = new ArrayList<FileData>();	
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		SAXParser saxParser = factory.newSAXParser();
+		
+		DefaultHandler handler = new DefaultHandler() 
+		{
 			
-			SAXParserFactory factory = SAXParserFactory.newInstance();
-			SAXParser saxParser = factory.newSAXParser();
+			FileData fileData;
+			boolean bEncryptionType = false;
+			boolean bEncryptionMode = false;
+			boolean bPaddingType = false;
+			boolean bFilePath = false;
 			
-			DefaultHandler handler = new DefaultHandler() 
+			public void startElement(String uri, String localName,String qName, Attributes attributes) throws SAXException 
 			{
 				
-				FileData fileData;
-				boolean bEncryptionType = false;
-				boolean bEncryptionMode = false;
-				boolean bPaddingType = false;
-				boolean bFilePath = false;
-				
-				public void startElement(String uri, String localName,String qName, Attributes attributes) throws SAXException 
+				if (qName.equalsIgnoreCase("FILE")) 
 				{
-					
-					if (qName.equalsIgnoreCase("FILE")) 
-					{
-						fileData = new FileData();
-					}
-					else if (qName.equalsIgnoreCase("ENCRYPTION")) {
-						bEncryptionType = true;
-					}
-					else if (qName.equalsIgnoreCase("ENCRYPTIONMODE")) {
-						bEncryptionMode = true;
-					}
-					else if (qName.equalsIgnoreCase("PADDINGTYPE")) {
-						bPaddingType = true;
-					}
-					else if (qName.equalsIgnoreCase("FILEPATH")) {
-						bFilePath = true;
-					}
+					fileData = new FileData();
 				}
-				
-				public void endElement(String uri, String localName, String qName) throws SAXException 
-				{
-					if (qName.equalsIgnoreCase("FILE")) 
-					{
-						dataList.add(fileData);
-					}
+				else if (qName.equalsIgnoreCase("ENCRYPTION")) {
+					bEncryptionType = true;
 				}
-
-				public void characters(char ch[], int start, int length) throws SAXException 
+				else if (qName.equalsIgnoreCase("ENCRYPTIONMODE")) {
+					bEncryptionMode = true;
+				}
+				else if (qName.equalsIgnoreCase("PADDINGTYPE")) {
+					bPaddingType = true;
+				}
+				else if (qName.equalsIgnoreCase("FILEPATH")) {
+					bFilePath = true;
+				}
+			}
+			
+			public void endElement(String uri, String localName, String qName) throws SAXException 
+			{
+				if (qName.equalsIgnoreCase("FILE")) 
 				{
-					if (bEncryptionType) {
-						
-						System.out.println(new String(ch, start, length));
-						
-						fileData.setEncryptionType(EncryptionType.valueOf(new String(ch, start, length)));
-						bEncryptionType = false;
-					}
-					if (bEncryptionMode) {
-						System.out.println(new String(ch, start, length));
-						fileData.setEncryptionMode(EncryptionMode.valueOf(new String(ch, start, length)));
-						bEncryptionMode = false;
-					}
-					if (bPaddingType) {
-						System.out.println(new String(ch, start, length));
-						fileData.setPaddingType(PaddingType.valueOf(new String(ch, start, length)));
-						bPaddingType = false;
-					}
-					if (bFilePath) {
-						System.out.println(new String(ch, start, length));
-						fileData.setFilePath(new String(ch, start, length));
-						bFilePath = false;
-					}
-				}	
-			};
-			
-		saxParser.parse(configPath, handler);
-			
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+					dataList.add(fileData);
+				}
+			}
 
+			public void characters(char ch[], int start, int length) throws SAXException 
+			{
+				if (bEncryptionType) {
+					fileData.setEncryptionType(EncryptionType.valueOf(new String(ch, start, length)));
+					bEncryptionType = false;
+				}
+				if (bEncryptionMode) {
+					fileData.setEncryptionMode(EncryptionMode.valueOf(new String(ch, start, length)));
+					bEncryptionMode = false;
+				}
+				if (bPaddingType) {
+					fileData.setPaddingType(PaddingType.valueOf(new String(ch, start, length)));
+					bPaddingType = false;
+				}
+				if (bFilePath) {
+					fileData.setFilePath(new String(ch, start, length));
+					bFilePath = false;
+				}
+			}	
+		};
 		
+	saxParser.parse(configPath, handler);
 		return dataList;
 	}
 	

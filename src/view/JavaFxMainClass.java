@@ -1,4 +1,6 @@
 package view;
+import java.util.List;
+
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.PaddingType;
@@ -23,6 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.TextEditor;
+import persistence.FileData;
 
 /**
  * Builds the scene tree and creates event handler
@@ -30,7 +33,9 @@ import logic.TextEditor;
  *
  */
 public class JavaFxMainClass extends Application{
-
+	
+	TextEditor editor;
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -58,7 +63,8 @@ public class JavaFxMainClass extends Application{
 		//Menu for encryption options
 		Menu encryptionMenu = new Menu("Encryption");
 			MenuItem encryptions = new MenuItem("Options");
-		encryptionMenu.getItems().addAll(encryptions);
+			MenuItem config = new MenuItem("Config");
+		encryptionMenu.getItems().addAll(encryptions, config);
 		
 		//Adds all menu items to the "file" menu
 		menuBar.getMenus().addAll(fileMenu, encryptionMenu);
@@ -107,13 +113,28 @@ public class JavaFxMainClass extends Application{
 		encryptionButtonsBox.setHgap(10);
 		encryptionButtonsBox.setAlignment(Pos.CENTER_RIGHT);
 		
-		TextEditor editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown);
+		editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown);
 		
 		//Sets the general layout of the scene
 		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);
         layoutMainWindow.setFillWidth(true);
 		Scene mainWindow = new Scene(layoutMainWindow, 600, 400);
+
+//Config Stage ---------------------------------------------------------------------
+		Stage configStage = new Stage();
 		
+		GridPane configLayout = new GridPane();
+		configLayout.setAlignment(Pos.CENTER);
+		configLayout.setHgap(15);
+		configLayout.setVgap(3);
+		configLayout.setGridLinesVisible(true);
+		
+		Scene configWindow = new Scene(configLayout, 450, 180);
+		configStage.setScene(configWindow);
+		configStage.setTitle("Encryption Config");
+		configStage.getIcons().add(new Image("gear-256.png"));
+		
+				
 //Event Handler -----------------------------------------------------------------------------------------------
 		
 		menuNewItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -147,6 +168,14 @@ public class JavaFxMainClass extends Application{
             	encryptionOptionStage.show();
             }
         });
+		
+		config.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	configLayout.getChildren().clear();
+            	editor.writeListInGrid(configLayout);
+            	configStage.show();
+            }
+        });
 
 		closeButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
@@ -168,5 +197,5 @@ public class JavaFxMainClass extends Application{
         primaryStage.show();
 		
 	}
-
+	
 }
