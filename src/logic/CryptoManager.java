@@ -15,20 +15,20 @@ import enums.PaddingType;
 public class CryptoManager {
 	
 	//hardcoded DES Key
-    byte[] hardDESKey = new byte[] { 
+    static byte[] hardDESKey = new byte[] { 
             (byte)0x5e, (byte)0x8e, (byte)0x9e, (byte)0xf2,
             (byte)0xf8, (byte)0x5e, (byte)0x8e, (byte)0x6e
             };
     
     //Hardcoded AES Key
-    byte[]  hardAESKey = new byte[] { 
+    static byte[]  hardAESKey = new byte[] { 
             0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
             0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
             0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17 };
     
-    byte[]  hardIv8Bytes = new byte[] { 
+    static byte[]  hardIv8Bytes = new byte[] { 
     		0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00 };
-    byte[]  hardIv16Bytes = new byte[] { 
+    static byte[]  hardIv16Bytes = new byte[] { 
     		0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00,
     		0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00 };
     
@@ -43,7 +43,7 @@ public class CryptoManager {
 	 * 
 	 * TODO Currently hard coded keys
 	 */
-	public byte[] encryptString(String input, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
+	public static byte[] encryptString(String input, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
 	{ 
 		
 		//TODO base 64?
@@ -95,7 +95,7 @@ public class CryptoManager {
 	 * TODO Hard coded keys & Ivs
 	 * 		Cipher-Based I/O ?
 	 */
-	public String decryptString(byte[] input, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
+	public static String decryptString(byte[] input, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
 	{
 		byte[] inputByteArray = input;
 		byte[] keyToUse = hardDESKey;
@@ -133,7 +133,7 @@ public class CryptoManager {
 	 * @param encryption encryption to be used
 	 * @return key 
 	 */
-	private byte[] getMatchingKey(EncryptionType encryption)
+	private static byte[] getMatchingKey(EncryptionType encryption)
 	{
 		switch(encryption)
 		{
@@ -152,7 +152,7 @@ public class CryptoManager {
 	 * @param encryption encryption to be used
 	 * @return iv 
 	 */
-	private byte[] getMatchingIV(EncryptionType encryption)
+	private static byte[] getMatchingIV(EncryptionType encryption)
 	{
 		switch(encryption)
 		{

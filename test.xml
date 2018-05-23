@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<STEConfig>
+<STEDATA>
 <file>
-<encryption>none</encryption>
+<encryption>AES</encryption>
+<encryptionMode>CBC</encryptionMode>
+<paddingType>NoPadding</paddingType>
 <filePath>Peter.txt</filePath>
-<hashValue>hashValue</hashValue>
-<padding>none</padding>
 </file>
-</STEConfig>
+<file>
+<encryption>AES</encryption>
+<encryptionMode>CBC</encryptionMode>
+<paddingType>NoPadding</paddingType>
+<filePath>Peter.txt</filePath>
+</file>
+</STEDATA>

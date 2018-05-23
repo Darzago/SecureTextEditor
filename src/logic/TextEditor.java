@@ -41,7 +41,7 @@ public class TextEditor extends TextArea{
 	
 	FileManager fileManager = new FileManager();
 	
-	List<FileData> dataList = new ArrayList<FileData>();
+	List<FileData> dataList;
 	
 	private PaddingType selectedPadding ;
 	

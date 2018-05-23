@@ -1,7 +1,12 @@
 package tests;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
+import enums.EncryptionMode;
 import enums.EncryptionType;
+import enums.PaddingType;
+import persistence.FileData;
 import persistence.FileManager;
 
 public class TestClass {
@@ -10,15 +15,29 @@ public class TestClass {
 		
 		try {
 			
-			String hallo = "Lulilil";
-			
-			System.out.println(new String(hallo.getBytes(), "UTF-8"));
-			
 			FileManager test = new FileManager();
-			test.loadConfig("test.xml");
 			
-			EncryptionType test2 = EncryptionType.valueOf("AES");
-			System.out.println(test2);
+			FileData testData1 = new FileData();
+			testData1.setEncryptionMode(EncryptionMode.CBC);
+			testData1.setEncryptionType(EncryptionType.AES);
+			testData1.setFilePath("Peter.txt");
+			testData1.setPaddingType(PaddingType.NoPadding);
+			
+			FileData testData2 = new FileData();
+			testData2.setEncryptionMode(EncryptionMode.CBC);
+			testData2.setEncryptionType(EncryptionType.AES);
+			testData2.setFilePath("Peter.txt");
+			testData2.setPaddingType(PaddingType.NoPadding);
+			
+			List<FileData> testList = new ArrayList<FileData>();
+			
+			testList.add(testData1);
+			testList.add(testData2);
+			
+			test.writeConfig(testList);
+			
+			System.out.println(test.loadConfig("test.xml"));
+
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
