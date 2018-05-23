@@ -1,6 +1,6 @@
 package logic;
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -39,56 +40,17 @@ public class TextEditor extends TextArea{
 	//Flag that shows if there is unsaved progress
 	private boolean textHasChanged = false;
 	
-	FileManager fileManager = new FileManager();
-	
 	List<FileData> dataList;
-	
-	private PaddingType selectedPadding ;
-	
-	private EncryptionType selectedEncryption;
-	
-	private EncryptionMode selectedMode;
-	
-	/**
-	 * Sets the currently selected padding type
-	 * @param paddingType padding type to be set
-	 */
-	public void setPaddingType(PaddingType paddingType)
-	{
-		this.selectedPadding = paddingType;
-	}
-	
-	/**
-	 * Sets the currently selected encryption type
-	 * @param encryptionType encryption type to be set
-	 */
-	public void setEncryptionType(EncryptionType encryptionType)
-	{
-		this.selectedEncryption = encryptionType;
-	}
-	
-	
-	/**
-	 * Sets the currently selected encryption mode
-	 * @param encryptionMode encryption mode to be set
-	 */
-	public void setEncryptionMode(EncryptionMode encryptionMode)
-	{
-		this.selectedMode = encryptionMode;
-	}
+
+	private ComboBox<PaddingType> paddingTypeBox;
+	private ComboBox<EncryptionType> encryptionTypeBox;
+	private ComboBox<EncryptionMode> encryptionModeBox;
 	
 	/**
 	 * Displays a new window if the current file has been changed but not saved, otherwise opens the new file
 	 */
 	public void newFileDialogue()
-	{
-		
-		//FileData testdata = new FileData(PaddingType.NoPadding,EncryptionType.none,new File("Peter.txt"),"hashValue");
-		//dataList.add(testdata);
-		//fileManager.writeConfig(dataList);
-		
-		//fileManager.loadConfig("test.xml");
-		
+	{		
 		if(textHasChanged)
 		{
 			if(displaySaveAlert())
@@ -146,10 +108,29 @@ public class TextEditor extends TextArea{
     		
     		this.documentOrigin = openFileName;
     		
-    		this.setText(fileManager.openFileFromPath(openFileName, selectedEncryption, selectedMode, selectedPadding));
+    		findFileData(fileToOpen);
+    		
+    		this.setText(FileManager.openFileFromPath(openFileName, encryptionTypeBox.getValue(), encryptionModeBox.getValue(), paddingTypeBox.getValue()));
     		
     		updateTitle(fileToOpen.getName());
     	}
+	}
+	
+	private void findFileData(File file)
+	{
+		Iterator<FileData> iterator = dataList.iterator();
+		while (iterator.hasNext()){
+	         FileData currentlyViewedData = iterator.next();
+
+	         if(currentlyViewedData.getFilePath().equals(file.getName()))
+				{
+					System.out.println("Datei erkannt!");
+					this.encryptionTypeBox.setValue(currentlyViewedData.getEncryptionType());
+					this.encryptionModeBox.setValue(currentlyViewedData.getEncryptionMode());
+					this.paddingTypeBox.setValue(currentlyViewedData.getPaddingType());
+				}
+			}
+		 
 	}
 	
 	/**
@@ -172,7 +153,8 @@ public class TextEditor extends TextArea{
 			changeFileOrigin(fileToSave);
 			
 			try {
-				fileManager.saveFileInPath(fileToSave, this.getText(), selectedEncryption, selectedMode, selectedPadding);
+				updateFileData(new FileData(paddingTypeBox.getValue(), 	encryptionTypeBox.getValue(), encryptionModeBox.getValue(), fileToSave.getName()));
+				FileManager.saveFileInPath(fileToSave, this.getText(), 	encryptionTypeBox.getValue(), encryptionModeBox.getValue(), paddingTypeBox.getValue());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -184,6 +166,22 @@ public class TextEditor extends TextArea{
 		}
 	}
 	
+	private void updateFileData(FileData fileData)
+	{
+		Iterator<FileData> iterator = dataList.iterator();
+		while (iterator.hasNext()){
+
+	         FileData currentlyViewedData = iterator.next();
+
+	         if(currentlyViewedData.getFilePath().equals(fileData.getFilePath()))
+				{
+					iterator.remove();
+				}
+			}
+		dataList.add(fileData);
+		FileManager.writeConfig(dataList);
+	}
+	
 	/**
 	 * Saves the content in the editor in a specified directory/its origin directory
 	 */
@@ -193,7 +191,8 @@ public class TextEditor extends TextArea{
 		{			
 			File fileToWrite = new File(documentOrigin); 
 			try {
-				fileManager.saveFileInPath(fileToWrite, this.getText(), selectedEncryption, selectedMode, selectedPadding);
+				updateFileData(new FileData(paddingTypeBox.getValue(), encryptionTypeBox.getValue(), encryptionModeBox.getValue(), fileToWrite.getName()));
+				FileManager.saveFileInPath(fileToWrite, this.getText(), encryptionTypeBox.getValue(), encryptionModeBox.getValue(), paddingTypeBox.getValue());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -235,14 +234,16 @@ public class TextEditor extends TextArea{
 	 * @param _selectedMode currently selected {@link EncryptionMode}
 	 * @param _selectedPadding currently selected {@link PaddingType}
 	 */
-	public TextEditor(Stage _myStage, EncryptionType _encryptionType, EncryptionMode _selectedMode,  PaddingType _selectedPadding)
+	public TextEditor(Stage _myStage, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown)
 	{
 		this.myStage = _myStage;
 		updateTitle(defaultName);
 		this.setPrefRowCount(999999);
-		this.selectedEncryption = _encryptionType;
-		this.selectedPadding = _selectedPadding;
-		this.selectedMode = _selectedMode;
+		this.encryptionTypeBox = encryptionDropDown;
+		this.paddingTypeBox = paddingDropDown;
+		this.encryptionModeBox = encryptionModeDropDown;
+		
+		dataList = FileManager.loadConfig();
 		
 		TextEditor copy = this;
 		this.textProperty().addListener(new ChangeListener<String>() {

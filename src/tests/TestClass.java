@@ -36,8 +36,12 @@ public class TestClass {
 			
 			test.writeConfig(testList);
 			
-			System.out.println(test.loadConfig("test.xml"));
+			System.out.println(FileManager.loadConfig());
 
+			
+			String testString1 = "Hallo";
+			String testString2 = "Hallo";
+			System.out.println(testString2.equals(testString2));
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

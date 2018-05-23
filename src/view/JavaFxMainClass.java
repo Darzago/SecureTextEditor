@@ -42,7 +42,7 @@ public class JavaFxMainClass extends Application{
 		
 		Stage encryptionOptionStage = new Stage();
 		
-		TextEditor editor = new TextEditor(primaryStage, EncryptionType.none, EncryptionMode.ECB , PaddingType.NoPadding);
+
 		
 		TabPane tabPane = new TabPane();
 		MenuBar menuBar = new MenuBar();
@@ -50,42 +50,14 @@ public class JavaFxMainClass extends Application{
 		//Event Handlers of all menu options within the file menu
 		Menu fileMenu = new Menu("File");
 			MenuItem menuNewItem = new MenuItem("New");
-			menuNewItem.setOnAction(new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent t) {
-	            	editor.newFileDialogue();
-	            }
-	        });
-			
 			MenuItem menuOpenItem = new MenuItem("Open");
-			menuOpenItem.setOnAction(new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent t) {
-	            	editor.openFileDialogue();
-	            }
-	        });
-			
 			MenuItem menuSaveItem = new MenuItem("Save");
-			menuSaveItem.setOnAction(new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent t) {
-	            	editor.saveFile();
-	            }
-	        });
 			MenuItem menuSaveAsItem = new MenuItem("Save As");
-			menuSaveAsItem.setOnAction(new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent t) {
-	            	editor.saveFileAs();
-	            }
-	        });
 		fileMenu.getItems().addAll(menuNewItem, menuOpenItem, menuSaveItem, menuSaveAsItem);
 		
 		//Menu for encryption options
 		Menu encryptionMenu = new Menu("Encryption");
 			MenuItem encryptions = new MenuItem("Options");
-			encryptions.setOnAction(new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent t) {
-	            	//Open options window
-	            	encryptionOptionStage.show();
-	            }
-	        });
 		encryptionMenu.getItems().addAll(encryptions);
 		
 		//Adds all menu items to the "file" menu
@@ -96,47 +68,21 @@ public class JavaFxMainClass extends Application{
 		menuOpenItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
 		menuSaveItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
 		
-		//Sets the general layout of the scene
-		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);
-        layoutMainWindow.setFillWidth(true);
-		Scene mainWindow = new Scene(layoutMainWindow, 600, 400);
-		
 		//Label for the encryption dropdown
 		Label encryptionLabel = new Label("Encryption:  ");
 			ComboBox<EncryptionType> encryptionDropDown = new ComboBox<EncryptionType> ();
-			
-			//Event thet gets called if the value of the dropdown changes/is reassigned
-			encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent t) {
-	            	
-	            	//TODO change other dropdown options depending on the encryption
-	            	editor.setEncryptionType(encryptionDropDown.getValue());
-	            }
-	        });
-			
 			encryptionDropDown.setValue(EncryptionType.none);
 		encryptionDropDown.getItems().addAll(EncryptionType.values());
 		
 		
 		Label modeLabel = new Label("Mode:  ");
 			ComboBox<EncryptionMode> modeDropDown = new ComboBox<EncryptionMode> ();
-			//Event thet gets called if the value of the dropdown changes/is reassigned
-			modeDropDown.setOnAction(new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent t) {
-	            	editor.setEncryptionMode(modeDropDown.getValue());
-	            }
-	        });
 			modeDropDown.setValue(EncryptionMode.ECB);
 		modeDropDown.getItems().addAll(EncryptionMode.values());
 		
 		
 		Label paddingLabel = new Label("Padding:  ");
 			ComboBox<PaddingType> paddingDropDown = new ComboBox<PaddingType> ();
-			paddingDropDown.setOnAction(new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent t) {
-	            	editor.setPaddingType(paddingDropDown.getValue());
-	            }
-	        });
 			paddingDropDown.getItems().addAll(PaddingType.values());
 		paddingDropDown.setValue(PaddingType.NoPadding);
 		
@@ -156,17 +102,57 @@ public class JavaFxMainClass extends Application{
 		//Adds button(s) below the dropdown menus 
 		GridPane encryptionButtonsBox = new GridPane();
 			Button closeButton = new Button("Close");
-			
 			encryptionButtonsBox.add(closeButton, 1, 0);
-			closeButton.setOnAction(new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent t) {
-	            	encryptionOptionStage.close();
-	            }
-	        });
-			
 		encryptionButtonsBox.setPadding(new Insets(10, 10, 10, 10));
 		encryptionButtonsBox.setHgap(10);
 		encryptionButtonsBox.setAlignment(Pos.CENTER_RIGHT);
+		
+		TextEditor editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown);
+		
+		//Sets the general layout of the scene
+		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);
+        layoutMainWindow.setFillWidth(true);
+		Scene mainWindow = new Scene(layoutMainWindow, 600, 400);
+		
+//Event Handler -----------------------------------------------------------------------------------------------
+		
+		menuNewItem.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	editor.newFileDialogue();
+            }
+        });
+		
+		menuOpenItem.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	editor.openFileDialogue();
+            }
+        });
+		
+		
+		menuSaveItem.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	editor.saveFile();
+            }
+        });
+		
+		menuSaveAsItem.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	editor.saveFileAs();
+            }
+        });
+		
+		encryptions.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	//Open options window
+            	encryptionOptionStage.show();
+            }
+        });
+
+		closeButton.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	encryptionOptionStage.close();
+            }
+        });
 		
 		
 		VBox optionGeneralLayout = new VBox(encryptionGridPane, encryptionButtonsBox);
@@ -175,6 +161,7 @@ public class JavaFxMainClass extends Application{
 		encryptionOptionStage.setScene(encryptionOptionWindow);
 		encryptionOptionStage.setTitle("Encryption Options");
 		encryptionOptionStage.getIcons().add(new Image("gear-256.png"));
+		
 		
 		primaryStage.getIcons().add(new Image("Lock.png"));
 		primaryStage.setScene(mainWindow);
