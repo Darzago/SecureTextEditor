@@ -14,4 +14,11 @@
 <filePath>blub.txt</filePath>
 <iV>ol3SkGrCe/s=</iV>
 </file>
+<file>
+<encryption>AES</encryption>
+<encryptionMode>CBC</encryptionMode>
+<paddingType>PKCS7Padding</paddingType>
+<filePath>lul.txt</filePath>
+<iV>/e5ruDok3BRCG/vaiCSkwA==</iV>
+</file>
 </STEDATA>
