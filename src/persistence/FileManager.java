@@ -57,12 +57,6 @@ public class FileManager {
     	return CryptoManager.decryptString(Base64.getDecoder().decode(readByteArray), fileData);
 	}
 	
-	
-	/**
-	 * Writes the content into a file
-	 * @param path File to be written
-	 */
-	
 	/**
 	 * Writes (and encodes) the current content of the editor into a file 
 	 * @param path File to be written
