@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -53,7 +54,7 @@ public class FileManager {
 	{
     	Path filePath = Paths.get(fileLocation);
     	byte[] readByteArray= Files.readAllBytes(filePath);
-    	return CryptoManager.decryptString(readByteArray, fileData);
+    	return CryptoManager.decryptString(Base64.getDecoder().decode(readByteArray), fileData);
 	}
 	
 	
@@ -78,7 +79,7 @@ public class FileManager {
 			//create an object of BufferedOutputStream
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			
-			bos.write(CryptoManager.encryptString(fileContent, fileData));
+			bos.write(Base64.getEncoder().encode(CryptoManager.encryptString(fileContent, fileData)));
 			
 			bos.close();
 		}

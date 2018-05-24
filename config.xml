@@ -7,4 +7,11 @@
 <filePath>ac.txt</filePath>
 <iV>9N7BrifhhzhDxTTzrw+EkA==</iV>
 </file>
+<file>
+<encryption>DES</encryption>
+<encryptionMode>CTS</encryptionMode>
+<paddingType>PKCS7Padding</paddingType>
+<filePath>blub.txt</filePath>
+<iV>ol3SkGrCe/s=</iV>
+</file>
 </STEDATA>
