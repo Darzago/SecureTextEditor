@@ -1,11 +1,13 @@
 package logic;
+import java.security.SecureRandom;
+import java.util.Base64;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import enums.EncryptionMode;
 import enums.EncryptionType;
-import enums.PaddingType;
+import persistence.FileData;
 
 /**
  * Used to de and encrypt data
@@ -26,12 +28,6 @@ public class CryptoManager {
             0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
             0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17 };
     
-    static byte[]  hardIv8Bytes = new byte[] { 
-    		0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00 };
-    static byte[]  hardIv16Bytes = new byte[] { 
-    		0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00,
-    		0x07, 0x06, 0x05, 0x04, 0x03, 0x02, 0x01, 0x00 };
-    
 	/**
 	 * Encrypts a given string with the desired encryption, encryption mode and padding type 
 	 * @param input String to be encrypted
@@ -43,7 +39,7 @@ public class CryptoManager {
 	 * 
 	 * TODO Currently hard coded keys
 	 */
-	public static byte[] encryptString(String input, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
+	public static byte[] encryptString(String input, FileData fileData) throws Exception
 	{ 
 		
 		//TODO base 64?
@@ -54,19 +50,26 @@ public class CryptoManager {
 		
 		IvParameterSpec ivSpec;
 		
-		
-		keyToUse = getMatchingKey(encryptionType);
+		keyToUse = getMatchingKey(fileData.getEncryptionType());
 		
 		if(keyToUse == null)
 			return input.getBytes();
 		
-		SecretKeySpec key = new SecretKeySpec(keyToUse, encryptionType.toString());
+		SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
 		
-		Cipher cipher = Cipher.getInstance(encryptionType.toString() + "/" + encryptionMode.toString() + "/" + paddingType.toString(), "BC");
+		Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
 		
-		if(encryptionMode.usesIV())
+		
+		if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
 		{
-			ivSpec = new IvParameterSpec(getMatchingIV(encryptionType));
+			byte[] ivArray = getMatchingIV(fileData.getEncryptionType()); 
+			fileData.setiV(Base64.getEncoder().encodeToString(ivArray));
+			ivSpec = new IvParameterSpec(ivArray);
+			cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
+		}
+		else if(fileData.getEncryptionMode().usesIV())
+		{
+			ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
 			cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
 		}
 		else
@@ -95,24 +98,29 @@ public class CryptoManager {
 	 * TODO Hard coded keys & Ivs
 	 * 		Cipher-Based I/O ?
 	 */
-	public static String decryptString(byte[] input, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
+	public static String decryptString(byte[] input, FileData fileData) throws Exception
 	{
 		byte[] inputByteArray = input;
 		byte[] keyToUse = hardDESKey;
 		IvParameterSpec ivSpec;
 		
-		keyToUse = getMatchingKey(encryptionType);
+		keyToUse = getMatchingKey(fileData.getEncryptionType());
+		
 		if(keyToUse == null)
 			return new String(input, "UTF-8");
 		
-		SecretKeySpec key = new SecretKeySpec(keyToUse, encryptionType.toString());
+		SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
 		
-		Cipher cipher = Cipher.getInstance(encryptionType.toString() + "/" + encryptionMode.toString() + "/" + paddingType.toString(), "BC");
+		Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
 		
-		if(encryptionMode.usesIV())
+		if(fileData.getEncryptionMode().usesIV() && !fileData.getiV().equals("null"))
 		{
-			ivSpec = new IvParameterSpec(getMatchingIV(encryptionType));
+			ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
 			cipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
+		}
+		else if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
+		{
+			throw new Exception("IV WAS NOT SET");
 		}
 		else
 		{
@@ -157,13 +165,25 @@ public class CryptoManager {
 		switch(encryption)
 		{
 		case DES:
-			return hardIv8Bytes;
+			return generateIV(8);
 		case AES:
-			return hardIv16Bytes;
+			return generateIV(16);
 		case none:
 		default:
 			return null;
 		}
+	}
+	
+	private static byte[] generateIV(int length)
+	{
+		if(length > 0)
+		{
+			SecureRandom random = new SecureRandom();
+			byte[] ivBytes = new byte[length];
+			random.nextBytes(ivBytes);
+			return ivBytes;
+		}
+		return null;
 	}
 	
 }

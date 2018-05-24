@@ -22,12 +22,14 @@ public class TestClass {
 			testData1.setEncryptionType(EncryptionType.AES);
 			testData1.setFilePath("Peter.txt");
 			testData1.setPaddingType(PaddingType.NoPadding);
+			testData1.setiV("lul");
 			
 			FileData testData2 = new FileData();
 			testData2.setEncryptionMode(EncryptionMode.CBC);
 			testData2.setEncryptionType(EncryptionType.AES);
 			testData2.setFilePath("Peter.txt");
 			testData2.setPaddingType(PaddingType.NoPadding);
+			testData2.setiV("lal");
 			
 			List<FileData> testList = new ArrayList<FileData>();
 			

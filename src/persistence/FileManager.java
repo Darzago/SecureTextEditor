@@ -1,9 +1,7 @@
 package persistence;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,13 +10,10 @@ import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -54,11 +49,11 @@ public class FileManager {
 	 * @return decoded content of the file
 	 * @throws Exception 
 	 */
-	public static String openFileFromPath(String fileLocation, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
+	public static String openFileFromPath(String fileLocation, FileData fileData) throws Exception
 	{
     	Path filePath = Paths.get(fileLocation);
     	byte[] readByteArray= Files.readAllBytes(filePath);
-    	return CryptoManager.decryptString(readByteArray, encryptionType, encryptionMode, paddingType);
+    	return CryptoManager.decryptString(readByteArray, fileData);
 	}
 	
 	
@@ -74,7 +69,7 @@ public class FileManager {
 	 * @param encryptionMode encryption mode to be used to encrypt
 	 * @param paddingType padding type to be used to encrypt
 	 */
-	public static void saveFileInPath(File path, String fileContent, EncryptionType encryptionType,  EncryptionMode encryptionMode, PaddingType paddingType) throws Exception
+	public static void saveFileInPath(File path, String fileContent, FileData fileData) throws Exception
 	{
 		if(path != null){
 			//create an object of FileOutputStream
@@ -83,7 +78,7 @@ public class FileManager {
 			//create an object of BufferedOutputStream
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			
-			bos.write(CryptoManager.encryptString(fileContent, encryptionType, encryptionMode, paddingType));
+			bos.write(CryptoManager.encryptString(fileContent, fileData));
 			
 			bos.close();
 		}
@@ -125,8 +120,13 @@ public class FileManager {
 			
 			//filepath
 			Element pathElement = config.createElement("filePath");
-			pathElement.appendChild(config.createTextNode(filedata.getFilePath()));
+			pathElement.appendChild(config.createTextNode(filedata.getFilePath() + ""));
 			fileElement.appendChild(pathElement);
+			
+			//filepath
+			Element ivElement = config.createElement("iV");
+			ivElement.appendChild(config.createTextNode(filedata.getiV() + ""));
+			fileElement.appendChild(ivElement);
 			
 		}
 		
@@ -159,6 +159,7 @@ public class FileManager {
 			boolean bEncryptionMode = false;
 			boolean bPaddingType = false;
 			boolean bFilePath = false;
+			boolean bIV = false;
 			
 			public void startElement(String uri, String localName,String qName, Attributes attributes) throws SAXException 
 			{
@@ -178,6 +179,9 @@ public class FileManager {
 				}
 				else if (qName.equalsIgnoreCase("FILEPATH")) {
 					bFilePath = true;
+				}
+				else if (qName.equalsIgnoreCase("IV")) {
+					bIV = true;
 				}
 			}
 			
@@ -206,6 +210,10 @@ public class FileManager {
 				if (bFilePath) {
 					fileData.setFilePath(new String(ch, start, length));
 					bFilePath = false;
+				}
+				if (bIV) {
+					fileData.setiV(new String(ch, start, length));
+					bIV = false;
 				}
 			}	
 		};

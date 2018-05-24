@@ -183,7 +183,6 @@ public class JavaFxMainClass extends Application{
             }
         });
 		
-		
 		VBox optionGeneralLayout = new VBox(encryptionGridPane, encryptionButtonsBox);
 		
 		Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 370, 130);

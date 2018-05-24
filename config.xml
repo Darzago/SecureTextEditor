@@ -1,33 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <STEDATA>
 <file>
-<encryption>DES</encryption>
-<encryptionMode>CBC</encryptionMode>
-<paddingType>PKCS7Padding</paddingType>
-<filePath>AES CBC PKCS7 test.txt</filePath>
-</file>
-<file>
 <encryption>AES</encryption>
-<encryptionMode>CTR</encryptionMode>
-<paddingType>NoPadding</paddingType>
-<filePath>AES CTR NoPadding.txt</filePath>
-</file>
-<file>
-<encryption>DES</encryption>
-<encryptionMode>CTS</encryptionMode>
-<paddingType>ZeroBytePadding</paddingType>
-<filePath>DES CTS ZeroByte test.txt</filePath>
-</file>
-<file>
-<encryption>AES</encryption>
-<encryptionMode>OFB</encryptionMode>
-<paddingType>NoPadding</paddingType>
-<filePath>AES OFB NoPadding.txt</filePath>
-</file>
-<file>
-<encryption>DES</encryption>
 <encryptionMode>CTS</encryptionMode>
 <paddingType>PKCS7Padding</paddingType>
-<filePath>blub.txt</filePath>
+<filePath>ac.txt</filePath>
+<iV>9N7BrifhhzhDxTTzrw+EkA==</iV>
 </file>
 </STEDATA>

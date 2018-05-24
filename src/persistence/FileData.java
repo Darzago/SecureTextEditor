@@ -8,7 +8,23 @@ public class FileData {
 	PaddingType paddingType;
 	EncryptionType encryptionType;
 	EncryptionMode encryptionMode;
-	String filePath;	
+	String filePath;
+	String iV;
+
+	/**
+	 * @return the iV
+	 */
+	public String getiV() {
+		return iV;
+	}
+
+	/**
+	 * @param iV the iV to set
+	 */
+	public void setiV(String iV) {
+		if(this.iV == null)
+			this.iV = iV;
+	}
 
 	/**
 	 * @return the paddingType
@@ -21,7 +37,6 @@ public class FileData {
 	 * @param paddingType the paddingType to set
 	 */
 	public void setPaddingType(PaddingType paddingType) {
-		if(this.paddingType == null)
 			this.paddingType = paddingType;
 	}
 
@@ -36,7 +51,6 @@ public class FileData {
 	 * @param encryptionType the encryptionType to set
 	 */
 	public void setEncryptionType(EncryptionType encryptionType) {
-		if(this.encryptionType == null)
 			this.encryptionType = encryptionType;
 	}
 
@@ -51,7 +65,6 @@ public class FileData {
 	 * @param encryptionMode the encryptionMode to set
 	 */
 	public void setEncryptionMode(EncryptionMode encryptionMode) {
-		if(this.encryptionMode == null)
 			this.encryptionMode = encryptionMode;
 	}
 
@@ -66,7 +79,6 @@ public class FileData {
 	 * @param filePath the filePath to set
 	 */
 	public void setFilePath(String filePath) {
-		if(this.filePath == null)
 			this.filePath = filePath;
 	}
 
