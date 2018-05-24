@@ -12,7 +12,6 @@ import persistence.FileData;
 /**
  * Used to de and encrypt data
  * @author Joel
- *
  */
 public class CryptoManager {
 	
@@ -31,26 +30,19 @@ public class CryptoManager {
 	/**
 	 * Encrypts a given string with the desired encryption, encryption mode and padding type 
 	 * @param input String to be encrypted
-	 * @param encryptionType desired encryption type
-	 * @param encryptionMode desired encryption mode
-	 * @param paddingType desired padding type
+	 * @param fileData file metadata
 	 * @return encrypted string in a byte array
 	 * @throws Exception
 	 * 
 	 * TODO Currently hard coded keys
 	 */
 	public static byte[] encryptString(String input, FileData fileData) throws Exception
-	{ 
-		
-		//TODO base 64?
-		
+	{ 		
 		byte[] inputByteArray = input.getBytes();
-		
-		byte[] keyToUse = hardDESKey;
-		
+				
 		IvParameterSpec ivSpec;
 		
-		keyToUse = getMatchingKey(fileData.getEncryptionType());
+		byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
 		
 		if(keyToUse == null)
 			return input.getBytes();
@@ -101,10 +93,8 @@ public class CryptoManager {
 	public static String decryptString(byte[] input, FileData fileData) throws Exception
 	{
 		byte[] inputByteArray = input;
-		byte[] keyToUse = hardDESKey;
 		IvParameterSpec ivSpec;
-		
-		keyToUse = getMatchingKey(fileData.getEncryptionType());
+		byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
 		
 		if(keyToUse == null)
 			return new String(input, "UTF-8");
@@ -174,6 +164,11 @@ public class CryptoManager {
 		}
 	}
 	
+	/**
+	 * Randomly generates an IV with the given length
+	 * @param length length of the IV
+	 * @return iv
+	 */
 	private static byte[] generateIV(int length)
 	{
 		if(length > 0)

@@ -37,18 +37,15 @@ import logic.CryptoManager;
  */
 public class FileManager {
 	
-	CryptoManager cryptoManager = new CryptoManager();
-	
+	//Path of the config.xml file
 	private static final String configPath = "config.xml";
-	
+
 	/**
-	 * Opens and decrypts a file from the given filepath using the given settings
+	 * Opens and decrypts a file from the given filepath using the given information
 	 * @param fileLocation file to be opened
-	 * @param encryptionType encryption type to be used to decrypt
-	 * @param encryptionMode encryption mode to be used to decrypt
-	 * @param paddingType padding type to be used to decrypt
+	 * @param fileData file metadata used to decrypt
 	 * @return decoded content of the file
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static String openFileFromPath(String fileLocation, FileData fileData) throws Exception
 	{
@@ -57,12 +54,13 @@ public class FileManager {
     	return CryptoManager.decryptString(Base64.getDecoder().decode(readByteArray), fileData);
 	}
 	
+
 	/**
-	 * Writes (and encodes) the current content of the editor into a file 
+	 * Writes and encrypts the given content into a file 
 	 * @param path File to be written
-	 * @param encryptionType encryption type to be used to encrypt
-	 * @param encryptionMode encryption mode to be used to encrypt
-	 * @param paddingType padding type to be used to encrypt
+	 * @param fileContent content of the file
+	 * @param fileData metadata of the file
+	 * @throws Exception
 	 */
 	public static void saveFileInPath(File path, String fileContent, FileData fileData) throws Exception
 	{
@@ -135,11 +133,10 @@ public class FileManager {
 	}
 	
 	/**
-	 * TODO
 	 * Loads a config.xml 
 	 * @param path Path of the .xml
 	 * @return List of the read data
-	 */
+	 */	
 	public static List<FileData> loadConfig() throws Exception
 	{	
 		List<FileData> dataList = new ArrayList<FileData>();	
@@ -150,6 +147,7 @@ public class FileManager {
 		{
 			
 			FileData fileData;
+			
 			boolean bEncryptionType = false;
 			boolean bEncryptionMode = false;
 			boolean bPaddingType = false;

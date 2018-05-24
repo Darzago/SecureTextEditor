@@ -1,5 +1,4 @@
 package view;
-import java.util.List;
 
 import enums.EncryptionMode;
 import enums.EncryptionType;
@@ -25,7 +24,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import logic.TextEditor;
-import persistence.FileData;
+
 
 /**
  * Builds the scene tree and creates event handler
@@ -42,9 +41,7 @@ public class JavaFxMainClass extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
-		//TODO Undecorated window
-		
+
 		Stage encryptionOptionStage = new Stage();
 		
 

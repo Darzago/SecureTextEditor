@@ -45,10 +45,13 @@ public class TextEditor extends TextArea{
 	//Flag that shows if there is unsaved progress
 	private boolean textHasChanged = false;
 	
+	//List of all currently known metadata
 	List<FileData> dataList;
-
+	
+	//Metadata of the file the editor currently edits
 	private FileData currentFileData;
 	
+	//Dropdown Menus in the encryption option window
 	private ComboBox<PaddingType> paddingTypeBox;
 	private ComboBox<EncryptionType> encryptionTypeBox;
 	private ComboBox<EncryptionMode> encryptionModeBox;
@@ -71,6 +74,10 @@ public class TextEditor extends TextArea{
 		}
 	}
 	
+	/**
+	 * Writes metadata in a Gridpane to make it readable to the user
+	 * @param pane Gridpane to write metadata
+	 */
 	public void writeListInGrid(GridPane pane)
 	{
 		Text nameText = new Text("Name:");
@@ -114,7 +121,6 @@ public class TextEditor extends TextArea{
 	
 	/**
 	 * Displays a new window if the current file has been changed but not saved, otherwise creates a new file
-	 * TODO Code duplication
 	 */
 	public void openFileDialogue()
 	{
@@ -172,6 +178,10 @@ public class TextEditor extends TextArea{
     	}
 	}
 	
+	/**
+	 * Searches the known metadata for an input file and loads its information into the editor
+	 * @param file
+	 */
 	private void findAndOpenFileData(File file)
 	{
 		boolean fileFound = false;
@@ -254,6 +264,9 @@ public class TextEditor extends TextArea{
 		}
 	}
 	
+	/**
+	 * Updates the metadata of the file currently being edited (in the list of metadata)
+	 */
 	private void updateFileData()
 	{
 		try 
@@ -432,6 +445,10 @@ public class TextEditor extends TextArea{
 		return false;
 	}
 	
+	/**
+	 * Displays an error message
+	 * @param e Exception that caused the error
+	 */
     private void showError(Exception e) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error alert");

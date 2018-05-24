@@ -3,6 +3,11 @@ import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.PaddingType;
 
+/**
+ * Used to store a files metadata
+ * @author Joel
+ *
+ */
 public class FileData {
 	
 	PaddingType paddingType;
