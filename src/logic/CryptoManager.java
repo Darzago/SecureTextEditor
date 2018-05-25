@@ -54,8 +54,10 @@ public class CryptoManager {
 		
 		if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
 		{
-			byte[] ivArray = getMatchingIV(fileData.getEncryptionType()); 
+			byte[] ivArray = getMatchingIV(fileData.getEncryptionType());
+			
 			fileData.setiV(Base64.getEncoder().encodeToString(ivArray));
+			
 			ivSpec = new IvParameterSpec(ivArray);
 			cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
 		}

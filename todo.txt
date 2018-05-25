@@ -1,0 +1,13 @@
+TODO
+	USB Komponente
+		-USB Verzeichnis mit Hashwerten und Verzeichnisnamen usw
+			--> schon bekannte USB Sticks können automatisch an den Hashwerten erkannt werden
+		-USB Stick registrierungs option, user anleitung, Abstecken dranstecken/Registrierungsmodus
+		-somit wird jedem usb stick ein eigene config zugeteilt?
+		-Passwort option für keyconfig.xml / Art der Passwortverschlüsselung auswählbar & in der config gespeichert
+		-wann sollte verifiziert werden ob der usb stick noch da ist?
+	Hash
+		Message Digest mit 3 Hash Arten
+		--> Abspeichern der Hasdaten und der Hashart
+	
+DONE
