@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import persistence.FileData;
+import persistence.MetaData;
 import persistence.FileManager;
 
 /**
@@ -46,10 +46,10 @@ public class TextEditor extends TextArea{
 	private boolean textHasChanged = false;
 	
 	//List of all currently known metadata
-	List<FileData> dataList;
+	List<MetaData> dataList;
 	
 	//Metadata of the file the editor currently edits
-	private FileData currentFileData;
+	private MetaData currentFileData;
 	
 	//Dropdown Menus in the encryption option window
 	private ComboBox<PaddingType> paddingTypeBox;
@@ -98,11 +98,11 @@ public class TextEditor extends TextArea{
 				
 		int i = 1;
 		
-		List<FileData> currentlyPersistentList;
+		List<MetaData> currentlyPersistentList;
 		try {
 			currentlyPersistentList = FileManager.loadConfig();
 			
-			for(FileData data : currentlyPersistentList)
+			for(MetaData data : currentlyPersistentList)
 			{
 				pane.add(new Text(data.getFilePath()), 0, i);
 				pane.add(new Text(data.getEncryptionType().toString()), 1, i);
@@ -193,10 +193,10 @@ public class TextEditor extends TextArea{
 			e1.printStackTrace();
 		}
 		
-		Iterator<FileData> iterator = dataList.iterator();
+		Iterator<MetaData> iterator = dataList.iterator();
 		while (iterator.hasNext())
 		{
-	         FileData currentlyViewedData = iterator.next();
+	         MetaData currentlyViewedData = iterator.next();
 
 	         if(currentlyViewedData.getFilePath().equals(file.getName()))
 				{
@@ -215,7 +215,7 @@ public class TextEditor extends TextArea{
 		{
 			try 
 			{
-				FileData newFileData = new FileData(paddingTypeBox.getValue(), encryptionTypeBox.getValue(), encryptionModeBox.getValue(), file.getName());
+				MetaData newFileData = new MetaData(paddingTypeBox.getValue(), encryptionTypeBox.getValue(), encryptionModeBox.getValue(), file.getName());
 				this.currentFileData = newFileData;
 				dataList.add(newFileData);
 			} 
@@ -271,10 +271,10 @@ public class TextEditor extends TextArea{
 	{
 		try 
 		{
-			Iterator<FileData> iterator = dataList.iterator();
+			Iterator<MetaData> iterator = dataList.iterator();
 			while (iterator.hasNext()){
 
-		         FileData currentlyViewedData = iterator.next();
+		         MetaData currentlyViewedData = iterator.next();
 
 		         if(currentlyViewedData.getFilePath().equals(currentFileData.getFilePath()))
 					{
@@ -362,7 +362,7 @@ public class TextEditor extends TextArea{
 		this.paddingTypeBox = paddingDropDown;
 		this.encryptionModeBox = encryptionModeDropDown;
 		
-		this.currentFileData = new FileData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), defaultName);
+		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), defaultName);
 		
 		encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
@@ -402,7 +402,7 @@ public class TextEditor extends TextArea{
 		} 
 		catch (Exception e) 
 		{
-			dataList = new ArrayList<FileData>();
+			dataList = new ArrayList<MetaData>();
 			showError(e);
 		}
 		

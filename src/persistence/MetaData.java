@@ -8,7 +8,7 @@ import enums.PaddingType;
  * @author Joel
  *
  */
-public class FileData {
+public class MetaData {
 	
 	PaddingType paddingType;
 	EncryptionType encryptionType;
@@ -87,9 +87,9 @@ public class FileData {
 			this.filePath = filePath;
 	}
 
-	public FileData(){}
+	public MetaData(){}
 	
-	public FileData(PaddingType paddingType, EncryptionType encryptionType, EncryptionMode encryptionMode, String filePath) 
+	public MetaData(PaddingType paddingType, EncryptionType encryptionType, EncryptionMode encryptionMode, String filePath) 
 	{
 		this.paddingType = paddingType;
 		this.encryptionType = encryptionType;

@@ -6,7 +6,7 @@ import java.util.List;
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.PaddingType;
-import persistence.FileData;
+import persistence.MetaData;
 import persistence.FileManager;
 
 public class TestClass {
@@ -17,21 +17,21 @@ public class TestClass {
 			
 			FileManager test = new FileManager();
 			
-			FileData testData1 = new FileData();
+			MetaData testData1 = new MetaData();
 			testData1.setEncryptionMode(EncryptionMode.CBC);
 			testData1.setEncryptionType(EncryptionType.AES);
 			testData1.setFilePath("Peter.txt");
 			testData1.setPaddingType(PaddingType.NoPadding);
 			testData1.setiV("lul");
 			
-			FileData testData2 = new FileData();
+			MetaData testData2 = new MetaData();
 			testData2.setEncryptionMode(EncryptionMode.CBC);
 			testData2.setEncryptionType(EncryptionType.AES);
 			testData2.setFilePath("Peter.txt");
 			testData2.setPaddingType(PaddingType.NoPadding);
 			testData2.setiV("lal");
 			
-			List<FileData> testList = new ArrayList<FileData>();
+			List<MetaData> testList = new ArrayList<MetaData>();
 			
 			testList.add(testData1);
 			testList.add(testData2);

@@ -47,7 +47,7 @@ public class FileManager {
 	 * @return decoded content of the file
 	 * @throws Exception
 	 */
-	public static String openFileFromPath(String fileLocation, FileData fileData) throws Exception
+	public static String openFileFromPath(String fileLocation, MetaData fileData) throws Exception
 	{
     	Path filePath = Paths.get(fileLocation);
     	byte[] readByteArray= Files.readAllBytes(filePath);
@@ -62,7 +62,7 @@ public class FileManager {
 	 * @param fileData metadata of the file
 	 * @throws Exception
 	 */
-	public static void saveFileInPath(File path, String fileContent, FileData fileData) throws Exception
+	public static void saveFileInPath(File path, String fileContent, MetaData fileData) throws Exception
 	{
 		if(path != null){
 			//create an object of FileOutputStream
@@ -81,7 +81,7 @@ public class FileManager {
 	 * Write config data
 	 * @param dataList data to be written into a config
 	 */
-	public static void writeConfig(List<FileData> dataList) throws Exception
+	public static void writeConfig(List<MetaData> dataList) throws Exception
 	{
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -91,7 +91,7 @@ public class FileManager {
 		Element rootElement = config.createElement("STEDATA");
 		config.appendChild(rootElement);
 		
-		for(FileData filedata : dataList){
+		for(MetaData filedata : dataList){
 			//options
 			Element fileElement = config.createElement("file");
 			rootElement.appendChild(fileElement);
@@ -137,16 +137,16 @@ public class FileManager {
 	 * @param path Path of the .xml
 	 * @return List of the read data
 	 */	
-	public static List<FileData> loadConfig() throws Exception
+	public static List<MetaData> loadConfig() throws Exception
 	{	
-		List<FileData> dataList = new ArrayList<FileData>();	
+		List<MetaData> dataList = new ArrayList<MetaData>();	
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		SAXParser saxParser = factory.newSAXParser();
 		
 		DefaultHandler handler = new DefaultHandler() 
 		{
 			
-			FileData fileData;
+			MetaData fileData;
 			
 			boolean bEncryptionType = false;
 			boolean bEncryptionMode = false;
@@ -159,7 +159,7 @@ public class FileManager {
 				
 				if (qName.equalsIgnoreCase("FILE")) 
 				{
-					fileData = new FileData();
+					fileData = new MetaData();
 				}
 				else if (qName.equalsIgnoreCase("ENCRYPTION")) {
 					bEncryptionType = true;

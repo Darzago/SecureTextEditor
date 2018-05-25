@@ -7,7 +7,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import enums.EncryptionType;
-import persistence.FileData;
+import persistence.MetaData;
 
 /**
  * Used to de and encrypt data
@@ -36,7 +36,7 @@ public class CryptoManager {
 	 * 
 	 * TODO Currently hard coded keys
 	 */
-	public static byte[] encryptString(String input, FileData fileData) throws Exception
+	public static byte[] encryptString(String input, MetaData fileData) throws Exception
 	{ 		
 		byte[] inputByteArray = input.getBytes();
 				
@@ -90,7 +90,7 @@ public class CryptoManager {
 	 * TODO Hard coded keys & Ivs
 	 * 		Cipher-Based I/O ?
 	 */
-	public static String decryptString(byte[] input, FileData fileData) throws Exception
+	public static String decryptString(byte[] input, MetaData fileData) throws Exception
 	{
 		byte[] inputByteArray = input;
 		IvParameterSpec ivSpec;
