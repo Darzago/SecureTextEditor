@@ -3,7 +3,7 @@ package view;
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.PaddingType;
-import javafx.application.*;
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,7 +22,9 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import logic.TextEditor;
 
 
@@ -59,9 +61,10 @@ public class JavaFxMainClass extends Application{
 		
 		//Menu for encryption options
 		Menu encryptionMenu = new Menu("Encryption");
-			MenuItem encryptions = new MenuItem("Options");
-			MenuItem config = new MenuItem("Config");
-		encryptionMenu.getItems().addAll(encryptions, config);
+			MenuItem encryptionsItem = new MenuItem("Options");
+			MenuItem configItem = new MenuItem("Config");
+			MenuItem registerUsbItem = new MenuItem("Register USB drive");
+		encryptionMenu.getItems().addAll(encryptionsItem, configItem, registerUsbItem);
 		
 		//Adds all menu items to the "file" menu
 		menuBar.getMenus().addAll(fileMenu, encryptionMenu);
@@ -131,8 +134,42 @@ public class JavaFxMainClass extends Application{
 		configStage.setTitle("Encryption Config");
 		configStage.getIcons().add(new Image("gear-256.png"));
 		
+		
+//USB Registration Stage ---------------------------------------------------------------------
+		Stage usbRegistrationStage = new Stage();
+		
+		GridPane usbRegistrationLayout = new GridPane();
+		usbRegistrationLayout.add(new Text("Plug in the usb stick to register"), 0, 0);
+		usbRegistrationLayout.setAlignment(Pos.CENTER);
+		usbRegistrationLayout.setHgap(15);
+		usbRegistrationLayout.setVgap(3);
+
+		Scene usbRegistrationWindow = new Scene(usbRegistrationLayout, 450, 180);
+		usbRegistrationStage.setScene(usbRegistrationWindow);
+		usbRegistrationStage.setTitle("Adding a new USB drive");
+		usbRegistrationStage.getIcons().add(new Image("gear-256.png"));
+		
+		
 				
 //Event Handler -----------------------------------------------------------------------------------------------
+		
+		registerUsbItem.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	usbRegistrationStage.show();
+            }
+        });
+		
+		usbRegistrationStage.setOnShown(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent t) {
+            	System.out.println("Window is being shown");
+            }
+        });
+		
+		usbRegistrationStage.setOnHidden(new EventHandler<WindowEvent>() {
+            public void handle(WindowEvent t) {
+            	System.out.println("Window is being Hidden");
+            }
+        });
 		
 		menuNewItem.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
@@ -159,14 +196,14 @@ public class JavaFxMainClass extends Application{
             }
         });
 		
-		encryptions.setOnAction(new EventHandler<ActionEvent>() {
+		encryptionsItem.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	//Open options window
             	encryptionOptionStage.show();
             }
         });
 		
-		config.setOnAction(new EventHandler<ActionEvent>() {
+		configItem.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	configLayout.getChildren().clear();
             	editor.writeListInGrid(configLayout);

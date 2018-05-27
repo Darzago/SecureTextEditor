@@ -5,7 +5,7 @@ import java.io.File;
 public class USBdetection 
 {
 	public static void main(String[] args)
-	{   
+	{
 		String[] letters = new String[]{ "E", "F", "G", "H", "I" ,"J","K", "L","M", "N"};
 		File[] Externaldrives = new File[letters.length];
 		boolean[] FoundDrive = new boolean[letters.length];

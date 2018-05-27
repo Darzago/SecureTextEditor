@@ -56,6 +56,7 @@ public class TextEditor extends TextArea{
 	private ComboBox<EncryptionType> encryptionTypeBox;
 	private ComboBox<EncryptionMode> encryptionModeBox;
 	
+	
 	/**
 	 * Displays a new window if the current file has been changed but not saved, otherwise opens the new file
 	 */
