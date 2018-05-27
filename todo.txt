@@ -1,26 +1,14 @@
-TODO
+TODO	-----------------------------------------------------------------------------------------------------------------
 	USB Komponente
+		-speichern des usb hashes und keyfilepath innerhalb der Datei	
 		-USB Verzeichnis mit Hashwerten und Verzeichnisnamen usw
 			--> schon bekannte USB Sticks können automatisch an den Hashwerten erkannt werden
 		-USB Stick registrierungs option, user anleitung, Abstecken dranstecken/Registrierungsmodus
 		-Passwort option für keyconfig.xml / Art der Passwortverschlüsselung auswählbar & in der config gespeichert
-		-wann sollte verifiziert werden ob der usb stick noch da ist?
-	Hash
-		Message Digest mit 3 Hash Arten
-		--> Abspeichern der Hashdaten und der Hashart
-		Bekannte USB Sticks sollten nach Möglichkeit erkannt und geladen werden
 	XML
-		-Erweiterung der filedaten um einen messagedigest/Hash um Veränderungen festzustellen
-			--> abspeicherung der Hashart in den Metadaten des Files 
-		-Änderung der Struktur um Daten abhängib vom drive abzuspeichern
-			<config>
-				<drive>
-					<driveletter></driveletter>
-					<driveId></driveId>
-					<file>
-						/* usual filedata */
-					</file>
-				</drive>
-			</config>
+		-Umstellung von XML auf im File gespeicherte Metadaten
 	
-DONE
+DONE	-----------------------------------------------------------------------------------------------------------------
+		-Message Digest mit 5 Hash Arten
+			--> Abspeichern der Hashdaten und der Hashart
+		-Integrity Test beim laden einer Datei
