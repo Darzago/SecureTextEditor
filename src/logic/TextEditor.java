@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import enums.EncryptionMode;
 import enums.EncryptionType;
+import enums.HashFunction;
 import enums.PaddingType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -51,11 +52,13 @@ public class TextEditor extends TextArea{
 	//Metadata of the file the editor currently edits
 	private MetaData currentFileData;
 	
+	Thread detectionThread;
+	
 	//Dropdown Menus in the encryption option window
 	private ComboBox<PaddingType> paddingTypeBox;
 	private ComboBox<EncryptionType> encryptionTypeBox;
 	private ComboBox<EncryptionMode> encryptionModeBox;
-	
+	private ComboBox<HashFunction> hashFunctionModeBox;
 	
 	/**
 	 * Displays a new window if the current file has been changed but not saved, otherwise opens the new file
@@ -209,6 +212,7 @@ public class TextEditor extends TextArea{
 					this.encryptionTypeBox.setValue(currentlyViewedData.getEncryptionType());
 					this.encryptionModeBox.setValue(currentlyViewedData.getEncryptionMode());
 					this.paddingTypeBox.setValue(currentlyViewedData.getPaddingType());
+					this.hashFunctionModeBox.setValue(currentlyViewedData.getHashFunction());
 				}
 			}
 		
@@ -216,7 +220,7 @@ public class TextEditor extends TextArea{
 		{
 			try 
 			{
-				MetaData newFileData = new MetaData(paddingTypeBox.getValue(), encryptionTypeBox.getValue(), encryptionModeBox.getValue(), file.getName());
+				MetaData newFileData = new MetaData(paddingTypeBox.getValue(), encryptionTypeBox.getValue(), encryptionModeBox.getValue(), hashFunctionModeBox.getValue(), "", file.getName());
 				this.currentFileData = newFileData;
 				dataList.add(newFileData);
 			} 
@@ -354,7 +358,7 @@ public class TextEditor extends TextArea{
 	 * @param _selectedMode currently selected {@link EncryptionMode}
 	 * @param _selectedPadding currently selected {@link PaddingType}
 	 */
-	public TextEditor(Stage _myStage, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown)
+	public TextEditor(Stage _myStage, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown)
 	{
 		this.myStage = _myStage;
 		updateTitle(defaultName);
@@ -362,8 +366,9 @@ public class TextEditor extends TextArea{
 		this.encryptionTypeBox = encryptionDropDown;
 		this.paddingTypeBox = paddingDropDown;
 		this.encryptionModeBox = encryptionModeDropDown;
+		this.hashFunctionModeBox = hashFunctionDropDown;
 		
-		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), defaultName);
+		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), "",defaultName);
 		
 		encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
@@ -394,6 +399,12 @@ public class TextEditor extends TextArea{
             public void handle(ActionEvent t) {
             	textHasChanged = true;
             	currentFileData.setPaddingType(paddingDropDown.getValue());
+            }
+        });
+		hashFunctionDropDown.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	textHasChanged = true;
+            	currentFileData.setHashFunction(hashFunctionDropDown.getValue());
             }
         });
 		
@@ -446,6 +457,23 @@ public class TextEditor extends TextArea{
 		return false;
 	}
 	
+	public void startUSBDetection()
+	{
+		detectionThread = new USBDetectionThread();
+		detectionThread.start();
+	}
+	
+	public void stopUSBDetection()
+	{
+		if(detectionThread != null)
+		{
+			if(detectionThread.isAlive())
+			{
+				detectionThread.stop();
+			}
+		}
+	}
+	
 	/**
 	 * Displays an error message
 	 * @param e Exception that caused the error
@@ -454,6 +482,7 @@ public class TextEditor extends TextArea{
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error alert");
         alert.setHeaderText(e.getMessage());
+        alert.setGraphic(null);
         
         String stackTrace = "";
         for(StackTraceElement element : e.getStackTrace())

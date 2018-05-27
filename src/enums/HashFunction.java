@@ -1,5 +1,5 @@
 package enums;
 
 public enum HashFunction {
-MD5Digest, SHA1Digest, SHA224Digest, SHA256Digest, SHA384Digest, SHA512Digest;
+MD5, SHA1, SHA224, SHA256, SHA384, SHA512, NONE;
 }

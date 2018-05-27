@@ -2,6 +2,7 @@ package view;
 
 import enums.EncryptionMode;
 import enums.EncryptionType;
+import enums.HashFunction;
 import enums.PaddingType;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -92,6 +93,11 @@ public class JavaFxMainClass extends Application{
 			paddingDropDown.getItems().addAll(PaddingType.values());
 		paddingDropDown.setValue(PaddingType.NoPadding);
 		
+		Label hashFunctionLabel = new Label("Hash Function:");
+			ComboBox<HashFunction> hashFunctionDropDown = new ComboBox<HashFunction> ();
+			hashFunctionDropDown.setValue(HashFunction.NONE);
+		hashFunctionDropDown.getItems().addAll(HashFunction.values());
+		
 		//Adds all dropdown menus and labels to a GridPane
 		GridPane encryptionGridPane = new GridPane();
 		encryptionGridPane.add(encryptionLabel, 0, 0);
@@ -100,6 +106,8 @@ public class JavaFxMainClass extends Application{
 		encryptionGridPane.add(modeDropDown, 1, 1);
 		encryptionGridPane.add(paddingLabel, 2, 0);
 		encryptionGridPane.add(paddingDropDown, 2, 1);
+		encryptionGridPane.add(hashFunctionLabel, 3, 0);
+		encryptionGridPane.add(hashFunctionDropDown, 3, 1);
 		
 		encryptionGridPane.setHgap(10);
 		encryptionGridPane.setAlignment(Pos.CENTER);
@@ -113,7 +121,7 @@ public class JavaFxMainClass extends Application{
 		encryptionButtonsBox.setHgap(10);
 		encryptionButtonsBox.setAlignment(Pos.CENTER_RIGHT);
 		
-		editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown);
+		editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown);
 		
 		//Sets the general layout of the scene
 		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);
@@ -162,12 +170,14 @@ public class JavaFxMainClass extends Application{
 		usbRegistrationStage.setOnShown(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent t) {
             	System.out.println("Window is being shown");
+            	editor.startUSBDetection();
             }
         });
 		
 		usbRegistrationStage.setOnHidden(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent t) {
             	System.out.println("Window is being Hidden");
+            	editor.stopUSBDetection();
             }
         });
 		
@@ -219,7 +229,7 @@ public class JavaFxMainClass extends Application{
 		
 		VBox optionGeneralLayout = new VBox(encryptionGridPane, encryptionButtonsBox);
 		
-		Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 370, 130);
+		Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 500, 130);
 		encryptionOptionStage.setScene(encryptionOptionWindow);
 		encryptionOptionStage.setTitle("Encryption Options");
 		encryptionOptionStage.getIcons().add(new Image("gear-256.png"));

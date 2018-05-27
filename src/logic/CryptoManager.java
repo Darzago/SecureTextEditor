@@ -1,5 +1,7 @@
 package logic;
+import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
@@ -7,6 +9,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import enums.EncryptionType;
+import enums.HashFunction;
 import persistence.MetaData;
 
 /**
@@ -47,6 +50,8 @@ public class CryptoManager {
 		if(keyToUse == null)
 			return input.getBytes();
 		
+		
+		
 		SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
 		
 		Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
@@ -77,6 +82,12 @@ public class CryptoManager {
 		
 		ctLength += cipher.doFinal(cipherText, ctLength);
 		
+		if(fileData.getHashFunction() != HashFunction.NONE)
+		{
+			MessageDigest hash = MessageDigest.getInstance(fileData.getHashFunction().toString(), "BC");
+			hash.update(cipherText);
+			fileData.setHashValue(Base64.getEncoder().encodeToString(hash.digest()));
+		}
 		return cipherText;
 	}
 	
@@ -97,9 +108,19 @@ public class CryptoManager {
 		byte[] inputByteArray = input;
 		IvParameterSpec ivSpec;
 		byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
-		
+	
 		if(keyToUse == null)
 			return new String(input, "UTF-8");
+		
+		if(fileData.getHashFunction() != HashFunction.NONE)
+		{
+			MessageDigest hash = MessageDigest.getInstance(fileData.getHashFunction().toString(), "BC");
+			hash.update(input);
+			if(!Arrays.equals(Base64.getDecoder().decode(fileData.getHashValue()) , hash.digest()))
+			{
+				throw new Exception("File has been altered!");
+			}
+		}
 		
 		SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
 		

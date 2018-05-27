@@ -27,6 +27,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import enums.EncryptionMode;
 import enums.EncryptionType;
+import enums.HashFunction;
 import enums.PaddingType;
 import logic.CryptoManager;
 
@@ -102,9 +103,9 @@ public class FileManager {
 			encryptionElement.appendChild(config.createTextNode(filedata.getEncryptionType() + ""));
 			
 			//encryption mode
-			Element hashElement = config.createElement("encryptionMode");
-			hashElement.appendChild(config.createTextNode(filedata.getEncryptionMode() + ""));
-			fileElement.appendChild(hashElement);
+			Element encryptionModeElement = config.createElement("encryptionMode");
+			encryptionModeElement.appendChild(config.createTextNode(filedata.getEncryptionMode() + ""));
+			fileElement.appendChild(encryptionModeElement);
 			
 			//padding type
 			Element paddingElement = config.createElement("paddingType");
@@ -121,6 +122,15 @@ public class FileManager {
 			ivElement.appendChild(config.createTextNode(filedata.getiV() + ""));
 			fileElement.appendChild(ivElement);
 			
+			//hashFunction
+			Element hashFunctionElement = config.createElement("hashFunction");
+			hashFunctionElement.appendChild(config.createTextNode(filedata.getHashFunction() + ""));
+			fileElement.appendChild(hashFunctionElement);
+			
+			//hashValue
+			Element hashElement = config.createElement("hashValue");
+			hashElement.appendChild(config.createTextNode(filedata.getHashValue() + ""));
+			fileElement.appendChild(hashElement);
 		}
 		
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -153,6 +163,8 @@ public class FileManager {
 			boolean bPaddingType = false;
 			boolean bFilePath = false;
 			boolean bIV = false;
+			boolean bHashFunction = false;
+			boolean bHashValue = false;
 			
 			public void startElement(String uri, String localName,String qName, Attributes attributes) throws SAXException 
 			{
@@ -175,6 +187,12 @@ public class FileManager {
 				}
 				else if (qName.equalsIgnoreCase("IV")) {
 					bIV = true;
+				}
+				else if (qName.equalsIgnoreCase("HASHFUNCTION")) {
+					bHashFunction = true;
+				}
+				else if (qName.equalsIgnoreCase("HASHVALUE")) {
+					bHashValue = true;
 				}
 			}
 			
@@ -207,6 +225,14 @@ public class FileManager {
 				if (bIV) {
 					fileData.setiV(new String(ch, start, length));
 					bIV = false;
+				}
+				if (bHashFunction) {
+					fileData.setHashFunction(HashFunction.valueOf(new String(ch, start, length)));
+					bHashFunction = false;
+				}
+				if (bHashValue) {
+					fileData.setHashValue(new String(ch, start, length));
+					bHashValue = false;
 				}
 			}	
 		};

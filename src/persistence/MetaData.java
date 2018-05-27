@@ -1,6 +1,7 @@
 package persistence;
 import enums.EncryptionMode;
 import enums.EncryptionType;
+import enums.HashFunction;
 import enums.PaddingType;
 
 /**
@@ -13,8 +14,38 @@ public class MetaData {
 	PaddingType paddingType;
 	EncryptionType encryptionType;
 	EncryptionMode encryptionMode;
+	HashFunction hashFunction;
+	String hashValue;
 	String filePath;
 	String iV;
+	
+	/**
+	 * @return the hashValue
+	 */
+	public String getHashValue() {
+		return hashValue;
+	}
+
+	/**
+	 * @param hashValue the hashValue to set
+	 */
+	public void setHashValue(String hashValue) {
+		this.hashValue = hashValue;
+	}
+	
+	/**
+	 * @return the hashFunction
+	 */
+	public HashFunction getHashFunction() {
+		return hashFunction;
+	}
+
+	/**
+	 * @param hashFunction the hashFunction to set
+	 */
+	public void setHashFunction(HashFunction hashFunction) {
+		this.hashFunction = hashFunction;
+	}
 
 	/**
 	 * @return the iV
@@ -89,12 +120,14 @@ public class MetaData {
 
 	public MetaData(){}
 	
-	public MetaData(PaddingType paddingType, EncryptionType encryptionType, EncryptionMode encryptionMode, String filePath) 
+	public MetaData(PaddingType paddingType, EncryptionType encryptionType, EncryptionMode encryptionMode, HashFunction hashFunction, String hashValue, String filePath) 
 	{
 		this.paddingType = paddingType;
 		this.encryptionType = encryptionType;
 		this.encryptionMode = encryptionMode;
 		this.filePath = filePath;
+		this.hashFunction = hashFunction;
+		this.hashValue = hashValue;
 	}
 
 
