@@ -52,7 +52,7 @@ public class TextEditor extends TextArea{
 	//Metadata of the file the editor currently edits
 	private MetaData currentFileData;
 	
-	Thread detectionThread;
+	USBDetectionThread detectionThread;
 	
 	//Dropdown Menus in the encryption option window
 	private ComboBox<PaddingType> paddingTypeBox;
@@ -192,8 +192,9 @@ public class TextEditor extends TextArea{
 		
 		try {
 			dataList = FileManager.loadConfig();
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
+		} 
+		catch (Exception e1) 
+		{
 			e1.printStackTrace();
 		}
 		
@@ -350,6 +351,12 @@ public class TextEditor extends TextArea{
 		textHasChanged = false;
 	}
 	
+	//TODO
+	public void registerUSBDrive(int foundDeviceId, String driveLetter)
+	{
+		
+	}
+	
 	/**
 	 * Constructor
 	 * Sets the stage and adds a listener to detect if the content of the text area has changed
@@ -369,6 +376,10 @@ public class TextEditor extends TextArea{
 		this.hashFunctionModeBox = hashFunctionDropDown;
 		
 		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), "",defaultName);
+		
+		//Disable those 2 dropdown menus since the (at start) selected encryption is 'none'
+		paddingDropDown.setDisable(true);
+		encryptionModeDropDown.setDisable(true);
 		
 		encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
@@ -391,6 +402,17 @@ public class TextEditor extends TextArea{
 		encryptionModeDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	textHasChanged = true;
+            	
+            	if(encryptionModeDropDown.getValue() == EncryptionMode.GCM)
+            	{
+            		paddingDropDown.setValue(PaddingType.NoPadding);
+            		paddingDropDown.setDisable(true);
+            	}
+            	else if(paddingDropDown.isDisable())
+            	{
+            		paddingDropDown.setDisable(false);
+            	}
+            	
             	currentFileData.setEncryptionMode(encryptionModeDropDown.getValue());
             }
         });
@@ -469,7 +491,7 @@ public class TextEditor extends TextArea{
 		{
 			if(detectionThread.isAlive())
 			{
-				detectionThread.stop();
+				detectionThread.setRunning(false);
 			}
 		}
 	}

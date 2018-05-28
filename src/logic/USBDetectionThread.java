@@ -9,6 +9,8 @@ import org.usb4java.DeviceList;
 import org.usb4java.LibUsb;
 import org.usb4java.LibUsbException;
 
+import javafx.application.Platform;
+
 public class USBDetectionThread extends Thread{
 	
 	private String[] driveLetters ;
@@ -18,12 +20,13 @@ public class USBDetectionThread extends Thread{
 	private int minDeviceCount = Integer.MAX_VALUE;
 	private int currentDeviceCount;
 	private int[] minDeviceList;
+	private boolean runningFlag = true;
 	
-    public void run() {
+	public void run() {
     	
     	String driveLetter;
     	
-    	while(true)
+    	while(runningFlag)
     	{
     		currentDeviceCount = getCurrentDeviceCount();
     		if(currentDeviceCount < minDeviceCount)
@@ -36,9 +39,8 @@ public class USBDetectionThread extends Thread{
     		driveLetter = detectUSBDriveLetter();
     		if(driveLetter != null)
     		{
-    			int foundDeviceId = getNewDeviceID();
-    			System.out.println(foundDeviceId + " Letter: " + driveLetter);
-    			//editor.checkDevices(hashList, deviceLetter)
+    			registerUSBDevice(getNewDeviceID() , driveLetter);
+    			this.runningFlag = false;
     		}
     		
     		try 
@@ -115,7 +117,7 @@ public class USBDetectionThread extends Thread{
                     									+ "" 
                     									+ ((device_descriptor.idVendor() < 0)? device_descriptor.idVendor() * (-2) : device_descriptor.idVendor()));
                     									*/
-                    
+                    //TODO do that shit ^ by speratly feeding them into the update function of the messagedigest update function
                     arrayIndex ++;
 
                 }
@@ -181,5 +183,31 @@ public class USBDetectionThread extends Thread{
 		 
 			foundDrive[i] = externalDrives[i].canRead();
 		}
+	}
+	
+	private void registerUSBDevice(int foundDeviceId, String driveLetter)
+	{
+		//passes the task to the javafx main thread
+		Platform.runLater(new Runnable() {
+		    @Override
+		    public void run() {
+		        callBackEditor.registerUSBDrive(foundDeviceId, driveLetter);
+		    }
+		});
+	}
+	
+    /**
+	 * @return the runningFlag
+	 */
+	public boolean isRunning() {
+		return runningFlag;
+	}
+
+
+	/**
+	 * @param runningFlag the runningFlag to set
+	 */
+	public void setRunning(boolean runningFlag) {
+		this.runningFlag = runningFlag;
 	}
 }

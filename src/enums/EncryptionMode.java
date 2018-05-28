@@ -1,7 +1,7 @@
 package enums;
 
 public enum EncryptionMode {
-ECB, CBC, CTS, CTR, OFB, CFB, CFB8;
+ECB, CBC, CTS, CTR, OFB, CFB, CFB8, GCM;
 
 	/**
 	 * Returns if the Mode uses an IV
@@ -11,7 +11,8 @@ ECB, CBC, CTS, CTR, OFB, CFB, CFB8;
 	{
 		if(this == EncryptionMode.CTR || this == EncryptionMode.CBC 
 		|| this == EncryptionMode.CTS || this == EncryptionMode.OFB 
-		|| this == EncryptionMode.CFB || this == EncryptionMode.CFB8)
+		|| this == EncryptionMode.CFB || this == EncryptionMode.CFB8
+		|| this == EncryptionMode.GCM)
 		{
 			return true;
 		}

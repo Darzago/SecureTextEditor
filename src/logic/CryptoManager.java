@@ -116,7 +116,9 @@ public class CryptoManager {
 		{
 			MessageDigest hash = MessageDigest.getInstance(fileData.getHashFunction().toString(), "BC");
 			hash.update(input);
-			if(!Arrays.equals(Base64.getDecoder().decode(fileData.getHashValue()) , hash.digest()))
+			
+			//Compare the two hashes using a message digest helper function
+			if(!MessageDigest.isEqual(Base64.getDecoder().decode(fileData.getHashValue()) , hash.digest()))
 			{
 				throw new Exception("File has been altered!");
 			}
