@@ -64,9 +64,8 @@ public class JavaFxMainClass extends Application{
 		//Menu for encryption options
 		Menu encryptionMenu = new Menu("Encryption");
 			MenuItem encryptionsItem = new MenuItem("Options");
-			MenuItem configItem = new MenuItem("Config");
 			MenuItem registerUsbItem = new MenuItem("Register USB drive");
-		encryptionMenu.getItems().addAll(encryptionsItem, configItem, registerUsbItem);
+		encryptionMenu.getItems().addAll(encryptionsItem, registerUsbItem);
 		
 		//Adds all menu items to the "file" menu
 		menuBar.getMenus().addAll(fileMenu, encryptionMenu);
@@ -134,34 +133,14 @@ public class JavaFxMainClass extends Application{
 		encryptionButtonsBox.setPadding(new Insets(10, 10, 10, 10));
 		encryptionButtonsBox.setHgap(10);
 		encryptionButtonsBox.setAlignment(Pos.CENTER_RIGHT);
-		
-		editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown);
-		
-		//Sets the general layout of the scene
-		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);
-        layoutMainWindow.setFillWidth(true);
-		Scene mainWindow = new Scene(layoutMainWindow, 600, 400);
-
-//Config Stage ---------------------------------------------------------------------
-		Stage configStage = new Stage();
-		
-		GridPane configLayout = new GridPane();
-		configLayout.setAlignment(Pos.CENTER);
-		configLayout.setHgap(15);
-		configLayout.setVgap(3);
-		configLayout.setGridLinesVisible(true);
-		
-		Scene configWindow = new Scene(configLayout, 450, 180);
-		configStage.setScene(configWindow);
-		configStage.setTitle("Encryption Config");
-		configStage.getIcons().add(new Image("gear-256.png"));
-		
+				
 		
 //USB Registration Stage ---------------------------------------------------------------------
 		Stage usbRegistrationStage = new Stage();
 		
 		GridPane usbRegistrationLayout = new GridPane();
-		usbRegistrationLayout.add(new Text("Plug in the usb stick to register"), 0, 0);
+		Text usbText = new Text("Plug in the usb stick to register");
+		usbRegistrationLayout.add(usbText, 0, 0);
 		usbRegistrationLayout.setAlignment(Pos.CENTER);
 		usbRegistrationLayout.setHgap(15);
 		usbRegistrationLayout.setVgap(3);
@@ -171,8 +150,15 @@ public class JavaFxMainClass extends Application{
 		usbRegistrationStage.setTitle("Adding a new USB drive");
 		usbRegistrationStage.getIcons().add(new Image("gear-256.png"));
 		
+//Main Stage	 ---------------------------------------------------------------------------------------		
 		
-				
+		editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown, usbText);
+		
+		//Sets the general layout of the scene
+		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);
+        layoutMainWindow.setFillWidth(true);
+		Scene mainWindow = new Scene(layoutMainWindow, 600, 400);
+		
 //Event Handler -----------------------------------------------------------------------------------------------
 		
 		registerUsbItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -227,13 +213,6 @@ public class JavaFxMainClass extends Application{
             }
         });
 		
-		configItem.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-            	configLayout.getChildren().clear();
-            	editor.writeListInGrid(configLayout);
-            	configStage.show();
-            }
-        });
 
 		closeButton.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {

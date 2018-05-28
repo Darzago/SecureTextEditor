@@ -1,8 +1,15 @@
 package logic;
 import java.io.File;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import enums.EncryptionMode;
 import enums.EncryptionType;
@@ -48,7 +55,6 @@ public class TextEditor extends TextArea{
 	private boolean textHasChanged = false;
 	
 	//List of all currently known metadata
-	List<MetaData> dataList = new ArrayList<MetaData>();
 	List<USBMetaData> usbDataList = new ArrayList<USBMetaData>();
 	
 	//Metadata of the file the editor currently edits
@@ -61,6 +67,8 @@ public class TextEditor extends TextArea{
 	private ComboBox<EncryptionType> encryptionTypeBox;
 	private ComboBox<EncryptionMode> encryptionModeBox;
 	private ComboBox<HashFunction> hashFunctionModeBox;
+	
+	Text usbRegistrationText;
 	
 	/**
 	 * Displays a new window if the current file has been changed but not saved, otherwise opens the new file
@@ -78,51 +86,6 @@ public class TextEditor extends TextArea{
 		{
 			newFile();
 		}
-	}
-	
-	/**
-	 * Writes metadata in a Gridpane to make it readable to the user
-	 * @param pane Gridpane to write metadata
-	 */
-	public void writeListInGrid(GridPane pane)
-	{
-		Text nameText = new Text("Name:");
-		nameText.setUnderline(true);
-		pane.add(nameText, 0, 0);
-		
-		Text typeText = new Text("Type:");
-		typeText.setUnderline(true);
-		pane.add(typeText, 1, 0);
-		
-		Text modeText = new Text("Mode:");
-		modeText.setUnderline(true);
-		pane.add(modeText, 2, 0);
-		
-		Text paddingText = new Text("Padding:");
-		paddingText.setUnderline(true);
-		pane.add(paddingText, 3, 0);
-				
-		int i = 1;
-		
-		List<MetaData> currentlyPersistentList;
-		try {
-			currentlyPersistentList = FileManager.loadConfig();
-			
-			for(MetaData data : currentlyPersistentList)
-			{
-				pane.add(new Text(data.getFilePath()), 0, i);
-				pane.add(new Text(data.getEncryptionType().toString()), 1, i);
-				pane.add(new Text(data.getEncryptionMode().toString()), 2, i);
-				pane.add(new Text(data.getPaddingType().toString()), 3, i);
-				i++;
-			}
-			
-		} 
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-
 	}
 	
 	/**
@@ -169,7 +132,7 @@ public class TextEditor extends TextArea{
         		
         		this.documentOrigin = openFileName;
         		
-        		findAndOpenFileData(fileToOpen);
+        		loadMetaData(fileToOpen);
         		
 				this.setText(FileManager.openFileFromPath(openFileName, currentFileData));
 				
@@ -188,51 +151,46 @@ public class TextEditor extends TextArea{
 	 * Searches the known metadata for an input file and loads its information into the editor
 	 * @param file
 	 */
-	private void findAndOpenFileData(File file)
+	private void loadMetaData(File file)
 	{
-		boolean fileFound = false;
 		
 		try {
-			dataList = FileManager.loadConfig();
-		} 
-		catch (Exception e1) 
+			UserDefinedFileAttributeView view = Files.getFileAttributeView(file.toPath(), UserDefinedFileAttributeView.class);
+			System.out.println(view.list());
+			
+			//Yay
+			System.out.println(new String((byte[])Files.getAttribute(file.toPath(), "user:Type")));
+			
+			MetaData openedData = new MetaData();
+			openedData.setEncryptionType(EncryptionType.valueOf(getAttributeAsString(file, "user:Type")));
+			openedData.setEncryptionMode(EncryptionMode.valueOf(getAttributeAsString(file, "user:Mode")));
+			openedData.setPaddingType(PaddingType.valueOf(getAttributeAsString(file, "user:Padding")));
+			openedData.setHashFunction(HashFunction.valueOf(getAttributeAsString(file, "user:HashF")));
+			openedData.setHashValue(new String((byte[])Files.getAttribute(file.toPath(), "user:Hash")));
+			System.out.println(openedData.getHashValue());
+			openedData.setiV(getAttributeAsString(file, "user:IV"));
+			currentFileData = openedData;
+			updateOutput(currentFileData);
+			
+		}
+		catch (Exception e) 
 		{
-			e1.printStackTrace();
+			e.printStackTrace();
 		}
 		
-		Iterator<MetaData> iterator = dataList.iterator();
-		while (iterator.hasNext())
-		{
-	         MetaData currentlyViewedData = iterator.next();
-
-	         if(currentlyViewedData.getFilePath().equals(file.getName()))
-				{
-	        	 	fileFound = true;
-					System.out.println("Datei erkannt!");
-					
-					this.currentFileData = currentlyViewedData;
-					
-					this.encryptionTypeBox.setValue(currentlyViewedData.getEncryptionType());
-					this.encryptionModeBox.setValue(currentlyViewedData.getEncryptionMode());
-					this.paddingTypeBox.setValue(currentlyViewedData.getPaddingType());
-					this.hashFunctionModeBox.setValue(currentlyViewedData.getHashFunction());
-				}
-			}
-		
-		if(!fileFound)
-		{
-			try 
-			{
-				MetaData newFileData = new MetaData(paddingTypeBox.getValue(), encryptionTypeBox.getValue(), encryptionModeBox.getValue(), hashFunctionModeBox.getValue(), "", file.getName());
-				this.currentFileData = newFileData;
-				dataList.add(newFileData);
-			} 
-			catch (Exception e) 
-			{
-				showError(e);
-				e.printStackTrace();
-			}
-		}
+	}
+	
+	private void updateOutput(MetaData metadata)
+	{
+		this.encryptionTypeBox.setValue(metadata.getEncryptionType());
+		this.encryptionModeBox.setValue(metadata.getEncryptionMode());
+		this.paddingTypeBox.setValue(metadata.getPaddingType());
+		this.hashFunctionModeBox.setValue(metadata.getHashFunction());
+	}
+	
+	private String getAttributeAsString(File file, String attributeName) throws IOException
+	{
+		return (new String((byte[])Files.getAttribute(file.toPath(), attributeName)));
 	}
 	
 	/**
@@ -256,11 +214,7 @@ public class TextEditor extends TextArea{
 				changeFileOrigin(fileToSave);
 				
 				FileManager.saveFileInPath(fileToSave, this.getText(), 	currentFileData);
-				
-				updateFileData();
-				
-				FileManager.writeConfig(dataList);
-				
+
 				myStage.setTitle(documentName);
 				
 				updateTitle(fileToSave.getName());
@@ -269,33 +223,6 @@ public class TextEditor extends TextArea{
 				showError(e);
 				e.printStackTrace();
 			}
-		}
-	}
-	
-	/**
-	 * Updates the metadata of the file currently being edited (in the list of metadata)
-	 */
-	private void updateFileData()
-	{
-		try 
-		{
-			Iterator<MetaData> iterator = dataList.iterator();
-			while (iterator.hasNext()){
-
-		         MetaData currentlyViewedData = iterator.next();
-
-		         if(currentlyViewedData.getFilePath().equals(currentFileData.getFilePath()))
-					{
-						iterator.remove();
-					}
-				}
-			dataList.add(currentFileData);
-			FileManager.writeConfig(dataList);
-		} 
-		catch (Exception e) 
-		{
-			showError(e);
-			e.printStackTrace();
 		}
 	}
 	
@@ -311,11 +238,7 @@ public class TextEditor extends TextArea{
 			try 
 			{
 				FileManager.saveFileInPath(fileToWrite, this.getText(), currentFileData);
-				
-				updateFileData();
-				
-				FileManager.writeConfig(dataList);
-				
+
 				myStage.setTitle(documentName);
 				
 				updateTitle(fileToWrite.getName());
@@ -362,7 +285,8 @@ public class TextEditor extends TextArea{
 		{
 			if(currentData.getHash() ==  foundDeviceId)
 			{
-				//TODO Change text to 'Usb drive has already been registered.'
+				foundData = currentData;
+				usbRegistrationText.setText("Usb drive has already been registered.");
 			}
 		}
 		
@@ -377,6 +301,7 @@ public class TextEditor extends TextArea{
 			{
 				showError(e);
 			}
+			usbRegistrationText.setText("USB Stick Nr: " + foundDeviceId + " has been registered");
 		}
 	}
 	
@@ -388,7 +313,7 @@ public class TextEditor extends TextArea{
 	 * @param _selectedMode currently selected {@link EncryptionMode}
 	 * @param _selectedPadding currently selected {@link PaddingType}
 	 */
-	public TextEditor(Stage _myStage, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown)
+	public TextEditor(Stage _myStage, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown, Text usbRegistrationText)
 	{
 		this.myStage = _myStage;
 		updateTitle(defaultName);
@@ -397,6 +322,7 @@ public class TextEditor extends TextArea{
 		this.paddingTypeBox = paddingDropDown;
 		this.encryptionModeBox = encryptionModeDropDown;
 		this.hashFunctionModeBox = hashFunctionDropDown;
+		this.usbRegistrationText = usbRegistrationText;
 		
 		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), "",defaultName);
 		
@@ -455,12 +381,11 @@ public class TextEditor extends TextArea{
 		
 		try 
 		{
-			dataList = FileManager.loadConfig();
 			usbDataList = FileManager.loadUSBConfig();
 		} 
 		catch (Exception e) 
 		{
-			dataList = new ArrayList<MetaData>();
+			
 			showError(e);
 		}
 		

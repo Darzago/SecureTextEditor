@@ -9,11 +9,13 @@ TODO	---------------------------------------------------------------------------
 	XML
 		-Umstellung von XML auf im File gespeicherte Metadaten
 	HASHES
-		-hash generierung in eigene methode auslagern
-				--> Umschreiben der reihenfolgen/anweisungen in den en & decrypt funktionen
+		-Hash charset problem bei konvertierung aus den metadaten
+		
 	Verschlüsselungen
 		-RSA und passwort basierte Verschlüsselungen
 		-operation mode enum um zwischen passwort, symmetrisch und asymmetrisch unetrscheiden kann
+		-GCM funktioniert nicht mit DES
+			--> umstellen wenn auf einen anderen modus gewchselt wird
 		
 	SICHERHEITSLÜCKE
 		-angreifer kann einfach den drive namen in der config ändern und die keydatei auf seine festplatte schreiben
