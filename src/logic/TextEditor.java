@@ -54,7 +54,7 @@ public class TextEditor extends TextArea{
 	//Metadata of the file the editor currently edits
 	private MetaData currentFileData;
 	
-	USBDetectionThread detectionThread;
+	USBDetection detectionThread;
 	
 	//Dropdown Menus in the encryption option window
 	private ComboBox<PaddingType> paddingTypeBox;
@@ -346,7 +346,8 @@ public class TextEditor extends TextArea{
 			documentOrigin = newOrigin.getPath();
 			currentFileData.setFilePath(newOrigin.getName());
 		}
-	}	
+	}
+	
 	private void updateTitle(String _title)
 	{
 		this.documentName = _title;
@@ -504,7 +505,7 @@ public class TextEditor extends TextArea{
 	
 	public void startUSBDetection()
 	{
-		detectionThread = new USBDetectionThread(this);
+		detectionThread = new USBDetection(this);
 		detectionThread.start();
 	}
 	

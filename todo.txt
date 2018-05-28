@@ -5,6 +5,7 @@ TODO	---------------------------------------------------------------------------
 			--> schon bekannte USB Sticks können automatisch an den Hashwerten erkannt werden
 		-USB Stick registrierungs option, user anleitung, Abstecken dranstecken/Registrierungsmodus
 		-Passwort option für keyconfig.xml / Art der Passwortverschlüsselung auswählbar & in der config gespeichert
+		-Nur ein registrierter stick gleichzeitig angeschlossen sein
 	XML
 		-Umstellung von XML auf im File gespeicherte Metadaten
 	HASHES

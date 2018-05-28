@@ -11,7 +11,7 @@ import org.usb4java.LibUsbException;
 
 import javafx.application.Platform;
 
-public class USBDetectionThread extends Thread{
+public class USBDetection extends Thread{
 	
 	private String[] driveLetters ;
 	private File[] externalDrives ;
@@ -157,7 +157,7 @@ public class USBDetectionThread extends Thread{
     }
 	
 	
-	public USBDetectionThread(TextEditor _callbackEditor) {
+	public USBDetection(TextEditor _callbackEditor) {
 		driveLetters = new String[]{ "E", "F", "G", "H", "I" ,"J","K", "L","M", "N"};
 		externalDrives = new File[driveLetters.length];
 		foundDrive = new boolean[driveLetters.length];
