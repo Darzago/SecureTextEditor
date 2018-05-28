@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <STEDATA>
 <file>
-<encryption>AES</encryption>
-<encryptionMode>GCM</encryptionMode>
+<encryption>none</encryption>
+<encryptionMode>ECB</encryptionMode>
 <paddingType>NoPadding</paddingType>
 <filePath>halloTest.txt</filePath>
-<iV>5xQuRr7IE523BZPtak62Cw==</iV>
+<iV>null</iV>
 <hashFunction>SHA224</hashFunction>
-<hashValue>5F9F3yPa3gLpenLDAKYJ0Uf+A4ox/xcu/EbM6g==</hashValue>
+<hashValue>odDr0U67rMMA+2a23UR+YHOvjLMRZnr3EFbJ/g==</hashValue>
 </file>
 </STEDATA>

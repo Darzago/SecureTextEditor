@@ -40,55 +40,60 @@ public class CryptoManager {
 	 * TODO Currently hard coded keys
 	 */
 	public static byte[] encryptString(String input, MetaData fileData) throws Exception
-	{ 		
-		byte[] inputByteArray = input.getBytes();
+	{ 
+		byte[] output;
+		
+		if(fileData.getEncryptionType() != EncryptionType.none)
+		{
+			byte[] inputByteArray = input.getBytes();
+					
+			IvParameterSpec ivSpec;
+			
+			byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
+			
+			SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
+			
+			Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
+			
+			//If the iv has not been set, but one is needed, generate it
+			if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
+			{
+				byte[] ivArray = generateMatchingIV(fileData.getEncryptionType());
 				
-		IvParameterSpec ivSpec;
-		
-		byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
-		
-		if(keyToUse == null)
-			return input.getBytes();
-		
-		
-		
-		SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
-		
-		Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
-		
-		
-		if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
-		{
-			byte[] ivArray = getMatchingIV(fileData.getEncryptionType());
+				fileData.setiV(Base64.getEncoder().encodeToString(ivArray));
+				
+				ivSpec = new IvParameterSpec(ivArray);
+				cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
+			}
+			else if(fileData.getEncryptionMode().usesIV())
+			{
+				ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
+				cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
+			}
+			else
+			{
+				cipher.init(Cipher.ENCRYPT_MODE, key);
+			}
 			
-			fileData.setiV(Base64.getEncoder().encodeToString(ivArray));
+			output = new byte[cipher.getOutputSize(inputByteArray.length)];
 			
-			ivSpec = new IvParameterSpec(ivArray);
-			cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
-		}
-		else if(fileData.getEncryptionMode().usesIV())
-		{
-			ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
-			cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
+			int ctLength = cipher.update(inputByteArray, 0, inputByteArray.length, output, 0);
+			
+			ctLength += cipher.doFinal(output, ctLength);
 		}
 		else
 		{
-			cipher.init(Cipher.ENCRYPT_MODE, key);
+			output = input.getBytes();
 		}
-		
-		byte[] cipherText = new byte[cipher.getOutputSize(inputByteArray.length)];
-		
-		int ctLength = cipher.update(inputByteArray, 0, inputByteArray.length, cipherText, 0);
-		
-		ctLength += cipher.doFinal(cipherText, ctLength);
 		
 		if(fileData.getHashFunction() != HashFunction.NONE)
 		{
 			MessageDigest hash = MessageDigest.getInstance(fileData.getHashFunction().toString(), "BC");
-			hash.update(cipherText);
+			hash.update(output);
 			fileData.setHashValue(Base64.getEncoder().encodeToString(hash.digest()));
 		}
-		return cipherText;
+		
+		return input.getBytes();
 	}
 	
 	/**
@@ -105,12 +110,7 @@ public class CryptoManager {
 	 */
 	public static String decryptString(byte[] input, MetaData fileData) throws Exception
 	{
-		byte[] inputByteArray = input;
-		IvParameterSpec ivSpec;
-		byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
-	
-		if(keyToUse == null)
-			return new String(input, "UTF-8");
+		byte[] plainText;
 		
 		if(fileData.getHashFunction() != HashFunction.NONE)
 		{
@@ -124,31 +124,41 @@ public class CryptoManager {
 			}
 		}
 		
-		SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
-		
-		Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
-		
-		if(fileData.getEncryptionMode().usesIV() && !fileData.getiV().equals("null"))
+		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
-			ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
-			cipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
-		}
-		else if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
-		{
-			throw new Exception("IV WAS NOT SET");
+			IvParameterSpec ivSpec;
+			byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
+			
+			SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
+			
+			Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
+			
+			if(fileData.getEncryptionMode().usesIV() && !fileData.getiV().equals("null"))
+			{
+				ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
+				cipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
+			}
+			else if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
+			{
+				throw new Exception("IV WAS NOT SET");
+			}
+			else
+			{
+				cipher.init(Cipher.DECRYPT_MODE, key);
+			}
+			
+			plainText = new byte[cipher.getOutputSize(input.length)];
+			
+			int ctLength = cipher.update(input, 0, input.length, plainText, 0);
+			
+			ctLength += cipher.doFinal(plainText, ctLength);
 		}
 		else
 		{
-			cipher.init(Cipher.DECRYPT_MODE, key);
+			plainText = input;
 		}
 		
-		byte[] cipherText = new byte[cipher.getOutputSize(inputByteArray.length)];
-		
-		int ctLength = cipher.update(inputByteArray, 0, inputByteArray.length, cipherText, 0);
-		
-		ctLength += cipher.doFinal(cipherText, ctLength);
-		
-		return new String(cipherText, "UTF-8");
+		return new String(plainText, "UTF-8");
 	}
 	
 	/**
@@ -175,7 +185,7 @@ public class CryptoManager {
 	 * @param encryption encryption to be used
 	 * @return iv 
 	 */
-	private static byte[] getMatchingIV(EncryptionType encryption)
+	private static byte[] generateMatchingIV(EncryptionType encryption)
 	{
 		switch(encryption)
 		{

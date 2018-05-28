@@ -13,7 +13,6 @@ TODO	---------------------------------------------------------------------------
 				--> Umschreiben der reihenfolgen/anweisungen in den en & decrypt funktionen
 	Verschlüsselungen
 		-RSA und passwort basierte Verschlüsselungen
-		
 		-operation mode enum um zwischen passwort, symmetrisch und asymmetrisch unetrscheiden kann
 			
 DONE	-----------------------------------------------------------------------------------------------------------------

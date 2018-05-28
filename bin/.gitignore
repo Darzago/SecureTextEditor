@@ -1,8 +1,5 @@
-*.class
-/bin/
-/Enums/
-/enums/
-/logic/
-/persistence/
 /tests/
 /view/
+/logic/
+/enums/
+/persistence/
