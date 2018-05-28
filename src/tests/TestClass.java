@@ -1,9 +1,15 @@
 package tests;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.util.Base64;
+import java.util.Map;
 
 import enums.HashFunction;
+import logic.CryptoManager;
 
 public class TestClass {
 
@@ -13,12 +19,30 @@ public class TestClass {
 			
 			String toHash = "Pödödel";
 			
-			MessageDigest hash = MessageDigest.getInstance(HashFunction.SHA1.toString(), "BC");
-			hash.update(toHash.getBytes());
-			System.out.println(Base64.getEncoder().encodeToString(hash.digest()));
+			File testFile = new File("TEST.txt");
 			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			//create an object of FileOutputStream
+			FileOutputStream fos = new FileOutputStream(testFile);
+			
+			String penner = "penner";
+			
+			Files.setAttribute(testFile.toPath(), "user:penner", penner.getBytes());
+			
+			//create an object of BufferedOutputStream
+			BufferedOutputStream bos = new BufferedOutputStream(fos);
+			
+			bos.write(toHash.getBytes());
+			
+
+			Map<String, Object> attribs = Files.readAttributes(testFile.toPath(), "user:penner");
+			
+			System.out.println(new String((byte[])attribs.get("penner"), "utf-8"));
+			
+			bos.close();
+			
+		} 
+		catch (Exception e) 
+		{
 			e.printStackTrace();
 		}
 

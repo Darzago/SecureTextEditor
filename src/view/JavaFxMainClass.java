@@ -3,6 +3,7 @@ package view;
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
+import enums.OperationMode;
 import enums.PaddingType;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -76,6 +77,14 @@ public class JavaFxMainClass extends Application{
 		menuSaveItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
 		
 		//Label for the encryption dropdown
+		Label operationLabel = new Label("Operation Mode:  ");
+			ComboBox<OperationMode> operationDropDown = new ComboBox<OperationMode> ();
+			operationDropDown.setValue(OperationMode.Symmetric);
+			//TODO
+			operationDropDown.setDisable(true);
+		operationDropDown.getItems().addAll(OperationMode.values());
+		
+		//Label for the encryption dropdown
 		Label encryptionLabel = new Label("Encryption:  ");
 			ComboBox<EncryptionType> encryptionDropDown = new ComboBox<EncryptionType> ();
 			encryptionDropDown.setValue(EncryptionType.none);
@@ -98,18 +107,23 @@ public class JavaFxMainClass extends Application{
 			hashFunctionDropDown.setValue(HashFunction.NONE);
 		hashFunctionDropDown.getItems().addAll(HashFunction.values());
 		
+		
+		
 		//Adds all dropdown menus and labels to a GridPane
 		GridPane encryptionGridPane = new GridPane();
-		encryptionGridPane.add(encryptionLabel, 0, 0);
-		encryptionGridPane.add(encryptionDropDown, 0, 1);
-		encryptionGridPane.add(modeLabel, 1, 0);
-		encryptionGridPane.add(modeDropDown, 1, 1);
-		encryptionGridPane.add(paddingLabel, 2, 0);
-		encryptionGridPane.add(paddingDropDown, 2, 1);
-		encryptionGridPane.add(hashFunctionLabel, 3, 0);
-		encryptionGridPane.add(hashFunctionDropDown, 3, 1);
+		encryptionGridPane.add(operationLabel, 0, 0);
+		encryptionGridPane.add(operationDropDown, 0, 1);
+		encryptionGridPane.add(encryptionLabel, 0, 2);
+		encryptionGridPane.add(encryptionDropDown, 0, 3);
+		encryptionGridPane.add(modeLabel, 1, 2);
+		encryptionGridPane.add(modeDropDown, 1, 3);
+		encryptionGridPane.add(paddingLabel, 2, 2);
+		encryptionGridPane.add(paddingDropDown, 2, 3);
+		encryptionGridPane.add(hashFunctionLabel, 3, 2);
+		encryptionGridPane.add(hashFunctionDropDown, 3, 3);
 		
 		encryptionGridPane.setHgap(10);
+		encryptionGridPane.setVgap(5);
 		encryptionGridPane.setAlignment(Pos.CENTER);
 		encryptionGridPane.setPadding(new Insets(10, 0, 0, 0));
 		
@@ -229,7 +243,7 @@ public class JavaFxMainClass extends Application{
 		
 		VBox optionGeneralLayout = new VBox(encryptionGridPane, encryptionButtonsBox);
 		
-		Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 500, 130);
+		Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 550, 200);
 		encryptionOptionStage.setScene(encryptionOptionWindow);
 		encryptionOptionStage.setTitle("Encryption Options");
 		encryptionOptionStage.getIcons().add(new Image("gear-256.png"));

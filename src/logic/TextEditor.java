@@ -304,7 +304,8 @@ public class TextEditor extends TextArea{
 	{
 		if(documentOrigin != null)
 		{			
-			File fileToWrite = new File(documentOrigin); 
+			File fileToWrite = new File(documentOrigin);
+			
 			try 
 			{
 				FileManager.saveFileInPath(fileToWrite, this.getText(), currentFileData);
@@ -354,7 +355,7 @@ public class TextEditor extends TextArea{
 	//TODO
 	public void registerUSBDrive(int foundDeviceId, String driveLetter)
 	{
-		
+	
 	}
 	
 	/**

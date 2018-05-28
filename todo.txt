@@ -9,7 +9,6 @@ TODO	---------------------------------------------------------------------------
 		-Umstellung von XML auf im File gespeicherte Metadaten
 	HASHES
 		-hash generierung in eigene methode auslagern
-			--> soll auch bei keiner Verschlüsselung funktionieren!!
 				--> Umschreiben der reihenfolgen/anweisungen in den en & decrypt funktionen
 	Verschlüsselungen
 		-RSA und passwort basierte Verschlüsselungen
@@ -19,4 +18,5 @@ DONE	---------------------------------------------------------------------------
 		-Message Digest mit 5 Hash Arten
 			--> Abspeichern der Hashdaten und der Hashart
 		-Integrity Test beim laden einer Datei
-		--GCM verschlüsslungs modus funktioniert nur mit noPadding
+		--GCM verschlüsslungs modus funktioniert nur mit noPaddin
+		-integrity tests funktionieren auch bei 'none' verschlüsselung
