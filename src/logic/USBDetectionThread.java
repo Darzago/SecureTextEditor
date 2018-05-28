@@ -100,24 +100,11 @@ public class USBDetectionThread extends Thread{
                     result = LibUsb.getDeviceDescriptor(device, device_descriptor);
                     if(result != LibUsb.SUCCESS)throw new LibUsbException("Unable to get device descriptor : ",result);
                     
-                    System.out.println("Product id is : "+device_descriptor.idProduct()+" "+"Vendor id is : "+device_descriptor.idVendor());
+                    //System.out.println(device_descriptor.hashCode());
+                    //System.out.println("Product id is : "+device_descriptor.idProduct()+" "+"Vendor id is : "+device_descriptor.idVendor());
                     
-                    /*
-                     *	if( id < 0 )
-                     *{
-                     *	id = id * -2
-                     *} 
-                     */
-                     
-                    //is the variable cached if the '?' expression is used? 
-                    //TODO Hash that shit and btw that math is fockin BULLSHIT
-                    /*
-                    idList[arrayIndex] = Integer.parseInt(
-                    									((device_descriptor.idProduct() < 0)? device_descriptor.idProduct() * (-2) : device_descriptor.idProduct()) 
-                    									+ "" 
-                    									+ ((device_descriptor.idVendor() < 0)? device_descriptor.idVendor() * (-2) : device_descriptor.idVendor()));
-                    									*/
-                    //TODO do that shit ^ by speratly feeding them into the update function of the messagedigest update function
+                    //TODO secure?
+                    idList[arrayIndex] = device_descriptor.hashCode();
                     arrayIndex ++;
 
                 }
@@ -125,7 +112,6 @@ public class USBDetectionThread extends Thread{
             finally
             {
                 LibUsb.freeDeviceList(list, true);
-                
             }
             return idList;
     }
@@ -171,10 +157,11 @@ public class USBDetectionThread extends Thread{
     }
 	
 	
-	public USBDetectionThread() {
+	public USBDetectionThread(TextEditor _callbackEditor) {
 		driveLetters = new String[]{ "E", "F", "G", "H", "I" ,"J","K", "L","M", "N"};
 		externalDrives = new File[driveLetters.length];
 		foundDrive = new boolean[driveLetters.length];
+		this.callBackEditor = _callbackEditor;
 		
 		//init the inital drive state
 		for ( int i = 0; i < driveLetters.length; ++i )

@@ -9,6 +9,7 @@ import java.util.Base64;
 import java.util.Map;
 
 import enums.HashFunction;
+import enums.OperationMode;
 import logic.CryptoManager;
 
 public class TestClass {
@@ -33,8 +34,9 @@ public class TestClass {
 			
 			bos.write(toHash.getBytes());
 			
-
 			Map<String, Object> attribs = Files.readAttributes(testFile.toPath(), "user:penner");
+			
+			OperationMode[] testModes = OperationMode.values();
 			
 			System.out.println(new String((byte[])attribs.get("penner"), "utf-8"));
 			

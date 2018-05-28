@@ -40,6 +40,8 @@ public class FileManager {
 	
 	//Path of the config.xml file
 	private static final String configPath = "config.xml";
+	
+	private static final String usbConfigPath = "usbConfig.xml";
 
 	/**
 	 * Opens and decrypts a file from the given filepath using the given information
@@ -240,5 +242,104 @@ public class FileManager {
 	saxParser.parse(configPath, handler);
 		return dataList;
 	}
+	
+	/**
+	 * Write usb config data
+	 * @param dataList data to be written into a config
+	 */
+	public static void writeUSBConfig(List<USBMetaData> dataList) throws Exception
+	{
+		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+		Document config = docBuilder.newDocument();
+		
+		//Root element
+		Element rootElement = config.createElement("USBCONFIG");
+		config.appendChild(rootElement);
+		
+		for(USBMetaData filedata : dataList){
+			//options
+			Element fileElement = config.createElement("usbdrive");
+			rootElement.appendChild(fileElement);
+			
+			//drive letter
+			Element encryptionElement = config.createElement("driveLetter");
+			fileElement.appendChild(encryptionElement);
+			encryptionElement.appendChild(config.createTextNode(filedata.getDriveLetter() + ""));
+			
+			//hash
+			Element encryptionModeElement = config.createElement("hash");
+			encryptionModeElement.appendChild(config.createTextNode(filedata.getHash() + ""));
+			fileElement.appendChild(encryptionModeElement);
+		}
+		
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+		transformerFactory.setAttribute("indent-number", 2);
+		Transformer transformer = transformerFactory.newTransformer();
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		DOMSource source = new DOMSource(config);
+		StreamResult result = new StreamResult(new File(usbConfigPath));
+		transformer.transform(source, result);		
+	}
+	
+	/**
+	 * Loads a config.xml 
+	 * @param path Path of the .xml
+	 * @return List of the read data
+	 */	
+	public static List<USBMetaData> loadUSBConfig() throws Exception
+	{	
+		List<USBMetaData> dataList = new ArrayList<USBMetaData>();	
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		SAXParser saxParser = factory.newSAXParser();
+		
+		DefaultHandler handler = new DefaultHandler() 
+		{
+			
+			USBMetaData fileData;
+			
+			boolean bDriveLetter = false;
+			boolean bHash = false;
+			
+			public void startElement(String uri, String localName,String qName, Attributes attributes) throws SAXException 
+			{
+				
+				if (qName.equalsIgnoreCase("usbdrive")) 
+				{
+					fileData = new USBMetaData();
+				}
+				else if (qName.equalsIgnoreCase("driveletter")) {
+					bDriveLetter = true;
+				}
+				else if (qName.equalsIgnoreCase("hash")) {
+					bHash = true;
+				}
+			}
+			
+			public void endElement(String uri, String localName, String qName) throws SAXException 
+			{
+				if (qName.equalsIgnoreCase("usbdrive")) 
+				{
+					dataList.add(fileData);
+				}
+			}
+
+			public void characters(char ch[], int start, int length) throws SAXException 
+			{
+				if (bDriveLetter) {
+					fileData.setDriveLetter(new String(ch, start, length));
+					bDriveLetter = false;
+				}
+				if (bHash) {
+					fileData.setHash(Integer.parseInt(new String(ch, start, length)));
+					bHash = false;
+				}
+			}	
+		};
+		
+		saxParser.parse(usbConfigPath, handler);
+		return dataList;
+	}
+	
 	
 }

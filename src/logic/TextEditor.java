@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import persistence.MetaData;
+import persistence.USBMetaData;
 import persistence.FileManager;
 
 /**
@@ -47,7 +48,8 @@ public class TextEditor extends TextArea{
 	private boolean textHasChanged = false;
 	
 	//List of all currently known metadata
-	List<MetaData> dataList;
+	List<MetaData> dataList = new ArrayList<MetaData>();
+	List<USBMetaData> usbDataList = new ArrayList<USBMetaData>();
 	
 	//Metadata of the file the editor currently edits
 	private MetaData currentFileData;
@@ -352,10 +354,29 @@ public class TextEditor extends TextArea{
 		textHasChanged = false;
 	}
 	
-	//TODO
 	public void registerUSBDrive(int foundDeviceId, String driveLetter)
 	{
-	
+		USBMetaData foundData = null;
+		for(USBMetaData currentData : usbDataList)
+		{
+			if(currentData.getHash() ==  foundDeviceId)
+			{
+				//TODO Change text to 'Usb drive has already been registered.'
+			}
+		}
+		
+		if (foundData == null)
+		{
+			usbDataList.add(new USBMetaData(driveLetter, foundDeviceId));
+			try 
+			{
+				FileManager.writeUSBConfig(usbDataList);
+			} 
+			catch (Exception e) 
+			{
+				showError(e);
+			}
+		}
 	}
 	
 	/**
@@ -434,6 +455,7 @@ public class TextEditor extends TextArea{
 		try 
 		{
 			dataList = FileManager.loadConfig();
+			usbDataList = FileManager.loadUSBConfig();
 		} 
 		catch (Exception e) 
 		{
@@ -482,7 +504,7 @@ public class TextEditor extends TextArea{
 	
 	public void startUSBDetection()
 	{
-		detectionThread = new USBDetectionThread();
+		detectionThread = new USBDetectionThread(this);
 		detectionThread.start();
 	}
 	

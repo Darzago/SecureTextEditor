@@ -13,6 +13,9 @@ TODO	---------------------------------------------------------------------------
 	Verschlüsselungen
 		-RSA und passwort basierte Verschlüsselungen
 		-operation mode enum um zwischen passwort, symmetrisch und asymmetrisch unetrscheiden kann
+		
+	SICHERHEITSLÜCKE
+		-angreifer kann einfach den drive namen in der config ändern und die keydatei auf seine festplatte schreiben
 			
 DONE	-----------------------------------------------------------------------------------------------------------------
 		-Message Digest mit 5 Hash Arten

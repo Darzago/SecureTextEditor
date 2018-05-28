@@ -88,7 +88,7 @@ public class JavaFxMainClass extends Application{
 		Label encryptionLabel = new Label("Encryption:  ");
 			ComboBox<EncryptionType> encryptionDropDown = new ComboBox<EncryptionType> ();
 			encryptionDropDown.setValue(EncryptionType.none);
-		encryptionDropDown.getItems().addAll(EncryptionType.values());
+		encryptionDropDown.getItems().addAll(EncryptionType.getValuesByOperation(OperationMode.Symmetric));
 		
 		
 		Label modeLabel = new Label("Mode:  ");
