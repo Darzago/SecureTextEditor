@@ -1,21 +1,16 @@
 TODO	-----------------------------------------------------------------------------------------------------------------
+	-cleanup der verschlüsselungsmethoden
+	
 	USB Komponente
 		-speichern des usb hashes und keyfilepath innerhalb der Datei	
 		-USB Verzeichnis mit Hashwerten und Verzeichnisnamen usw
 			--> schon bekannte USB Sticks können automatisch an den Hashwerten erkannt werden
-		-USB Stick registrierungs option, user anleitung, Abstecken dranstecken/Registrierungsmodus
 		-Passwort option für keyconfig.xml / Art der Passwortverschlüsselung auswählbar & in der config gespeichert
 		-Nur ein registrierter stick gleichzeitig angeschlossen sein
-	XML
-		-Umstellung von XML auf im File gespeicherte Metadaten
-	HASHES
-		-Hash charset problem bei konvertierung aus den metadaten
-		
+	
 	Verschlüsselungen
 		-RSA und passwort basierte Verschlüsselungen
-		-operation mode enum um zwischen passwort, symmetrisch und asymmetrisch unetrscheiden kann
-		-GCM funktioniert nicht mit DES
-			--> umstellen wenn auf einen anderen modus gewchselt wird
+		-ARC4 siehe seite 68 (nur mit PBE's)
 		
 	SICHERHEITSLÜCKE
 		-angreifer kann einfach den drive namen in der config ändern und die keydatei auf seine festplatte schreiben
@@ -26,3 +21,7 @@ DONE	---------------------------------------------------------------------------
 		-Integrity Test beim laden einer Datei
 		--GCM verschlüsslungs modus funktioniert nur mit noPaddin
 		-integrity tests funktionieren auch bei 'none' verschlüsselung
+		-Umstellung von XML auf im File gespeicherte Metadaten
+		-GCM funktioniert nicht mit DES
+			--> umstellen wenn auf einen anderen modus gewechselt wird
+		-USB Stick registrierungs option, user anleitung, Abstecken dranstecken/Registrierungsmodus

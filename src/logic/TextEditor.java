@@ -1,15 +1,9 @@
 package logic;
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.ArrayList;
-import java.util.Base64;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import enums.EncryptionMode;
 import enums.EncryptionType;
@@ -24,7 +18,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -155,12 +148,6 @@ public class TextEditor extends TextArea{
 	{
 		
 		try {
-			UserDefinedFileAttributeView view = Files.getFileAttributeView(file.toPath(), UserDefinedFileAttributeView.class);
-			System.out.println(view.list());
-			
-			//Yay
-			System.out.println(new String((byte[])Files.getAttribute(file.toPath(), "user:Type")));
-			
 			MetaData openedData = new MetaData();
 			openedData.setEncryptionType(EncryptionType.valueOf(getAttributeAsString(file, "user:Type")));
 			openedData.setEncryptionMode(EncryptionMode.valueOf(getAttributeAsString(file, "user:Mode")));
@@ -324,6 +311,7 @@ public class TextEditor extends TextArea{
 		this.hashFunctionModeBox = hashFunctionDropDown;
 		this.usbRegistrationText = usbRegistrationText;
 		
+		
 		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), "",defaultName);
 		
 		//Disable those 2 dropdown menus since the (at start) selected encryption is 'none'
@@ -344,6 +332,18 @@ public class TextEditor extends TextArea{
             	{
             		paddingDropDown.setDisable(false);
             		encryptionModeDropDown.setDisable(false);
+            	}
+            	
+            	if(encryptionDropDown.getValue() == EncryptionType.DES)
+            	{
+            		encryptionModeDropDown.getItems().remove(EncryptionMode.GCM);
+            	}
+            	else
+            	{
+            		if(!encryptionModeDropDown.getItems().contains(EncryptionMode.GCM))
+            		{
+            			encryptionModeDropDown.getItems().add(EncryptionMode.GCM);
+            		}
             	}
             }
         });

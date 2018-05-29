@@ -1,13 +1,16 @@
 package logic;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
 import persistence.MetaData;
@@ -30,6 +33,34 @@ public class CryptoManager {
             0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
             0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17 };
     
+    
+    /**
+     * Generates a cipherobject
+     * @param mode ENCRYPT/DECRYPT
+     * @param fileData metadata that contains needed information
+     * @param key key to be used
+     * @param ivSpec iv to be used
+     * @return generated cipher
+     * @throws Exception
+     */
+    private static Cipher generateCipher(int mode, MetaData fileData, SecretKeySpec key, IvParameterSpec ivSpec) throws Exception
+    {
+    	//TODO if operationmode == symmetrical
+
+		Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
+		
+		if(ivSpec != null)
+		{
+			cipher.init(mode, key, ivSpec);
+		}
+		else
+		{
+			cipher.init(mode, key);
+		}
+		
+		return cipher;
+    }
+    
 	/**
 	 * Encrypts a given string with the desired encryption, encryption mode and padding type 
 	 * @param input String to be encrypted
@@ -45,56 +76,76 @@ public class CryptoManager {
 		
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
-			byte[] inputByteArray = input.getBytes();
-					
-			IvParameterSpec ivSpec;
-			
 			byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
-			
 			SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
 			
-			Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
+			IvParameterSpec iv = getIvIfNeeded(fileData);
 			
-			//If the iv has not been set, but one is needed, generate it
-			if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
-			{
-				byte[] ivArray = generateMatchingIV(fileData.getEncryptionType());
-				
-				fileData.setiV(Base64.getEncoder().encodeToString(ivArray));
-				
-				ivSpec = new IvParameterSpec(ivArray);
-				cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
-			}
-			else if(fileData.getEncryptionMode().usesIV())
-			{
-				ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
-				cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
-			}
-			else
-			{
-				cipher.init(Cipher.ENCRYPT_MODE, key);
-			}
+			Cipher cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, key, iv);
 			
-			output = new byte[cipher.getOutputSize(inputByteArray.length)];
-			
-			int ctLength = cipher.update(inputByteArray, 0, inputByteArray.length, output, 0);
-			
-			ctLength += cipher.doFinal(output, ctLength);
+			output = applyCipher(cipher, input.getBytes());
 		}
 		else
 		{
 			output = input.getBytes();
 		}
 		
-		if(fileData.getHashFunction() != HashFunction.NONE)
-		{
-			MessageDigest hash = MessageDigest.getInstance(fileData.getHashFunction().toString(), "BC");
-			hash.update(output);
-		
-			fileData.setHashValue(Base64.getEncoder().encodeToString(hash.digest()));
-		}
+		fileData.setHashValue(generateHash(fileData.getHashFunction(), output));
 		
 		return output;
+	}
+	
+	/**
+	 * Generates a hash of the desired hashfunction
+	 * @param hashFunction Hashfunction to be applied
+	 * @param input input to be hashed
+	 * @return hash
+	 * @throws Exception
+	 */
+	private static String generateHash(HashFunction hashFunction, byte[] input) throws Exception
+	{
+		if(hashFunction != HashFunction.NONE)
+		{
+			MessageDigest hash = MessageDigest.getInstance(hashFunction.toString(), "BC");
+			hash.update(input);
+		
+			return Base64.getEncoder().encodeToString(hash.digest());
+		}
+		return null;
+	}
+	
+	/**
+	 * Applys the given cipher to a given input and returns it
+	 * @param cipher Cipher to apply
+	 * @param input input to cipher
+	 * @return ciphered output
+	 * @throws Exception
+	 */
+	private static byte[] applyCipher(Cipher cipher, byte[] input) throws Exception
+	{
+		byte [] output = new byte[cipher.getOutputSize(input.length)];
+		
+		int ctLength = cipher.update(input, 0, input.length, output, 0);
+		
+		ctLength += cipher.doFinal(output, ctLength);
+		
+		return output;
+	}
+	
+	
+	private static void validateHash(HashFunction hashFunction, byte[] input, String readHash) throws Exception
+	{
+		if(hashFunction != HashFunction.NONE)
+		{
+			MessageDigest hash = MessageDigest.getInstance(hashFunction.toString(), "BC");
+			hash.update(input);
+			
+			//Compare the two hashes using a message digest helper function
+			if(!MessageDigest.isEqual(Base64.getDecoder().decode(readHash) , hash.digest()))
+			{
+				throw new Exception("File has been altered REEEEEEEEEEEEEEEEEEE");
+			}
+		}
 	}
 	
 	/**
@@ -113,46 +164,28 @@ public class CryptoManager {
 	{
 		byte[] plainText;
 		
-		if(fileData.getHashFunction() != HashFunction.NONE)
-		{
-			MessageDigest hash = MessageDigest.getInstance(fileData.getHashFunction().toString(), "BC");
-			hash.update(input);
-			
-			//Compare the two hashes using a message digest helper function
-			if(!MessageDigest.isEqual(Base64.getDecoder().decode(fileData.getHashValue()) , hash.digest()))
-			{
-				throw new Exception("File has been altered REEEEEEEEEEEEEEEEEEE");
-			}
-		}
+		validateHash(fileData.getHashFunction(), input, fileData.getHashValue());
 		
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
-			IvParameterSpec ivSpec;
-			byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
+			IvParameterSpec ivSpec = null;
 			
+			byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
 			SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
 			
-			Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
-			
+			//TODO maybe clean it up into its own method?
 			if(fileData.getEncryptionMode().usesIV() && !fileData.getiV().equals("null"))
 			{
 				ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
-				cipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
 			}
 			else if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
 			{
 				throw new Exception("IV WAS NOT SET");
 			}
-			else
-			{
-				cipher.init(Cipher.DECRYPT_MODE, key);
-			}
-			
-			plainText = new byte[cipher.getOutputSize(input.length)];
-			
-			int ctLength = cipher.update(input, 0, input.length, plainText, 0);
-			
-			ctLength += cipher.doFinal(plainText, ctLength);
+
+			Cipher cipher = generateCipher(Cipher.DECRYPT_MODE, fileData, key, ivSpec);
+		
+			plainText = applyCipher(cipher, input);
 		}
 		else
 		{
@@ -215,6 +248,24 @@ public class CryptoManager {
 			return ivBytes;
 		}
 		return null;
+	}
+	
+	private static IvParameterSpec getIvIfNeeded(MetaData fileData)
+	{
+		IvParameterSpec ivSpec = null;
+		if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
+		{
+			byte[] ivArray = generateMatchingIV(fileData.getEncryptionType());
+			
+			fileData.setiV(Base64.getEncoder().encodeToString(ivArray));
+			
+			ivSpec = new IvParameterSpec(ivArray);
+		}
+		else if(fileData.getEncryptionMode().usesIV())
+		{
+			ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
+		}
+		return ivSpec;
 	}
 	
 }

@@ -25,10 +25,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import enums.EncryptionMode;
-import enums.EncryptionType;
-import enums.HashFunction;
-import enums.PaddingType;
 import logic.CryptoManager;
 
 /**
