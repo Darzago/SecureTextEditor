@@ -8,6 +8,7 @@ import java.util.Optional;
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
+import enums.OperationMode;
 import enums.PaddingType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -318,6 +319,8 @@ public class TextEditor extends TextArea{
 		paddingDropDown.setDisable(true);
 		encryptionModeDropDown.setDisable(true);
 		
+		
+		
 		encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	textHasChanged = true;
@@ -384,8 +387,7 @@ public class TextEditor extends TextArea{
 			usbDataList = FileManager.loadUSBConfig();
 		} 
 		catch (Exception e) 
-		{
-			
+		{	
 			showError(e);
 		}
 		

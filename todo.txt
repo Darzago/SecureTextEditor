@@ -1,5 +1,4 @@
 TODO	-----------------------------------------------------------------------------------------------------------------
-	-cleanup der verschlüsselungsmethoden
 	
 	USB Komponente
 		-speichern des usb hashes und keyfilepath innerhalb der Datei	
@@ -11,6 +10,7 @@ TODO	---------------------------------------------------------------------------
 	Verschlüsselungen
 		-RSA und passwort basierte Verschlüsselungen
 		-ARC4 siehe seite 68 (nur mit PBE's)
+		-Key generation
 		
 	SICHERHEITSLÜCKE
 		-angreifer kann einfach den drive namen in der config ändern und die keydatei auf seine festplatte schreiben
@@ -25,3 +25,4 @@ DONE	---------------------------------------------------------------------------
 		-GCM funktioniert nicht mit DES
 			--> umstellen wenn auf einen anderen modus gewechselt wird
 		-USB Stick registrierungs option, user anleitung, Abstecken dranstecken/Registrierungsmodus
+		-cleanup der verschlüsselungsmethoden

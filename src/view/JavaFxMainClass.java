@@ -3,6 +3,7 @@ package view;
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
+import enums.KeyLength;
 import enums.OperationMode;
 import enums.PaddingType;
 import javafx.application.Application;
@@ -17,7 +18,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -75,64 +78,81 @@ public class JavaFxMainClass extends Application{
 		menuOpenItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
 		menuSaveItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
 		
-		//Label for the encryption dropdown
-		Label operationLabel = new Label("Operation Mode:  ");
-			ComboBox<OperationMode> operationDropDown = new ComboBox<OperationMode> ();
-			operationDropDown.setValue(OperationMode.Symmetric);
-			//TODO
-			operationDropDown.setDisable(true);
-		operationDropDown.getItems().addAll(OperationMode.values());
+		//Options Menu	 ---------------------------------------------------------------------------------------
 		
-		//Label for the encryption dropdown
-		Label encryptionLabel = new Label("Encryption:  ");
-			ComboBox<EncryptionType> encryptionDropDown = new ComboBox<EncryptionType> ();
-			encryptionDropDown.setValue(EncryptionType.none);
-		encryptionDropDown.getItems().addAll(EncryptionType.getValuesByOperation(OperationMode.Symmetric));
-		
-		
-		Label modeLabel = new Label("Mode:  ");
-			ComboBox<EncryptionMode> modeDropDown = new ComboBox<EncryptionMode> ();
-			modeDropDown.setValue(EncryptionMode.ECB);
-		modeDropDown.getItems().addAll(EncryptionMode.values());
-		
-		
-		Label paddingLabel = new Label("Padding:  ");
-			ComboBox<PaddingType> paddingDropDown = new ComboBox<PaddingType> ();
-			paddingDropDown.getItems().addAll(PaddingType.values());
-		paddingDropDown.setValue(PaddingType.NoPadding);
-		
-		Label hashFunctionLabel = new Label("Hash Function:");
-			ComboBox<HashFunction> hashFunctionDropDown = new ComboBox<HashFunction> ();
-			hashFunctionDropDown.setValue(HashFunction.NONE);
-		hashFunctionDropDown.getItems().addAll(HashFunction.values());
-		
-		
-		
-		//Adds all dropdown menus and labels to a GridPane
-		GridPane encryptionGridPane = new GridPane();
-		encryptionGridPane.add(operationLabel, 0, 0);
-		encryptionGridPane.add(operationDropDown, 0, 1);
-		encryptionGridPane.add(encryptionLabel, 0, 2);
-		encryptionGridPane.add(encryptionDropDown, 0, 3);
-		encryptionGridPane.add(modeLabel, 1, 2);
-		encryptionGridPane.add(modeDropDown, 1, 3);
-		encryptionGridPane.add(paddingLabel, 2, 2);
-		encryptionGridPane.add(paddingDropDown, 2, 3);
-		encryptionGridPane.add(hashFunctionLabel, 3, 2);
-		encryptionGridPane.add(hashFunctionDropDown, 3, 3);
-		
-		encryptionGridPane.setHgap(10);
-		encryptionGridPane.setVgap(5);
-		encryptionGridPane.setAlignment(Pos.CENTER);
-		encryptionGridPane.setPadding(new Insets(10, 0, 0, 0));
-		
-		//Adds button(s) below the dropdown menus 
-		GridPane encryptionButtonsBox = new GridPane();
-			Button closeButton = new Button("Close");
-			encryptionButtonsBox.add(closeButton, 1, 0);
-		encryptionButtonsBox.setPadding(new Insets(10, 10, 10, 10));
-		encryptionButtonsBox.setHgap(10);
-		encryptionButtonsBox.setAlignment(Pos.CENTER_RIGHT);
+				//Label for the encryption dropdown
+						Label operationLabel = new Label("Operation Mode:  ");
+							ComboBox<OperationMode> operationDropDown = new ComboBox<OperationMode> ();
+							operationDropDown.setValue(OperationMode.Symmetric);
+						operationDropDown.getItems().addAll(OperationMode.values());
+						
+						//Label for the encryption dropdown
+						Label encryptionLabel = new Label("Encryption:  ");
+							ComboBox<EncryptionType> encryptionDropDown = new ComboBox<EncryptionType> ();
+							encryptionDropDown.setValue(EncryptionType.none);
+						encryptionDropDown.getItems().addAll(EncryptionType.getValuesByOperation(OperationMode.Symmetric));
+						
+						
+						Label modeLabel = new Label("Mode:  ");
+							ComboBox<EncryptionMode> modeDropDown = new ComboBox<EncryptionMode> ();
+							modeDropDown.setValue(EncryptionMode.ECB);
+						modeDropDown.getItems().addAll(EncryptionMode.values());
+						
+						
+						Label paddingLabel = new Label("Padding:  ");
+							ComboBox<PaddingType> paddingDropDown = new ComboBox<PaddingType> ();
+							paddingDropDown.getItems().addAll(PaddingType.values());
+						paddingDropDown.setValue(PaddingType.NoPadding);
+						
+						Label hashFunctionLabel = new Label("Hash Function:");
+							ComboBox<HashFunction> hashFunctionDropDown = new ComboBox<HashFunction> ();
+							hashFunctionDropDown.setValue(HashFunction.NONE);
+						hashFunctionDropDown.getItems().addAll(HashFunction.values());
+						
+						//Adds all dropdown menus and labels to a GridPane
+						GridPane encryptionGridPane = new GridPane();
+						encryptionGridPane.add(operationLabel, 0, 0);
+						encryptionGridPane.add(operationDropDown, 0, 1);
+						encryptionGridPane.add(encryptionLabel, 0, 2);
+						encryptionGridPane.add(encryptionDropDown, 0, 3);
+						encryptionGridPane.add(modeLabel, 1, 2);
+						encryptionGridPane.add(modeDropDown, 1, 3);
+						encryptionGridPane.add(paddingLabel, 2, 2);
+						encryptionGridPane.add(paddingDropDown, 2, 3);
+						encryptionGridPane.add(hashFunctionLabel, 3, 2);
+						encryptionGridPane.add(hashFunctionDropDown, 3, 3);
+						encryptionGridPane.setHgap(10);
+						encryptionGridPane.setVgap(5);
+						encryptionGridPane.setAlignment(Pos.TOP_LEFT);
+						encryptionGridPane.setPadding(new Insets(10, 10, 10, 10));
+						
+						Label keyLengthLabel = new Label("Key Length: ");
+							ComboBox<KeyLength> keyLengthDropDown = new ComboBox<KeyLength> ();
+							keyLengthDropDown.setValue(KeyLength.x1024);
+						keyLengthDropDown.getItems().addAll(KeyLength.values());
+						
+						Label passwordLabel = new Label("Password: ");
+						PasswordField  passwordArea = new PasswordField();
+						
+						//TODO Übergabe von keylengthdropdown, password field
+						
+						//TODO UMBAUEN DER haupt GRIDPANE JE NACH BLUB MANNN YAY LÖSUNG ENDLICH
+						
+						//Adds button(s) below the dropdown menus 
+						GridPane encryptionButtonsBox = new GridPane();
+							Button closeButton = new Button("Close");
+							encryptionButtonsBox.add(closeButton, 1, 0);
+						encryptionButtonsBox.setPadding(new Insets(10, 10, 10, 10));
+						encryptionButtonsBox.setHgap(10);
+						
+						encryptionButtonsBox.setAlignment(Pos.CENTER_RIGHT);
+				
+				VBox optionGeneralLayout = new VBox(encryptionGridPane, encryptionButtonsBox);
+				
+				Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 550, 200);
+				encryptionOptionStage.setScene(encryptionOptionWindow);
+				encryptionOptionStage.setTitle("Encryption Options");
+				encryptionOptionStage.getIcons().add(new Image("gear-256.png"));
 				
 		
 //USB Registration Stage ---------------------------------------------------------------------
@@ -158,6 +178,9 @@ public class JavaFxMainClass extends Application{
 		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);
         layoutMainWindow.setFillWidth(true);
 		Scene mainWindow = new Scene(layoutMainWindow, 600, 400);
+		
+
+
 		
 //Event Handler -----------------------------------------------------------------------------------------------
 		
@@ -220,18 +243,95 @@ public class JavaFxMainClass extends Application{
             }
         });
 		
-		VBox optionGeneralLayout = new VBox(encryptionGridPane, encryptionButtonsBox);
 		
-		Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 550, 200);
-		encryptionOptionStage.setScene(encryptionOptionWindow);
-		encryptionOptionStage.setTitle("Encryption Options");
-		encryptionOptionStage.getIcons().add(new Image("gear-256.png"));
+		operationDropDown.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	//Switch between several layout boxes
+            	switch(operationDropDown.getValue())
+            	{
+            	//TODO
+				case Asymmetric:
+					encryptionGridPane.getChildren().clear();
+
+					encryptionGridPane.add(operationLabel, 0, 0);
+					encryptionGridPane.add(operationDropDown, 0, 1);
+					encryptionGridPane.add(encryptionLabel, 0, 2);
+					encryptionGridPane.add(encryptionDropDown, 0, 3);
+					encryptionGridPane.add(keyLengthLabel, 1, 2);
+					encryptionGridPane.add(keyLengthDropDown, 1, 3);
+					
+					encryptionDropDown.getItems().clear();
+					encryptionDropDown.setValue(EncryptionType.RSA);
+					encryptionDropDown.getItems().addAll(EncryptionType.getValuesByOperation(OperationMode.Asymmetric));
+					
+					operationDropDown.hide();
+					encryptionDropDown.autosize();
+					break;
+				case Passwordbased:
+					encryptionGridPane.getChildren().clear();
+					
+					encryptionGridPane.add(operationLabel, 0, 0);
+					encryptionGridPane.add(operationDropDown, 0, 1);
+					encryptionGridPane.add(encryptionLabel, 0, 2);
+					encryptionGridPane.add(encryptionDropDown, 0, 3);
+					encryptionGridPane.add(passwordLabel, 1, 2);
+					encryptionGridPane.add(passwordArea, 1, 3);
+					
+					encryptionDropDown.getItems().clear();
+					encryptionDropDown.setValue(EncryptionType.PBEWithMD5AndDES);
+					encryptionDropDown.getItems().addAll(EncryptionType.getValuesByOperation(OperationMode.Passwordbased));
+					operationDropDown.hide();
+					encryptionDropDown.autosize();
+					
+					
+					break;
+				case Symmetric:
+					encryptionGridPane.getChildren().clear();
+					
+					encryptionGridPane.add(operationLabel, 0, 0);
+					encryptionGridPane.add(operationDropDown, 0, 1);
+					encryptionGridPane.add(encryptionLabel, 0, 2);
+					encryptionGridPane.add(encryptionDropDown, 0, 3);
+					encryptionGridPane.add(modeLabel, 1, 2);
+					encryptionGridPane.add(modeDropDown, 1, 3);
+					encryptionGridPane.add(paddingLabel, 2, 2);
+					encryptionGridPane.add(paddingDropDown, 2, 3);
+					encryptionGridPane.add(hashFunctionLabel, 3, 2);
+					encryptionGridPane.add(hashFunctionDropDown, 3, 3);
+					
+					encryptionDropDown.getItems().clear();
+					encryptionDropDown.setValue(EncryptionType.none);
+					encryptionDropDown.getItems().addAll(EncryptionType.getValuesByOperation(OperationMode.Symmetric));
+					
+					
+					//TODO still doesnt add the correct keylengths
+					keyLengthDropDown.fireEvent(new ActionEvent());
+					
+					//Fixes a bug that caused the combobox to become untargetable
+					operationDropDown.hide();
+					encryptionDropDown.autosize();
+
+					break;
+				default:
+					break;
+            	
+            	}
+            }
+        });
 		
+		//TODO doesent get called in the beginning
+		keyLengthDropDown.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	keyLengthDropDown.getItems().clear();
+            	keyLengthDropDown.setValue(KeyLength.getFittingKeyLength(encryptionDropDown.getValue())[0]);
+            	keyLengthDropDown.getItems().addAll(KeyLength.getFittingKeyLength(encryptionDropDown.getValue()));
+            }
+        });
 		
 		primaryStage.getIcons().add(new Image("Lock.png"));
 		primaryStage.setScene(mainWindow);
         primaryStage.show();
-		
+
 	}
 	
 }

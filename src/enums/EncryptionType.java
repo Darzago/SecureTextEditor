@@ -10,9 +10,9 @@ public enum EncryptionType {
 		case Asymmetric:
 			return new EncryptionType[]{RSA}; 
 		case Passwordbased:
-			return new EncryptionType[]{PBEWithSHAAnd128BitAES_CBC_BC, PBEWithMD5AndDES, PBEWithSHAAnd40BitRC4};
+			return new EncryptionType[]{PBEWithMD5AndDES, PBEWithSHAAnd40BitRC4, PBEWithSHAAnd128BitAES_CBC_BC};
 		case Symmetric:
-			return new EncryptionType[]{AES, DES, none};
+			return new EncryptionType[]{ none, AES, DES};
 		default:
 			return new EncryptionType[]{};
 		
