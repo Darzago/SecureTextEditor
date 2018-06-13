@@ -9,6 +9,10 @@ import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
+<<<<<<< HEAD
+=======
+import enums.OperationMode;
+>>>>>>> develop
 import enums.PaddingType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -382,6 +386,7 @@ public class TextEditor extends TextArea{
 		paddingDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	textHasChanged = true;
+            	System.out.println("Has been changed");
             	currentFileData.setPaddingType(paddingDropDown.getValue());
             }
         });
@@ -389,6 +394,7 @@ public class TextEditor extends TextArea{
 		hashFunctionDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	textHasChanged = true;
+            	System.out.println("Has been changed");
             	currentFileData.setHashFunction(hashFunctionDropDown.getValue());
             }
         });
@@ -396,6 +402,10 @@ public class TextEditor extends TextArea{
 		keylengthDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	textHasChanged = true;
+<<<<<<< HEAD
+=======
+            	System.out.println("Has been changed");
+>>>>>>> develop
             	currentFileData.setKeyLength(keyLengthBox.getValue());
             }
         });
