@@ -8,6 +8,7 @@ import java.util.Optional;
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
+import enums.KeyLength;
 import enums.OperationMode;
 import enums.PaddingType;
 import javafx.beans.value.ChangeListener;
@@ -61,6 +62,7 @@ public class TextEditor extends TextArea{
 	private ComboBox<EncryptionType> encryptionTypeBox;
 	private ComboBox<EncryptionMode> encryptionModeBox;
 	private ComboBox<HashFunction> hashFunctionModeBox;
+	private ComboBox<KeyLength> keyLengthBox;
 	
 	Text usbRegistrationText;
 	
@@ -155,6 +157,7 @@ public class TextEditor extends TextArea{
 			openedData.setPaddingType(PaddingType.valueOf(getAttributeAsString(file, "user:Padding")));
 			openedData.setHashFunction(HashFunction.valueOf(getAttributeAsString(file, "user:HashF")));
 			openedData.setHashValue(new String((byte[])Files.getAttribute(file.toPath(), "user:Hash")));
+			openedData.setKeyLength(KeyLength.valueOf(getAttributeAsString(file, "user:keyLength")));
 			System.out.println(openedData.getHashValue());
 			openedData.setiV(getAttributeAsString(file, "user:IV"));
 			currentFileData = openedData;
@@ -174,6 +177,7 @@ public class TextEditor extends TextArea{
 		this.encryptionModeBox.setValue(metadata.getEncryptionMode());
 		this.paddingTypeBox.setValue(metadata.getPaddingType());
 		this.hashFunctionModeBox.setValue(metadata.getHashFunction());
+		this.keyLengthBox.setValue(metadata.getKeyLength());
 	}
 	
 	private String getAttributeAsString(File file, String attributeName) throws IOException
@@ -301,7 +305,7 @@ public class TextEditor extends TextArea{
 	 * @param _selectedMode currently selected {@link EncryptionMode}
 	 * @param _selectedPadding currently selected {@link PaddingType}
 	 */
-	public TextEditor(Stage _myStage, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown, Text usbRegistrationText)
+	public TextEditor(Stage _myStage, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown, ComboBox<KeyLength> keylengthDropDown, Text usbRegistrationText)
 	{
 		this.myStage = _myStage;
 		updateTitle(defaultName);
@@ -311,14 +315,14 @@ public class TextEditor extends TextArea{
 		this.encryptionModeBox = encryptionModeDropDown;
 		this.hashFunctionModeBox = hashFunctionDropDown;
 		this.usbRegistrationText = usbRegistrationText;
+		this.keyLengthBox = keylengthDropDown;
 		
-		
-		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), "",defaultName);
+		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), keylengthDropDown.getValue(), "",defaultName);
 		
 		//Disable those 2 dropdown menus since the (at start) selected encryption is 'none'
 		paddingDropDown.setDisable(true);
 		encryptionModeDropDown.setDisable(true);
-		
+		//keyLengthBox.setDisable(true);
 		
 		
 		encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
@@ -326,15 +330,22 @@ public class TextEditor extends TextArea{
             	textHasChanged = true;
             	currentFileData.setEncryptionType(encryptionDropDown.getValue());
             	
+            	
+            	keyLengthBox.getItems().clear();
+            	keyLengthBox.getItems().addAll(KeyLength.getFittingKeyLength(encryptionDropDown.getValue()));
+            	keyLengthBox.setValue(KeyLength.getFittingKeyLength(encryptionDropDown.getValue())[0]);
+            	
             	if(encryptionDropDown.getValue() == EncryptionType.none)
             	{
             		paddingDropDown.setDisable(true);
             		encryptionModeDropDown.setDisable(true);
+            		keyLengthBox.setDisable(true);
             	}
             	else
             	{
             		paddingDropDown.setDisable(false);
             		encryptionModeDropDown.setDisable(false);
+            		keyLengthBox.setDisable(false);
             	}
             	
             	if(encryptionDropDown.getValue() == EncryptionType.DES)
@@ -372,13 +383,24 @@ public class TextEditor extends TextArea{
 		paddingDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	textHasChanged = true;
+            	System.out.println("Has been changed");
             	currentFileData.setPaddingType(paddingDropDown.getValue());
             }
         });
+		
 		hashFunctionDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	textHasChanged = true;
+            	System.out.println("Has been changed");
             	currentFileData.setHashFunction(hashFunctionDropDown.getValue());
+            }
+        });
+		
+		keylengthDropDown.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	textHasChanged = true;
+            	System.out.println("Has been changed");
+            	currentFileData.setKeyLength(keyLengthBox.getValue());
             }
         });
 		

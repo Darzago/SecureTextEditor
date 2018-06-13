@@ -77,10 +77,8 @@ public class CryptoManager {
 		
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
-			//byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
-			//key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
-			
-			key = generateKey(fileData.getEncryptionType(), KeyLength.x128);
+
+			key = generateKey(fileData.getEncryptionType(), fileData.getKeyLength());
 			
 			IvParameterSpec iv = getIvIfNeeded(fileData);
 			

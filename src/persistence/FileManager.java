@@ -65,15 +65,12 @@ public class FileManager {
 			//create an object of FileOutputStream
 			FileOutputStream fos = new FileOutputStream(path);
 			
-			
 			//Set the metadata of the file to be written
 			Files.setAttribute(path.toPath(), "user:Type", (fileData.getEncryptionType().toString() + "").getBytes() );
 			Files.setAttribute(path.toPath(), "user:Mode", (fileData.getEncryptionMode().toString()+ "").getBytes() );
 			Files.setAttribute(path.toPath(), "user:Padding", (fileData.getPaddingType().toString()+ "").getBytes() );
 			Files.setAttribute(path.toPath(), "user:HashF", (fileData.getHashFunction().toString()+ "").getBytes() );
-			
-			
-			
+			Files.setAttribute(path.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes() );
 			
 			//create an object of BufferedOutputStream
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
