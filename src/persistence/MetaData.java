@@ -2,6 +2,7 @@ package persistence;
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
+import enums.KeyLength;
 import enums.PaddingType;
 
 /**
@@ -15,9 +16,24 @@ public class MetaData {
 	EncryptionType encryptionType;
 	EncryptionMode encryptionMode;
 	HashFunction hashFunction;
+	KeyLength keyLength;
 	String hashValue;
 	String filePath;
 	String iV;
+	
+	/**
+	 * @return the keyLength
+	 */
+	public KeyLength getKeyLength() {
+		return keyLength;
+	}
+
+	/**
+	 * @param keyLength the keyLength to set
+	 */
+	public void setKeyLength(KeyLength keyLength) {
+		this.keyLength = keyLength;
+	}
 	
 	/**
 	 * @return the hashValue
@@ -120,7 +136,7 @@ public class MetaData {
 
 	public MetaData(){}
 	
-	public MetaData(PaddingType paddingType, EncryptionType encryptionType, EncryptionMode encryptionMode, HashFunction hashFunction, String hashValue, String filePath) 
+	public MetaData(PaddingType paddingType, EncryptionType encryptionType, EncryptionMode encryptionMode, HashFunction hashFunction, KeyLength keyLength, String hashValue, String filePath) 
 	{
 		this.paddingType = paddingType;
 		this.encryptionType = encryptionType;
@@ -128,6 +144,7 @@ public class MetaData {
 		this.filePath = filePath;
 		this.hashFunction = hashFunction;
 		this.hashValue = hashValue;
+		this.keyLength = keyLength;
 	}
 
 

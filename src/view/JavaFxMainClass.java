@@ -109,6 +109,11 @@ public class JavaFxMainClass extends Application{
 							hashFunctionDropDown.setValue(HashFunction.NONE);
 						hashFunctionDropDown.getItems().addAll(HashFunction.values());
 						
+						Label keyLengthLabel = new Label("Key Length:");
+							ComboBox<KeyLength> keyLengthDropDown = new ComboBox<KeyLength> ();
+							keyLengthDropDown.setValue(KeyLength.x0);
+						keyLengthDropDown.getItems().addAll(KeyLength.values());
+						
 						//Adds all dropdown menus and labels to a GridPane
 						GridPane encryptionGridPane = new GridPane();
 						encryptionGridPane.add(operationLabel, 0, 0);
@@ -121,15 +126,14 @@ public class JavaFxMainClass extends Application{
 						encryptionGridPane.add(paddingDropDown, 2, 3);
 						encryptionGridPane.add(hashFunctionLabel, 3, 2);
 						encryptionGridPane.add(hashFunctionDropDown, 3, 3);
+						encryptionGridPane.add(keyLengthLabel, 4, 2);
+						encryptionGridPane.add(keyLengthDropDown, 4, 3);
+						
 						encryptionGridPane.setHgap(10);
 						encryptionGridPane.setVgap(5);
 						encryptionGridPane.setAlignment(Pos.TOP_LEFT);
 						encryptionGridPane.setPadding(new Insets(10, 10, 10, 10));
 						
-						Label keyLengthLabel = new Label("Key Length: ");
-							ComboBox<KeyLength> keyLengthDropDown = new ComboBox<KeyLength> ();
-							keyLengthDropDown.setValue(KeyLength.x1024);
-						keyLengthDropDown.getItems().addAll(KeyLength.values());
 						
 						Label passwordLabel = new Label("Password: ");
 						PasswordField  passwordArea = new PasswordField();
@@ -172,7 +176,7 @@ public class JavaFxMainClass extends Application{
 		
 //Main Stage	 ---------------------------------------------------------------------------------------		
 		
-		editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown, usbText);
+		editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown, keyLengthDropDown, usbText);
 		
 		//Sets the general layout of the scene
 		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);
@@ -192,14 +196,13 @@ public class JavaFxMainClass extends Application{
 		
 		usbRegistrationStage.setOnShown(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent t) {
-            	System.out.println("Window is being shown");
             	editor.startUSBDetection();
             }
         });
 		
 		usbRegistrationStage.setOnHidden(new EventHandler<WindowEvent>() {
             public void handle(WindowEvent t) {
-            	System.out.println("Window is being Hidden");
+            	usbText.setText("Plug in the usb stick to register");
             	editor.stopUSBDetection();
             }
         });
@@ -249,7 +252,7 @@ public class JavaFxMainClass extends Application{
             	//Switch between several layout boxes
             	switch(operationDropDown.getValue())
             	{
-            	//TODO
+            	//TODO build functions
 				case Asymmetric:
 					encryptionGridPane.getChildren().clear();
 
@@ -316,16 +319,6 @@ public class JavaFxMainClass extends Application{
             }
         });
 		
-		//TODO doesent get called in the beginning
-		keyLengthDropDown.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-            	/*
-            	keyLengthDropDown.getItems().clear();
-            	keyLengthDropDown.setValue(KeyLength.getFittingKeyLength(encryptionDropDown.getValue())[0]);
-            	keyLengthDropDown.getItems().addAll(KeyLength.getFittingKeyLength(encryptionDropDown.getValue()));
-            	*/
-            }
-        });
 		
 		primaryStage.getIcons().add(new Image("Lock.png"));
 		primaryStage.setScene(mainWindow);

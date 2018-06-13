@@ -77,10 +77,8 @@ public class CryptoManager {
 		
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
-			//byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
-			//key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
-			
-			key = generateKey(fileData.getEncryptionType(), KeyLength.x128);
+
+			key = generateKey(fileData.getEncryptionType(), fileData.getKeyLength());
 			
 			IvParameterSpec iv = getIvIfNeeded(fileData);
 			
@@ -199,25 +197,6 @@ public class CryptoManager {
 		}
 		
 		return new String(plainText, "UTF-8");
-	}
-	
-	/**
-	 * Gets a key matching the fitting length depending on the encryption type
-	 * @param encryption encryption to be used
-	 * @return key 
-	 */
-	private static byte[] getMatchingKey(EncryptionType encryption)
-	{
-		switch(encryption)
-		{
-		case AES:
-			return hardAESKey;
-		case DES:
-			return hardDESKey;
-		case none:
-		default:
-		return null;
-		}
 	}
 	
 	//TODO private
