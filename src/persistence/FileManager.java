@@ -188,5 +188,40 @@ public class FileManager {
 		return dataList;
 	}
 	
+	//TODO
+	public static void saveKey(byte[] key, String hashValue) throws Exception
+	{
+		hashValue = removeSpecialChars(hashValue);
+		FileOutputStream fos = new FileOutputStream(hashValue + ".txt");
+		BufferedOutputStream bos = new BufferedOutputStream(fos);
+		bos.write(Base64.getEncoder().encode(key));
+		bos.close();
+	}
+	
+	private static String removeSpecialChars(String input)
+	{
+		input = input.replaceAll("/", "");
+		input = input.replaceAll("\\+", "");
+		input = input.replaceAll("=", "");
+		input = input.replaceAll("\\\\", "");
+		return input;
+	}
+	
+	//TODO
+	public static byte[] getKeyFromFile(String hashValue) throws Exception
+	{
+		hashValue = removeSpecialChars(hashValue);
+
+		File fileToOpen = new File(hashValue + ".txt");
+		
+		if(fileToOpen.exists())
+		{
+			return Base64.getDecoder().decode(Files.readAllBytes(fileToOpen.toPath()));
+		}
+		else
+		{
+			throw new Exception("Key File not found");
+		}
+	}
 	
 }

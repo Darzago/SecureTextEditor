@@ -8,7 +8,9 @@ import java.security.MessageDigest;
 import java.util.Base64;
 import java.util.Map;
 
+import enums.EncryptionType;
 import enums.HashFunction;
+import enums.KeyLength;
 import enums.OperationMode;
 import logic.CryptoManager;
 
@@ -18,29 +20,7 @@ public class TestClass {
 		
 		try {
 			
-			String toHash = "Pödödel";
-			
-			File testFile = new File("TEST.txt");
-			
-			//create an object of FileOutputStream
-			FileOutputStream fos = new FileOutputStream(testFile);
-			
-			String penner = "penner";
-			
-			Files.setAttribute(testFile.toPath(), "user:penner", penner.getBytes());
-			
-			//create an object of BufferedOutputStream
-			BufferedOutputStream bos = new BufferedOutputStream(fos);
-			
-			bos.write(toHash.getBytes());
-			
-			Map<String, Object> attribs = Files.readAttributes(testFile.toPath(), "user:penner");
-			
-			OperationMode[] testModes = OperationMode.values();
-			
-			System.out.println(new String((byte[])attribs.get("penner"), "utf-8"));
-			
-			bos.close();
+			CryptoManager.generateKey(EncryptionType.AES, KeyLength.x1024);
 			
 		} 
 		catch (Exception e) 

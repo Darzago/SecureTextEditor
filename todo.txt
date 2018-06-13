@@ -10,7 +10,10 @@ TODO	---------------------------------------------------------------------------
 	Verschlüsselungen
 		-RSA und passwort basierte Verschlüsselungen
 		-ARC4 siehe seite 68 (nur mit PBE's)
+		-Key längen auswahl fixen
 		-Key generation
+		-key speicherung
+			-->finden anhand der datei hashes
 		
 	SICHERHEITSLÜCKE
 		-angreifer kann einfach den drive namen in der config ändern und die keydatei auf seine festplatte schreiben

@@ -1,14 +1,18 @@
 package logic;
+import java.security.Key;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import enums.EncryptionType;
 import enums.HashFunction;
+import enums.KeyLength;
+import persistence.FileManager;
 import persistence.MetaData;
 
 /**
@@ -39,7 +43,7 @@ public class CryptoManager {
      * @return generated cipher
      * @throws Exception
      */
-    private static Cipher generateCipher(int mode, MetaData fileData, SecretKeySpec key, IvParameterSpec ivSpec) throws Exception
+    private static Cipher generateCipher(int mode, MetaData fileData, Key key, IvParameterSpec ivSpec) throws Exception
     {
     	//TODO if operationmode == symmetrical
 
@@ -69,17 +73,20 @@ public class CryptoManager {
 	public static byte[] encryptString(String input, MetaData fileData) throws Exception
 	{ 
 		byte[] output;
+		Key key = null;
 		
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
-			byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
-			SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
+			//byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
+			//key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
+			
+			key = generateKey(fileData.getEncryptionType(), KeyLength.x128);
 			
 			IvParameterSpec iv = getIvIfNeeded(fileData);
 			
 			Cipher cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, key, iv);
 			
-			output = applyCipher(cipher, input.getBytes());
+			output = applyCipher(cipher, input.getBytes()); 
 		}
 		else
 		{
@@ -87,6 +94,9 @@ public class CryptoManager {
 		}
 		
 		fileData.setHashValue(generateHash(fileData.getHashFunction(), output));
+		
+		if(key != null)
+			FileManager.saveKey(key.getEncoded(), fileData.getHashValue());
 		
 		return output;
 	}
@@ -166,10 +176,10 @@ public class CryptoManager {
 		{
 			IvParameterSpec ivSpec = null;
 			
-			byte[] keyToUse = getMatchingKey(fileData.getEncryptionType());
-			SecretKeySpec key = new SecretKeySpec(keyToUse, fileData.getEncryptionType().toString());
+			Key key = new SecretKeySpec(FileManager.getKeyFromFile(fileData.getHashValue()), fileData.getEncryptionType().toString());
 			
-			//TODO maybe clean it up into its own method?
+			//TODO Key    decryptionKey = new SecretKeySpec(encryptionKey.getEncoded(), encryptionKey.getAlgorithm());
+			
 			if(fileData.getEncryptionMode().usesIV() && !fileData.getiV().equals("null"))
 			{
 				ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
@@ -208,6 +218,18 @@ public class CryptoManager {
 		default:
 		return null;
 		}
+	}
+	
+	//TODO private
+	public static Key generateKey(EncryptionType encryptionType, KeyLength keyLength) throws Exception
+	{
+		KeyGenerator generator = KeyGenerator.getInstance(encryptionType.toString(), "BC");
+		generator.init(keyLength.returnAsInt());
+		Key encryptionKey = generator.generateKey();
+		
+		System.out.println(Base64.getEncoder().encodeToString(encryptionKey.getEncoded()));
+
+		return encryptionKey;
 	}
 	
 	/**

@@ -149,7 +149,7 @@ public class JavaFxMainClass extends Application{
 				
 				VBox optionGeneralLayout = new VBox(encryptionGridPane, encryptionButtonsBox);
 				
-				Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 550, 200);
+				Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 600, 200);
 				encryptionOptionStage.setScene(encryptionOptionWindow);
 				encryptionOptionStage.setTitle("Encryption Options");
 				encryptionOptionStage.getIcons().add(new Image("gear-256.png"));
@@ -303,10 +303,7 @@ public class JavaFxMainClass extends Application{
 					encryptionDropDown.setValue(EncryptionType.none);
 					encryptionDropDown.getItems().addAll(EncryptionType.getValuesByOperation(OperationMode.Symmetric));
 					
-					
-					//TODO still doesnt add the correct keylengths
-					keyLengthDropDown.fireEvent(new ActionEvent());
-					
+				
 					//Fixes a bug that caused the combobox to become untargetable
 					operationDropDown.hide();
 					encryptionDropDown.autosize();
@@ -322,9 +319,11 @@ public class JavaFxMainClass extends Application{
 		//TODO doesent get called in the beginning
 		keyLengthDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
+            	/*
             	keyLengthDropDown.getItems().clear();
             	keyLengthDropDown.setValue(KeyLength.getFittingKeyLength(encryptionDropDown.getValue())[0]);
             	keyLengthDropDown.getItems().addAll(KeyLength.getFittingKeyLength(encryptionDropDown.getValue()));
+            	*/
             }
         });
 		
