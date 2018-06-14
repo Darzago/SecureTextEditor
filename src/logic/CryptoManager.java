@@ -20,19 +20,6 @@ import persistence.MetaData;
  * @author Joel
  */
 public class CryptoManager {
-	
-	//hardcoded DES Key
-    static byte[] hardDESKey = new byte[] { 
-            (byte)0x5e, (byte)0x8e, (byte)0x9e, (byte)0xf2,
-            (byte)0xf8, (byte)0x5e, (byte)0x8e, (byte)0x6e
-            };
-    
-    //Hardcoded AES Key
-    static byte[]  hardAESKey = new byte[] { 
-            0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
-            0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
-            0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17 };
-    
     
     /**
      * Generates a cipherobject
@@ -94,7 +81,7 @@ public class CryptoManager {
 		fileData.setHashValue(generateHash(fileData.getHashFunction(), output));
 		
 		if(key != null)
-			FileManager.saveKey(key.getEncoded(), fileData.getHashValue());
+			FileManager.saveKey(key.getEncoded(), fileData.getHashValue(), fileData.getUsbData().getDriveLetter());
 		
 		return output;
 	}
@@ -174,9 +161,7 @@ public class CryptoManager {
 		{
 			IvParameterSpec ivSpec = null;
 			
-			Key key = new SecretKeySpec(FileManager.getKeyFromFile(fileData.getHashValue()), fileData.getEncryptionType().toString());
-			
-			//TODO Key    decryptionKey = new SecretKeySpec(encryptionKey.getEncoded(), encryptionKey.getAlgorithm());
+			Key key = new SecretKeySpec(FileManager.getKeyFromFile(fileData.getHashValue(), fileData.getUsbData().getDriveLetter()), fileData.getEncryptionType().toString());
 			
 			if(fileData.getEncryptionMode().usesIV() && !fileData.getiV().equals("null"))
 			{
@@ -205,9 +190,6 @@ public class CryptoManager {
 		KeyGenerator generator = KeyGenerator.getInstance(encryptionType.toString(), "BC");
 		generator.init(keyLength.returnAsInt());
 		Key encryptionKey = generator.generateKey();
-		
-		System.out.println(Base64.getEncoder().encodeToString(encryptionKey.getEncoded()));
-
 		return encryptionKey;
 	}
 	
@@ -264,5 +246,6 @@ public class CryptoManager {
 		}
 		return ivSpec;
 	}
+	
 	
 }

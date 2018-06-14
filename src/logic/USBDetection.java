@@ -76,7 +76,7 @@ public class USBDetection extends Thread{
     public static int vid = 1423;
     public static int pid = 25479;
 
-    public int[] getUSBList() 
+    public static int[] getUSBList() 
     {
     	
         Context context = new Context();
@@ -132,6 +132,7 @@ public class USBDetection extends Thread{
         return result;
 	}
     
+	//TODO Bug 
     private int getNewDeviceID()
     {
     	boolean found = false;
@@ -148,12 +149,12 @@ public class USBDetection extends Thread{
     				found = true;
     			}
     		}
-    		if(found)
+    		if(!found)
     		{
     			return newListE;
     		}
     	}
-    	return 900;
+    	return 0;
     }
 	
 	

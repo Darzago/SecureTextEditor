@@ -9,10 +9,6 @@ import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
-<<<<<<< HEAD
-=======
-import enums.OperationMode;
->>>>>>> develop
 import enums.PaddingType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -133,6 +129,8 @@ public class TextEditor extends TextArea{
         		
         		loadMetaData(fileToOpen);
         		
+        		checkForValidUsbDevice();
+        		
 				this.setText(FileManager.openFileFromPath(openFileName, currentFileData));
 				
 				updateTitle(fileToOpen.getName());
@@ -161,7 +159,6 @@ public class TextEditor extends TextArea{
 			openedData.setHashFunction(HashFunction.valueOf(getAttributeAsString(file, "user:HashF")));
 			openedData.setHashValue(new String((byte[])Files.getAttribute(file.toPath(), "user:Hash")));
 			openedData.setKeyLength(KeyLength.valueOf(getAttributeAsString(file, "user:keyLength")));
-			System.out.println(openedData.getHashValue());
 			openedData.setiV(getAttributeAsString(file, "user:IV"));
 			currentFileData = openedData;
 			updateOutput(currentFileData);
@@ -193,19 +190,22 @@ public class TextEditor extends TextArea{
 	 */
 	public void saveFileAs()
 	{
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.setInitialFileName(documentName);
-		
-		//Sets the datatype that is displayed in the filechooser
-		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text file (*.txt)", "*.txt");
-		fileChooser.getExtensionFilters().add(extFilter);
-		
-		File fileToSave = fileChooser.showSaveDialog(null);
-		
-		//if claus eprevents an error if the user pressed on the x of the save dialogue
-		if(fileToSave!= null){
+		try {
+			FileChooser fileChooser = new FileChooser();
+			fileChooser.setInitialFileName(documentName);
 			
-			try {
+			//Sets the datatype that is displayed in the filechooser
+			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text file (*.txt)", "*.txt");
+			fileChooser.getExtensionFilters().add(extFilter);
+			
+			checkForValidUsbDevice();
+			
+			File fileToSave = fileChooser.showSaveDialog(null);
+			
+			//if claus eprevents an error if the user pressed on the x of the save dialogue
+			if(fileToSave!= null){
+				
+				//TODO WENN DIE AUSGEWÄHLE VERSCHLÜSSELUNG != NULL IST MUSS EIN USB STICK CONNECTED SEIN (ODER DER OPERATIONSMODUS PBE)
 				changeFileOrigin(fileToSave);
 				
 				FileManager.saveFileInPath(fileToSave, this.getText(), 	currentFileData);
@@ -214,11 +214,47 @@ public class TextEditor extends TextArea{
 				
 				updateTitle(fileToSave.getName());
 				
-			} catch (Exception e) {
-				showError(e);
-				e.printStackTrace();
+			
+			}
+		} catch (Exception e) {
+			showError(e);
+			e.printStackTrace();
+		}
+	}
+	
+	private void checkForValidUsbDevice() throws Exception
+	{
+		USBMetaData usbData = null;
+		if(currentFileData.getEncryptionType() != EncryptionType.none)
+		{
+			
+			usbData = getConnectedUsb();
+			
+			if(usbData == null)
+			{
+				throw new Exception("No known usb stick connected");
 			}
 		}
+		currentFileData.setUsbData(usbData);
+	}
+	
+	private USBMetaData getConnectedUsb()
+	{
+		USBMetaData foundUsb = null;
+		int[] usbList = USBDetection.getUSBList();
+		
+		for(USBMetaData currentData : usbDataList)
+		{
+			int searchedHash = currentData.getHash();
+			for(int currentInt : usbList)
+			{
+				if(searchedHash == currentInt)
+				{
+					foundUsb = currentData;			
+				}
+			}
+		}
+		return foundUsb;
 	}
 	
 	/**
@@ -232,6 +268,8 @@ public class TextEditor extends TextArea{
 			
 			try 
 			{
+				checkForValidUsbDevice();
+				
 				FileManager.saveFileInPath(fileToWrite, this.getText(), currentFileData);
 
 				myStage.setTitle(documentName);
@@ -272,6 +310,7 @@ public class TextEditor extends TextArea{
 		this.myStage.setTitle(title + documentName);
 		textHasChanged = false;
 	}
+	
 	
 	public void registerUSBDrive(int foundDeviceId, String driveLetter)
 	{
@@ -386,7 +425,6 @@ public class TextEditor extends TextArea{
 		paddingDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	textHasChanged = true;
-            	System.out.println("Has been changed");
             	currentFileData.setPaddingType(paddingDropDown.getValue());
             }
         });
@@ -394,7 +432,6 @@ public class TextEditor extends TextArea{
 		hashFunctionDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	textHasChanged = true;
-            	System.out.println("Has been changed");
             	currentFileData.setHashFunction(hashFunctionDropDown.getValue());
             }
         });
@@ -402,10 +439,6 @@ public class TextEditor extends TextArea{
 		keylengthDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	textHasChanged = true;
-<<<<<<< HEAD
-=======
-            	System.out.println("Has been changed");
->>>>>>> develop
             	currentFileData.setKeyLength(keyLengthBox.getValue());
             }
         });

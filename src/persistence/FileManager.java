@@ -87,6 +87,7 @@ public class FileManager {
 		}
 	}
 	
+	
 	/**
 	 * Write usb config data
 	 * @param dataList data to be written into a config
@@ -185,11 +186,11 @@ public class FileManager {
 		return dataList;
 	}
 	
-	//TODO
-	public static void saveKey(byte[] key, String hashValue) throws Exception
+	//TODO ADD DRIVE LETTER AS INPUT VALUE 
+	public static void saveKey(byte[] key, String hashValue, String driveLetter) throws Exception
 	{
 		hashValue = removeSpecialChars(hashValue);
-		FileOutputStream fos = new FileOutputStream(hashValue + ".txt");
+		FileOutputStream fos = new FileOutputStream(driveLetter + ":/" + hashValue + ".STEkey");
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
 		bos.write(Base64.getEncoder().encode(key));
 		bos.close();
@@ -205,11 +206,11 @@ public class FileManager {
 	}
 	
 	//TODO
-	public static byte[] getKeyFromFile(String hashValue) throws Exception
+	public static byte[] getKeyFromFile(String hashValue, String driveLetter) throws Exception
 	{
 		hashValue = removeSpecialChars(hashValue);
 
-		File fileToOpen = new File(hashValue + ".txt");
+		File fileToOpen = new File(driveLetter + ":/" + hashValue + ".STEkey");
 		
 		if(fileToOpen.exists())
 		{

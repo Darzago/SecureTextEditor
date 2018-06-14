@@ -20,7 +20,22 @@ public class MetaData {
 	String hashValue;
 	String filePath;
 	String iV;
+	USBMetaData usbData;
 	
+	/**
+	 * @return the usbData
+	 */
+	public USBMetaData getUsbData() {
+		return usbData;
+	}
+
+	/**
+	 * @param usbData the usbData to set
+	 */
+	public void setUsbData(USBMetaData usbData) {
+		this.usbData = usbData;
+	}
+
 	/**
 	 * @return the keyLength
 	 */
