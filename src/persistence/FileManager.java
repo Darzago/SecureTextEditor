@@ -190,8 +190,18 @@ public class FileManager {
 	//TODO Move to cryptomanager
 	public static void saveKey(byte[] key, String hashValue, String driveLetter) throws Exception
 	{
+		File testForFolder = new File(driveLetter + ":/STE-KeyFiles");
+		if( !testForFolder.exists() || !testForFolder.isDirectory())
+		{
+			boolean dirCreated = testForFolder.mkdir();
+			if(!dirCreated)
+			{
+				throw new Exception("Key File Directory could not be created!");
+			}
+		}
+		
 		hashValue = removeSpecialChars(hashValue);
-		FileOutputStream fos = new FileOutputStream(driveLetter + ":/" + hashValue + ".STEkey");
+		FileOutputStream fos = new FileOutputStream(driveLetter + ":/STE-KeyFiles/" + hashValue + ".STEkey");
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
 		bos.write(Base64.getEncoder().encode(key));
 		bos.close();
@@ -210,7 +220,7 @@ public class FileManager {
 	{
 		hashValue = removeSpecialChars(hashValue);
 
-		File fileToOpen = new File(driveLetter + ":/" + hashValue + ".STEkey");
+		File fileToOpen = new File(driveLetter + ":/STE-KeyFiles/" + hashValue + ".STEkey");
 		
 		if(fileToOpen.exists())
 		{
