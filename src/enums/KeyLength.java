@@ -10,6 +10,7 @@ public enum KeyLength {
 	
 	public static KeyLength[] getFittingKeyLength(EncryptionType encryptionType)
 	{
+		
 		switch(encryptionType)
 		{
 		case AES:
@@ -21,7 +22,7 @@ public enum KeyLength {
 		case none:
 			return new KeyLength[]{x0};
 		default:
-			return new KeyLength[]{};
+			return new KeyLength[]{x0};
 		
 		}
 	}

@@ -1,19 +1,20 @@
 TODO	-----------------------------------------------------------------------------------------------------------------
 	
+	Wenn der gleiche key mit 2 verschiedenen verschlüsselungen gespeichert wird überschreiben sich die keys
+		--> metadata in die berechnung des keys mit einbeziehen
+	
 	USB Komponente
-		-speichern des usb hashes und keyfilepath innerhalb der Datei	
-		-USB Verzeichnis mit Hashwerten und Verzeichnisnamen usw
-			--> schon bekannte USB Sticks können automatisch an den Hashwerten erkannt werden
+		-Auswahl auf welchem usb stick gespeichert werden soll wenn mehrere angeschlossen sind
 		-Passwort option für keyconfig.xml / Art der Passwortverschlüsselung auswählbar & in der config gespeichert
 		-Nur ein registrierter stick gleichzeitig angeschlossen sein
 	
 	Verschlüsselungen
 		-RSA und passwort basierte Verschlüsselungen
 		-ARC4 siehe seite 68 (nur mit PBE's)
-		-Key längen auswahl fixen
-		-Key generation
-		-key speicherung
-			-->finden anhand der datei hashes
+		
+	Keys
+		-savin private keys	
+			--> wrap keys um speichern möglich zu machen (S134)
 		
 	SICHERHEITSLÜCKE
 		-angreifer kann einfach den drive namen in der config ändern und die keydatei auf seine festplatte schreiben
@@ -29,3 +30,9 @@ DONE	---------------------------------------------------------------------------
 			--> umstellen wenn auf einen anderen modus gewechselt wird
 		-USB Stick registrierungs option, user anleitung, Abstecken dranstecken/Registrierungsmodus
 		-cleanup der verschlüsselungsmethoden
+		-USB Verzeichnis mit Hashwerten und Verzeichnisnamen usw
+			--> schon bekannte USB Sticks können automatisch an den Hashwerten erkannt werden
+		-Key längen auswahl fixen
+		-Key generation
+		-key speicherung
+			-->finden anhand der datei hashes

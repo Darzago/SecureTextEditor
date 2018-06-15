@@ -20,7 +20,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -106,7 +105,7 @@ public class JavaFxMainClass extends Application{
 						
 						Label hashFunctionLabel = new Label("Hash Function:");
 							ComboBox<HashFunction> hashFunctionDropDown = new ComboBox<HashFunction> ();
-							hashFunctionDropDown.setValue(HashFunction.NONE);
+							hashFunctionDropDown.setValue(HashFunction.MD5);
 						hashFunctionDropDown.getItems().addAll(HashFunction.values());
 						
 						Label keyLengthLabel = new Label("Key Length:");
@@ -138,9 +137,8 @@ public class JavaFxMainClass extends Application{
 						Label passwordLabel = new Label("Password: ");
 						PasswordField  passwordArea = new PasswordField();
 						
-						//TODO Übergabe von keylengthdropdown, password field
+						//TODO übergabe password field
 						
-						//TODO UMBAUEN DER haupt GRIDPANE JE NACH BLUB MANNN YAY LÖSUNG ENDLICH
 						
 						//Adds button(s) below the dropdown menus 
 						GridPane encryptionButtonsBox = new GridPane();
@@ -176,14 +174,12 @@ public class JavaFxMainClass extends Application{
 		
 //Main Stage	 ---------------------------------------------------------------------------------------		
 		
-		editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown, keyLengthDropDown, usbText);
+		editor = new TextEditor(primaryStage, operationDropDown, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown, keyLengthDropDown, usbText);
 		
 		//Sets the general layout of the scene
 		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);
         layoutMainWindow.setFillWidth(true);
 		Scene mainWindow = new Scene(layoutMainWindow, 600, 400);
-		
-
 
 		
 //Event Handler -----------------------------------------------------------------------------------------------
@@ -249,6 +245,15 @@ public class JavaFxMainClass extends Application{
 		
 		operationDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
+            	
+            	editor.setCurrentOperationMode(operationDropDown.getValue());
+            	
+            	if(operationDropDown.getValue() == OperationMode.Asymmetric)
+            	{
+	            	paddingDropDown.setValue(PaddingType.NoPadding);
+	            	modeDropDown.setValue(EncryptionMode.None);
+            	}
+            	
             	//Switch between several layout boxes
             	switch(operationDropDown.getValue())
             	{
@@ -262,6 +267,9 @@ public class JavaFxMainClass extends Application{
 					encryptionGridPane.add(encryptionDropDown, 0, 3);
 					encryptionGridPane.add(keyLengthLabel, 1, 2);
 					encryptionGridPane.add(keyLengthDropDown, 1, 3);
+					encryptionGridPane.add(hashFunctionLabel, 2, 2);
+					encryptionGridPane.add(hashFunctionDropDown, 2, 3);
+					
 					
 					encryptionDropDown.getItems().clear();
 					encryptionDropDown.setValue(EncryptionType.RSA);
@@ -318,7 +326,6 @@ public class JavaFxMainClass extends Application{
             	}
             }
         });
-		
 		
 		primaryStage.getIcons().add(new Image("Lock.png"));
 		primaryStage.setScene(mainWindow);

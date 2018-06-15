@@ -3,6 +3,7 @@ import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
+import enums.OperationMode;
 import enums.PaddingType;
 
 /**
@@ -12,16 +13,31 @@ import enums.PaddingType;
  */
 public class MetaData {
 	
-	PaddingType paddingType;
-	EncryptionType encryptionType;
-	EncryptionMode encryptionMode;
-	HashFunction hashFunction;
-	KeyLength keyLength;
-	String hashValue;
-	String filePath;
-	String iV;
-	USBMetaData usbData;
+	private OperationMode operationMode;
+	private PaddingType paddingType;
+	private EncryptionType encryptionType;
+	private EncryptionMode encryptionMode;
+	private HashFunction hashFunction;
+	private KeyLength keyLength;
+	private String hashValue;
+	private String filePath;
+	private String iV;
+	private USBMetaData usbData;
 	
+	/**
+	 * @return the operationMode
+	 */
+	public OperationMode getOperationMode() {
+		return operationMode;
+	}
+
+	/**
+	 * @param operationMode the operationMode to set
+	 */
+	public void setOperationMode(OperationMode operationMode) {
+		this.operationMode = operationMode;
+	}
+
 	/**
 	 * @return the usbData
 	 */
@@ -150,17 +166,19 @@ public class MetaData {
 	}
 
 	public MetaData(){}
-	
-	public MetaData(PaddingType paddingType, EncryptionType encryptionType, EncryptionMode encryptionMode, HashFunction hashFunction, KeyLength keyLength, String hashValue, String filePath) 
-	{
+
+	public MetaData(OperationMode operationMode, PaddingType paddingType, EncryptionType encryptionType,
+			EncryptionMode encryptionMode, HashFunction hashFunction, KeyLength keyLength, String filePath) {
+		super();
+		this.operationMode = operationMode;
 		this.paddingType = paddingType;
 		this.encryptionType = encryptionType;
 		this.encryptionMode = encryptionMode;
-		this.filePath = filePath;
 		this.hashFunction = hashFunction;
-		this.hashValue = hashValue;
 		this.keyLength = keyLength;
+		this.hashValue = hashValue;
+		this.filePath = filePath;
+		this.iV = iV;
 	}
-
 
 }

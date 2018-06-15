@@ -66,6 +66,7 @@ public class FileManager {
 			FileOutputStream fos = new FileOutputStream(path);
 			
 			//Set the metadata of the file to be written
+			Files.setAttribute(path.toPath(), "user:operationMode", (fileData.getOperationMode().toString()+ "").getBytes() );
 			Files.setAttribute(path.toPath(), "user:Type", (fileData.getEncryptionType().toString() + "").getBytes() );
 			Files.setAttribute(path.toPath(), "user:Mode", (fileData.getEncryptionMode().toString()+ "").getBytes() );
 			Files.setAttribute(path.toPath(), "user:Padding", (fileData.getPaddingType().toString()+ "").getBytes() );
@@ -186,7 +187,7 @@ public class FileManager {
 		return dataList;
 	}
 	
-	//TODO ADD DRIVE LETTER AS INPUT VALUE 
+	//TODO Move to cryptomanager
 	public static void saveKey(byte[] key, String hashValue, String driveLetter) throws Exception
 	{
 		hashValue = removeSpecialChars(hashValue);
@@ -205,7 +206,6 @@ public class FileManager {
 		return input;
 	}
 	
-	//TODO
 	public static byte[] getKeyFromFile(String hashValue, String driveLetter) throws Exception
 	{
 		hashValue = removeSpecialChars(hashValue);

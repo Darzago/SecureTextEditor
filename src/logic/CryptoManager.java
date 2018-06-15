@@ -1,17 +1,25 @@
 package logic;
 import java.security.Key;
+import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.RSAPublicKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.PrivateKey;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 
 import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
+import enums.OperationMode;
 import persistence.FileManager;
 import persistence.MetaData;
 
@@ -30,23 +38,30 @@ public class CryptoManager {
      * @return generated cipher
      * @throws Exception
      */
-    private static Cipher generateCipher(int mode, MetaData fileData, Key key, IvParameterSpec ivSpec) throws Exception
+    private static Cipher generateCipher(int mode, MetaData fileData, Key key, IvParameterSpec ivSpec, SecureRandom random) throws Exception
     {
     	//TODO if operationmode == symmetrical
-
+    	
 		Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
 		
 		if(ivSpec != null)
 		{
 			cipher.init(mode, key, ivSpec);
 		}
+		else if(random != null && fileData.getOperationMode() == OperationMode.Asymmetric)
+		{
+			cipher.init(mode, key, random);
+		}
 		else
 		{
 			cipher.init(mode, key);
 		}
+
 		
 		return cipher;
     }
+    
+
     
 	/**
 	 * Encrypts a given string with the desired encryption, encryption mode and padding type 
@@ -55,23 +70,35 @@ public class CryptoManager {
 	 * @return encrypted string in a byte array
 	 * @throws Exception
 	 * 
-	 * TODO Currently hard coded keys
 	 */
 	public static byte[] encryptString(String input, MetaData fileData) throws Exception
 	{ 
 		byte[] output;
-		Key key = null;
-		
+		byte[] key = null;
+		Cipher cipher = null;
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
-
-			key = generateKey(fileData.getEncryptionType(), fileData.getKeyLength());
+			//TODO dont pull the keys from their respective key objects
+			switch(fileData.getOperationMode())
+			{
+			case Asymmetric:
+				SecureRandom random = new SecureRandom();
+				KeyPair keyPair = generateAsymmetricKeys(random, fileData.getKeyLength());
+				cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, keyPair.getPublic(), null, random);
+				key =  new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded()).getEncoded();
+				break;
+			case Passwordbased:
+				break;
+			case Symmetric:
+				Key keyObject = generateSymmetricKey(fileData.getEncryptionType(), fileData.getKeyLength());
+				IvParameterSpec iv = getIvIfNeeded(fileData);
+				System.out.println("iv" + iv.getIV());
+				cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, keyObject, iv, null);
+				key = keyObject.getEncoded();
+				break;
+			}
 			
-			IvParameterSpec iv = getIvIfNeeded(fileData);
-			
-			Cipher cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, key, iv);
-			
-			output = applyCipher(cipher, input.getBytes()); 
+			output = applyCipher(cipher, input.getBytes());
 		}
 		else
 		{
@@ -81,10 +108,11 @@ public class CryptoManager {
 		fileData.setHashValue(generateHash(fileData.getHashFunction(), output));
 		
 		if(key != null)
-			FileManager.saveKey(key.getEncoded(), fileData.getHashValue(), fileData.getUsbData().getDriveLetter());
+			FileManager.saveKey(key, fileData.getHashValue(), fileData.getUsbData().getDriveLetter());
 		
 		return output;
 	}
+
 	
 	/**
 	 * Generates a hash of the desired hashfunction
@@ -95,14 +123,10 @@ public class CryptoManager {
 	 */
 	private static String generateHash(HashFunction hashFunction, byte[] input) throws Exception
 	{
-		if(hashFunction != HashFunction.NONE)
-		{
-			MessageDigest hash = MessageDigest.getInstance(hashFunction.toString(), "BC");
-			hash.update(input);
-		
-			return Base64.getEncoder().encodeToString(hash.digest());
-		}
-		return null;
+		MessageDigest hash = MessageDigest.getInstance(hashFunction.toString(), "BC");
+		hash.update(input);
+	
+		return Base64.getEncoder().encodeToString(hash.digest());
 	}
 	
 	/**
@@ -126,16 +150,13 @@ public class CryptoManager {
 	
 	private static void validateHash(HashFunction hashFunction, byte[] input, String readHash) throws Exception
 	{
-		if(hashFunction != HashFunction.NONE)
+		MessageDigest hash = MessageDigest.getInstance(hashFunction.toString(), "BC");
+		hash.update(input);
+		
+		//Compare the two hashes using a message digest helper function
+		if(!MessageDigest.isEqual(Base64.getDecoder().decode(readHash) , hash.digest()))
 		{
-			MessageDigest hash = MessageDigest.getInstance(hashFunction.toString(), "BC");
-			hash.update(input);
-			
-			//Compare the two hashes using a message digest helper function
-			if(!MessageDigest.isEqual(Base64.getDecoder().decode(readHash) , hash.digest()))
-			{
-				throw new Exception("File has been altered REEEEEEEEEEEEEEEEEEE");
-			}
+			throw new Exception("File has been altered REEEEEEEEEEEEEEEEEEE");
 		}
 	}
 	
@@ -148,7 +169,6 @@ public class CryptoManager {
 	 * @return Decrypted String
 	 * @throws Exception
 	 * 
-	 * TODO Hard coded keys & Ivs
 	 * 		Cipher-Based I/O ?
 	 */
 	public static String decryptString(byte[] input, MetaData fileData) throws Exception
@@ -159,9 +179,8 @@ public class CryptoManager {
 		
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
-			IvParameterSpec ivSpec = null;
 			
-			Key key = new SecretKeySpec(FileManager.getKeyFromFile(fileData.getHashValue(), fileData.getUsbData().getDriveLetter()), fileData.getEncryptionType().toString());
+			IvParameterSpec ivSpec = null;
 			
 			if(fileData.getEncryptionMode().usesIV() && !fileData.getiV().equals("null"))
 			{
@@ -171,9 +190,30 @@ public class CryptoManager {
 			{
 				throw new Exception("IV WAS NOT SET");
 			}
+			
+			
+			Cipher cipher = null;
+			
+			switch(fileData.getOperationMode())
+			{
+			case Asymmetric:
+				KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+				PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(FileManager.getKeyFromFile(fileData.getHashValue(), fileData.getUsbData().getDriveLetter()));
+				PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
+				cipher = Cipher.getInstance("RSA/None/NoPadding", "BC");
+				cipher.init(Cipher.DECRYPT_MODE, privateKey);
+				break;
+			case Passwordbased:
+				break;
+			case Symmetric:
+				Key key = new SecretKeySpec(FileManager.getKeyFromFile(fileData.getHashValue(), fileData.getUsbData().getDriveLetter()), fileData.getEncryptionType().toString());
+				cipher = generateCipher(Cipher.DECRYPT_MODE, fileData, key, ivSpec, null);
+				break;
+			default:
+				break;
+			
+			}
 
-			Cipher cipher = generateCipher(Cipher.DECRYPT_MODE, fileData, key, ivSpec);
-		
 			plainText = applyCipher(cipher, input);
 		}
 		else
@@ -184,14 +224,22 @@ public class CryptoManager {
 		return new String(plainText, "UTF-8");
 	}
 	
-	//TODO private
-	public static Key generateKey(EncryptionType encryptionType, KeyLength keyLength) throws Exception
+	private static Key generateSymmetricKey(EncryptionType encryptionType, KeyLength keyLength) throws Exception
 	{
 		KeyGenerator generator = KeyGenerator.getInstance(encryptionType.toString(), "BC");
 		generator.init(keyLength.returnAsInt());
 		Key encryptionKey = generator.generateKey();
 		return encryptionKey;
 	}
+	
+	private static KeyPair generateAsymmetricKeys(SecureRandom random, KeyLength keyLength) throws Exception
+	{
+		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
+		generator.initialize(keyLength.returnAsInt(), random);
+		KeyPair pair = generator.generateKeyPair();
+		return pair;
+	}
+	
 	
 	/**
 	 * Gets an iv matching the fitting length depending on the encryption type

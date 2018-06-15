@@ -1,7 +1,25 @@
 package enums;
 
 public enum EncryptionType {
-	none, AES, DES, RSA, PBEWithSHAAnd128BitAES_CBC_BC, PBEWithMD5AndDES, PBEWithSHAAnd40BitRC4;
+	none, AES, DES, RSA, DESede, PBEWithSHAAnd128BitAES_CBC_BC, PBEWithMD5AndDES, PBEWithSHAAnd40BitRC4;
+	
+	//TODO
+	public EncryptionMode getModeByPBEType()
+	{
+
+		switch(this)
+		{
+		case PBEWithMD5AndDES:
+			
+		case PBEWithSHAAnd128BitAES_CBC_BC:
+			return EncryptionMode.CBC;	
+		case PBEWithSHAAnd40BitRC4:
+			
+		default:
+			return null;	
+		}
+		
+	}
 	
 	public static EncryptionType[] getValuesByOperation(OperationMode operation)
 	{

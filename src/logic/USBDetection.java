@@ -100,9 +100,6 @@ public class USBDetection extends Thread{
                     result = LibUsb.getDeviceDescriptor(device, device_descriptor);
                     if(result != LibUsb.SUCCESS)throw new LibUsbException("Unable to get device descriptor : ",result);
                     
-                    //System.out.println(device_descriptor.hashCode());
-                    //System.out.println("Product id is : "+device_descriptor.idProduct()+" "+"Vendor id is : "+device_descriptor.idVendor());
-                    
                     //TODO secure?
                     idList[arrayIndex] = device_descriptor.hashCode();
                     arrayIndex ++;
@@ -131,8 +128,7 @@ public class USBDetection extends Thread{
         if(result < 0 )throw new LibUsbException("Unable to get device list",result);
         return result;
 	}
-    
-	//TODO Bug 
+     
     private int getNewDeviceID()
     {
     	boolean found = false;
@@ -143,7 +139,6 @@ public class USBDetection extends Thread{
     		found = false;
     		for(int oldListE : minDeviceList)
     		{
-    			System.out.println(oldListE + "        " + newListE);
     			if(newListE == oldListE)
     			{
     				found = true;
