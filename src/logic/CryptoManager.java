@@ -3,14 +3,16 @@ import java.security.Key;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
+import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.RSAPublicKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.PrivateKey;
 import java.security.KeyPair;
@@ -40,9 +42,14 @@ public class CryptoManager {
      */
     private static Cipher generateCipher(int mode, MetaData fileData, Key key, IvParameterSpec ivSpec, SecureRandom random) throws Exception
     {
-    	//TODO if operationmode == symmetrical
+    	Cipher cipher = null;
     	
-		Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
+    	if(fileData.getEncryptionType() == EncryptionType.ARC4)
+    	{
+    		cipher = Cipher.getInstance(EncryptionType.ARC4.toString());
+    	}
+    	else
+    		cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
 		
 		if(ivSpec != null)
 		{
@@ -74,8 +81,11 @@ public class CryptoManager {
 	public static byte[] encryptString(String input, MetaData fileData) throws Exception
 	{ 
 		byte[] output;
-		byte[] key = null;
+		byte[] keyBytes = null;
+		IvParameterSpec iv;
 		Cipher cipher = null;
+		Key keyObject = null;
+		
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
 			//TODO dont pull the keys from their respective key objects
@@ -85,16 +95,28 @@ public class CryptoManager {
 				SecureRandom random = new SecureRandom();
 				KeyPair keyPair = generateAsymmetricKeys(random, fileData.getKeyLength());
 				cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, keyPair.getPublic(), null, random);
-				key =  new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded()).getEncoded();
+				keyBytes =  new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded()).getEncoded();
 				break;
 			case Passwordbased:
+				byte[] salt = generateByteArray(16);
+				SecretKeyFactory factory = SecretKeyFactory.getInstance(fileData.getPbeType().toString(), "BC");
+				
+				//65536 = iteration count, 256=keylength only working with a variable keylength pbe cipher
+		        KeySpec spec = new PBEKeySpec(fileData.getPassword().toCharArray(), salt, 1024, 256);
+		        SecretKey tmp = factory.generateSecret(spec);
+		        SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
+		        
+				System.out.println(tmp.getEncoded().length);
+			
+				iv = getIvIfNeeded(fileData);
+				cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, secret, iv, null);
+				
 				break;
 			case Symmetric:
-				Key keyObject = generateSymmetricKey(fileData.getEncryptionType(), fileData.getKeyLength());
-				IvParameterSpec iv = getIvIfNeeded(fileData);
-				System.out.println("iv" + iv.getIV());
+				keyObject = generateSymmetricKey(fileData.getEncryptionType(), fileData.getKeyLength());
+				iv = getIvIfNeeded(fileData);
 				cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, keyObject, iv, null);
-				key = keyObject.getEncoded();
+				keyBytes = keyObject.getEncoded();
 				break;
 			}
 			
@@ -107,8 +129,8 @@ public class CryptoManager {
 		
 		fileData.setHashValue(generateHash(fileData.getHashFunction(), output));
 		
-		if(key != null)
-			FileManager.saveKey(key, fileData.getHashValue(), fileData.getUsbData().getDriveLetter());
+		if(keyBytes != null)
+			FileManager.saveKey(keyBytes, fileData.getHashValue(), fileData.getUsbData().getDriveLetter());
 		
 		return output;
 	}
@@ -121,9 +143,9 @@ public class CryptoManager {
 	 * @return hash
 	 * @throws Exception
 	 */
-	private static String generateHash(HashFunction hashFunction, byte[] input) throws Exception
+	private static String generateHash(MetaData metadata, byte[] input) throws Exception
 	{
-		MessageDigest hash = MessageDigest.getInstance(hashFunction.toString(), "BC");
+		MessageDigest hash = MessageDigest.getInstance(metadata.getHashFunction().toString(), "BC");
 		hash.update(input);
 	
 		return Base64.getEncoder().encodeToString(hash.digest());
@@ -204,6 +226,7 @@ public class CryptoManager {
 				cipher.init(Cipher.DECRYPT_MODE, privateKey);
 				break;
 			case Passwordbased:
+				
 				break;
 			case Symmetric:
 				Key key = new SecretKeySpec(FileManager.getKeyFromFile(fileData.getHashValue(), fileData.getUsbData().getDriveLetter()), fileData.getEncryptionType().toString());
@@ -251,9 +274,9 @@ public class CryptoManager {
 		switch(encryption)
 		{
 		case DES:
-			return generateIV(8);
+			return generateByteArray(8);
 		case AES:
-			return generateIV(16);
+			return generateByteArray(16);
 		case none:
 		default:
 			return null;
@@ -261,18 +284,18 @@ public class CryptoManager {
 	}
 	
 	/**
-	 * Randomly generates an IV with the given length
-	 * @param length length of the IV
-	 * @return iv
+	 * Randomly generates a random byte array with the given length
+	 * @param length length of the array
+	 * @return array
 	 */
-	private static byte[] generateIV(int length)
+	private static byte[] generateByteArray(int length)
 	{
 		if(length > 0)
 		{
 			SecureRandom random = new SecureRandom();
-			byte[] ivBytes = new byte[length];
-			random.nextBytes(ivBytes);
-			return ivBytes;
+			byte[] randomBytes = new byte[length];
+			random.nextBytes(randomBytes);
+			return randomBytes;
 		}
 		return null;
 	}
@@ -280,13 +303,12 @@ public class CryptoManager {
 	private static IvParameterSpec getIvIfNeeded(MetaData fileData)
 	{
 		IvParameterSpec ivSpec = null;
-		if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
+		if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")) && fileData.getEncryptionType() != EncryptionType.ARC4)
 		{
 			byte[] ivArray = generateMatchingIV(fileData.getEncryptionType());
-			
 			fileData.setiV(Base64.getEncoder().encodeToString(ivArray));
-			
 			ivSpec = new IvParameterSpec(ivArray);
+			
 		}
 		else if(fileData.getEncryptionMode().usesIV())
 		{

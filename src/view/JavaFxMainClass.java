@@ -5,6 +5,7 @@ import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
 import enums.OperationMode;
+import enums.PBEType;
 import enums.PaddingType;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -113,6 +114,11 @@ public class JavaFxMainClass extends Application{
 							keyLengthDropDown.setValue(KeyLength.x0);
 						keyLengthDropDown.getItems().addAll(KeyLength.values());
 						
+						Label pbeTypeLabel = new Label("PBE Type:");
+							ComboBox<PBEType> pbeTypeDropDown = new ComboBox<PBEType> ();
+							pbeTypeDropDown.setValue(PBEType.PBKDF2WithHmacSHA1);
+						pbeTypeDropDown.getItems().addAll(PBEType.values());
+						
 						//Adds all dropdown menus and labels to a GridPane
 						GridPane encryptionGridPane = new GridPane();
 						encryptionGridPane.add(operationLabel, 0, 0);
@@ -136,8 +142,6 @@ public class JavaFxMainClass extends Application{
 						
 						Label passwordLabel = new Label("Password: ");
 						PasswordField  passwordArea = new PasswordField();
-						
-						//TODO übergabe password field
 						
 						
 						//Adds button(s) below the dropdown menus 
@@ -174,7 +178,7 @@ public class JavaFxMainClass extends Application{
 		
 //Main Stage	 ---------------------------------------------------------------------------------------		
 		
-		editor = new TextEditor(primaryStage, operationDropDown, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown, keyLengthDropDown, usbText);
+		editor = new TextEditor(primaryStage, operationDropDown, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown, keyLengthDropDown, usbText, passwordArea, pbeTypeDropDown);
 		
 		//Sets the general layout of the scene
 		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);
@@ -285,14 +289,22 @@ public class JavaFxMainClass extends Application{
 					encryptionGridPane.add(operationDropDown, 0, 1);
 					encryptionGridPane.add(encryptionLabel, 0, 2);
 					encryptionGridPane.add(encryptionDropDown, 0, 3);
-					encryptionGridPane.add(passwordLabel, 1, 2);
-					encryptionGridPane.add(passwordArea, 1, 3);
+					encryptionGridPane.add(modeLabel, 1, 2);
+					encryptionGridPane.add(modeDropDown, 1, 3);
+					encryptionGridPane.add(paddingLabel, 2, 2);
+					encryptionGridPane.add(paddingDropDown, 2, 3);
+					encryptionGridPane.add(hashFunctionLabel, 3, 2);
+					encryptionGridPane.add(hashFunctionDropDown, 3, 3);
+					encryptionGridPane.add(passwordLabel, 0, 4);
+					encryptionGridPane.add(passwordArea, 0, 5);
+					encryptionGridPane.add(pbeTypeLabel, 1, 4);
+					encryptionGridPane.add(pbeTypeDropDown, 1, 5);
+					
 					
 					encryptionDropDown.getItems().clear();
-					encryptionDropDown.setValue(EncryptionType.PBEWithMD5AndDES);
+					encryptionDropDown.setValue(EncryptionType.AES);
 					encryptionDropDown.getItems().addAll(EncryptionType.getValuesByOperation(OperationMode.Passwordbased));
-					operationDropDown.hide();
-					encryptionDropDown.autosize();
+					
 					
 					
 					break;

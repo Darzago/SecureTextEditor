@@ -10,6 +10,7 @@ import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
 import enums.OperationMode;
+import enums.PBEType;
 import enums.PaddingType;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -19,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -55,7 +57,7 @@ public class TextEditor extends TextArea{
 	//Metadata of the file the editor currently edits
 	private MetaData currentFileData;
 	
-	USBDetection detectionThread;
+	private USBDetection detectionThread;
 	
 	//Dropdown Menus in the encryption option window
 	private ComboBox<PaddingType> paddingTypeBox;
@@ -64,8 +66,10 @@ public class TextEditor extends TextArea{
 	private ComboBox<HashFunction> hashFunctionModeBox;
 	private ComboBox<KeyLength> keyLengthBox;
 	private ComboBox<OperationMode> operationBox;
+	private ComboBox<PBEType> pbeTypeBox;
 	
-	Text usbRegistrationText;
+	private Text usbRegistrationText;
+	private PasswordField  passwordField;
 	
 	/**
 	 * Displays a new window if the current file has been changed but not saved, otherwise opens the new file
@@ -147,6 +151,7 @@ public class TextEditor extends TextArea{
 	}
 	
 	/**
+	 * TODO Move to filemanager
 	 * Searches the known metadata for an input file and loads its information into the editor
 	 * @param file
 	 */
@@ -162,7 +167,9 @@ public class TextEditor extends TextArea{
 			openedData.setHashValue(new String((byte[])Files.getAttribute(file.toPath(), "user:Hash")));
 			openedData.setKeyLength(KeyLength.valueOf(getAttributeAsString(file, "user:keyLength")));
 			openedData.setOperationMode(OperationMode.valueOf(getAttributeAsString(file, "user:operationMode")));
+			openedData.setPbeType(PBEType.valueOf(getAttributeAsString(file, "user:pbeType")));
 			openedData.setiV(getAttributeAsString(file, "user:IV"));
+			openedData.setSalt((byte[])Files.getAttribute(file.toPath(), "user:salt"));
 			currentFileData = openedData;
 			updateOutput(currentFileData);
 			
@@ -182,6 +189,7 @@ public class TextEditor extends TextArea{
 		this.hashFunctionModeBox.setValue(metadata.getHashFunction());
 		this.keyLengthBox.setValue(metadata.getKeyLength());
 		this.operationBox.setValue(metadata.getOperationMode());
+		this.pbeTypeBox.setValue(metadata.getPbeType());
 	}
 	
 	private String getAttributeAsString(File file, String attributeName) throws IOException
@@ -356,7 +364,7 @@ public class TextEditor extends TextArea{
 	 * @param _selectedMode currently selected {@link EncryptionMode}
 	 * @param _selectedPadding currently selected {@link PaddingType}
 	 */
-	public TextEditor(Stage _myStage, ComboBox<OperationMode> operationModeDropDown, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown, ComboBox<KeyLength> keylengthDropDown, Text usbRegistrationText)
+	public TextEditor(Stage _myStage, ComboBox<OperationMode> operationModeDropDown, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown, ComboBox<KeyLength> keylengthDropDown, Text usbRegistrationText, PasswordField  passwordArea, ComboBox<PBEType> pbeTypeDropDown)
 	{
 		this.myStage = _myStage;
 		updateTitle(defaultName);
@@ -368,8 +376,10 @@ public class TextEditor extends TextArea{
 		this.usbRegistrationText = usbRegistrationText;
 		this.keyLengthBox = keylengthDropDown;
 		this.operationBox = operationModeDropDown;
+		this.passwordField = passwordArea;
+		this.pbeTypeBox = pbeTypeDropDown;
 		
-		this.currentFileData = new MetaData(operationModeDropDown.getValue(), paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), keylengthDropDown.getValue(), "");
+		this.currentFileData = new MetaData(operationModeDropDown.getValue(), paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), keylengthDropDown.getValue(), "", pbeTypeDropDown.getValue());
 		
 		//Disable these dropdown menus since the (at start) selected encryption is 'none'
 		paddingDropDown.setDisable(true);
@@ -389,7 +399,7 @@ public class TextEditor extends TextArea{
 	            	keyLengthBox.setValue(KeyLength.getFittingKeyLength(encryptionDropDown.getValue())[0]);
             	}
             	
-            	if(encryptionDropDown.getValue() == EncryptionType.none)
+            	if(encryptionDropDown.getValue() == EncryptionType.none || encryptionDropDown.getValue() == EncryptionType.ARC4)
             	{
             		paddingDropDown.setDisable(true);
             		encryptionModeDropDown.setDisable(true);
@@ -448,6 +458,13 @@ public class TextEditor extends TextArea{
             }
         });
 		
+		pbeTypeDropDown.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+            	textHasChanged = true;
+            	currentFileData.setPbeType(pbeTypeDropDown.getValue());
+            }
+        });
+		
 		keylengthDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
             	textHasChanged = true;
@@ -466,6 +483,7 @@ public class TextEditor extends TextArea{
 		}
 		
 		TextEditor copy = this;
+		
 		this.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) {
@@ -474,6 +492,14 @@ public class TextEditor extends TextArea{
 		    		copy.myStage.setTitle(title + "*" + documentName);
 		    		copy.textHasChanged = true;
 		    	}		    	
+		    }
+		});
+		
+		passwordField.textProperty().addListener(new ChangeListener<String>() {
+		    @Override
+		    public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) 
+		    {
+		    	currentFileData.setPassword(passwordField.getText());
 		    }
 		});
 		

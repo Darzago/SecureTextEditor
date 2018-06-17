@@ -1,7 +1,12 @@
 TODO	-----------------------------------------------------------------------------------------------------------------
 	
+	CLEANUP
+		Create key & iv method
+	
 	Wenn der gleiche key mit 2 verschiedenen verschlüsselungen gespeichert wird überschreiben sich die keys
 		--> metadata in die berechnung des keys mit einbeziehen
+	
+	anwendung der hashfunktion macht so keinen sinn, der klartext sollte gehasht werden, sonst kann das ganze ja ganz einfach nachgebaut werden	
 	
 	USB Komponente
 		-Auswahl auf welchem usb stick gespeichert werden soll wenn mehrere angeschlossen sind
@@ -9,12 +14,9 @@ TODO	---------------------------------------------------------------------------
 		-Nur ein registrierter stick gleichzeitig angeschlossen sein
 	
 	Verschlüsselungen
-		-RSA und passwort basierte Verschlüsselungen
+		-passwort basierte Verschlüsselungen
+			--> password checks
 		-ARC4 siehe seite 68 (nur mit PBE's)
-		
-	Keys
-		-savin private keys	
-			--> wrap keys um speichern möglich zu machen (S134)
 		
 	SICHERHEITSLÜCKE
 		-angreifer kann einfach den drive namen in der config ändern und die keydatei auf seine festplatte schreiben

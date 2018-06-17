@@ -71,16 +71,19 @@ public class FileManager {
 			Files.setAttribute(path.toPath(), "user:Mode", (fileData.getEncryptionMode().toString()+ "").getBytes() );
 			Files.setAttribute(path.toPath(), "user:Padding", (fileData.getPaddingType().toString()+ "").getBytes() );
 			Files.setAttribute(path.toPath(), "user:HashF", (fileData.getHashFunction().toString()+ "").getBytes() );
-			Files.setAttribute(path.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes() );
-			
+			Files.setAttribute(path.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes());
+			Files.setAttribute(path.toPath(), "user:pbeType", (fileData.getPbeType().toString() + "").getBytes());
+				
 			//create an object of BufferedOutputStream
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			
+			//TODO 3 encrypt options
 			byte[] contentToWrite = Base64.getEncoder().encode(CryptoManager.encryptString(fileContent, fileData));
 			
 			//these attributes need to set after the encoding because their values are generated while encoding
 			Files.setAttribute(path.toPath(), "user:IV", (fileData.getiV() + "").getBytes() );
 			Files.setAttribute(path.toPath(), "user:Hash", (fileData.getHashValue()).getBytes());
+			Files.setAttribute(path.toPath(), "user:salt", (fileData.getSalt()));
 			
 			bos.write(contentToWrite);
 			
