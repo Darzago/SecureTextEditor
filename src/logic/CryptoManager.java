@@ -179,7 +179,7 @@ public class CryptoManager {
 		//Compare the two hashes using a message digest helper function
 		if(!MessageDigest.isEqual(Base64.getDecoder().decode(readHash) , hash.digest()))
 		{
-			throw new Exception("File has been altered REEEEEEEEEEEEEEEEEEE");
+			throw new Exception("File has been altered!");
 		}
 	}
 	

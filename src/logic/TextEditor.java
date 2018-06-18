@@ -409,6 +409,7 @@ public class TextEditor extends TextArea{
             	{
             		paddingDropDown.setDisable(true);
             		encryptionModeDropDown.setDisable(true);
+            		keylengthDropDown.setDisable(false);
             	}
             	else
             	{
