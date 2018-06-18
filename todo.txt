@@ -2,6 +2,8 @@ TODO	---------------------------------------------------------------------------
 	
 	CLEANUP
 		Create key & iv method
+		opertaion mode muss nicht übergeben werden --> erkennen anhand des types
+		move loadMetadata to filemanager
 	
 	Wenn der gleiche key mit 2 verschiedenen verschlüsselungen gespeichert wird überschreiben sich die keys
 		--> metadata in die berechnung des keys mit einbeziehen

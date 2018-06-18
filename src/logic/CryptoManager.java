@@ -49,7 +49,7 @@ public class CryptoManager {
     	
     	if(fileData.getEncryptionType() == EncryptionType.ARC4)
     	{
-    		cipher = Cipher.getInstance(EncryptionType.ARC4.toString());
+    		cipher = Cipher.getInstance(EncryptionType.ARC4.toString(), "BC");
     	}
     	else
     		cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
@@ -101,8 +101,10 @@ public class CryptoManager {
 				keyBytes =  new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded()).getEncoded();
 				break;
 			case Passwordbased:
+				
 				byte[] salt = generateByteArray(8);
 				fileData.setSalt(salt);
+				
 				SecretKeyFactory factory = SecretKeyFactory.getInstance(fileData.getPbeType().toString(), "BC");
 				
 			    SecretKey key = factory.generateSecret(new PBEKeySpec(fileData.getPassword().toCharArray()));
@@ -110,7 +112,6 @@ public class CryptoManager {
 			    cipher = Cipher.getInstance(fileData.getPbeType().toString());
 			    
 			    cipher.init(Cipher.ENCRYPT_MODE, key, new PBEParameterSpec(salt, 1024));
-				
 				
 				break;
 			case Symmetric:
@@ -148,7 +149,10 @@ public class CryptoManager {
 	{
 		MessageDigest hash = MessageDigest.getInstance(metadata.getHashFunction().toString(), "BC");
 		hash.update(input);
-	
+		hash.update(metadata.getEncryptionType().toString().getBytes());
+		hash.update(metadata.getPaddingType().toString().getBytes());
+		hash.update(metadata.getKeyLength().toString().getBytes());
+		hash.update(metadata.getUsbData().toString().getBytes());
 		return Base64.getEncoder().encodeToString(hash.digest());
 	}
 	
@@ -171,13 +175,10 @@ public class CryptoManager {
 	}
 	
 	
-	private static void validateHash(HashFunction hashFunction, byte[] input, String readHash) throws Exception
+	private static void validateHash(MetaData fileData, byte[] input, String readHash) throws Exception
 	{
-		MessageDigest hash = MessageDigest.getInstance(hashFunction.toString(), "BC");
-		hash.update(input);
-		
 		//Compare the two hashes using a message digest helper function
-		if(!MessageDigest.isEqual(Base64.getDecoder().decode(readHash) , hash.digest()))
+		if(!MessageDigest.isEqual(Base64.getDecoder().decode(readHash) , Base64.getDecoder().decode(generateHash(fileData, input))))
 		{
 			throw new Exception("File has been altered!");
 		}
@@ -198,7 +199,7 @@ public class CryptoManager {
 	{
 		byte[] plainText;
 		
-		validateHash(fileData.getHashFunction(), input, fileData.getHashValue());
+		validateHash(fileData, input, fileData.getHashValue());
 		
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
@@ -227,7 +228,6 @@ public class CryptoManager {
 				cipher.init(Cipher.DECRYPT_MODE, privateKey);
 				break;
 			case Passwordbased:
-
 				PasswordDialog test = new PasswordDialog();
 				Optional<String> result = test.showAndWait();
 				if(result.get() != null)
@@ -243,7 +243,6 @@ public class CryptoManager {
 			    SecretKey skey = keyFactory2.generateSecret(new PBEKeySpec(result.get().toCharArray()));
 			    cipher = Cipher.getInstance(fileData.getPbeType().toString());
 			    cipher.init(Cipher.DECRYPT_MODE, skey, new PBEParameterSpec(fileData.getSalt(), 1024));
-			    
 				
 				break;
 			case Symmetric:
