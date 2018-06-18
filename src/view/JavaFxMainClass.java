@@ -158,7 +158,7 @@ public class JavaFxMainClass extends Application{
 				
 				VBox optionGeneralLayout = new VBox(encryptionGridPane, encryptionButtonsBox);
 				
-				Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 600, 200);
+				Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 650, 200);
 				encryptionOptionStage.setScene(encryptionOptionWindow);
 				encryptionOptionStage.setTitle("Encryption Options");
 				encryptionOptionStage.getIcons().add(new Image("gear-256.png"));
@@ -272,10 +272,10 @@ public class JavaFxMainClass extends Application{
 					encryptionGridPane.add(operationDropDown, 0, 1);
 					encryptionGridPane.add(encryptionLabel, 0, 2);
 					encryptionGridPane.add(encryptionDropDown, 0, 3);
-					encryptionGridPane.add(keyLengthLabel, 1, 2);
-					encryptionGridPane.add(keyLengthDropDown, 1, 3);
-					encryptionGridPane.add(hashFunctionLabel, 2, 2);
-					encryptionGridPane.add(hashFunctionDropDown, 2, 3);
+					encryptionGridPane.add(keyLengthLabel, 2, 2);
+					encryptionGridPane.add(keyLengthDropDown, 2, 3);
+					encryptionGridPane.add(hashFunctionLabel, 1, 2);
+					encryptionGridPane.add(hashFunctionDropDown, 1, 3);
 					
 					
 					encryptionDropDown.getItems().clear();
@@ -297,6 +297,9 @@ public class JavaFxMainClass extends Application{
 					encryptionGridPane.add(hashFunctionLabel, 2, 2);
 					encryptionGridPane.add(hashFunctionDropDown, 2, 3);
 					
+					operationDropDown.hide();
+					encryptionDropDown.autosize();
+					
 					break;
 				case Symmetric:
 					encryptionGridPane.getChildren().clear();
@@ -311,6 +314,8 @@ public class JavaFxMainClass extends Application{
 					encryptionGridPane.add(paddingDropDown, 2, 3);
 					encryptionGridPane.add(hashFunctionLabel, 3, 2);
 					encryptionGridPane.add(hashFunctionDropDown, 3, 3);
+					encryptionGridPane.add(keyLengthLabel, 4, 2);
+					encryptionGridPane.add(keyLengthDropDown, 4, 3);
 					
 					encryptionDropDown.getItems().clear();
 					encryptionDropDown.setValue(EncryptionType.none);

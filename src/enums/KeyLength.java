@@ -19,6 +19,8 @@ public enum KeyLength {
 			return new KeyLength[]{x64};
 		case RSA:
 			return new KeyLength[]{x1024, x4096};
+		case ARC4:
+			return new KeyLength[]{x64, x128, x192, x256, x1024, x4096};
 		case none:
 			return new KeyLength[]{x0};
 		default:

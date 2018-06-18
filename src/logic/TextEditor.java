@@ -399,11 +399,16 @@ public class TextEditor extends TextArea{
 	            	keyLengthBox.setValue(KeyLength.getFittingKeyLength(encryptionDropDown.getValue())[0]);
             	}
             	
-            	if(encryptionDropDown.getValue() == EncryptionType.none || encryptionDropDown.getValue() == EncryptionType.ARC4)
+            	if(encryptionDropDown.getValue() == EncryptionType.none)
             	{
             		paddingDropDown.setDisable(true);
             		encryptionModeDropDown.setDisable(true);
-            		keyLengthBox.setDisable(true);
+            		keylengthDropDown.setDisable(true);
+            	}
+            	else if(encryptionDropDown.getValue() == EncryptionType.ARC4)
+            	{
+            		paddingDropDown.setDisable(true);
+            		encryptionModeDropDown.setDisable(true);
             	}
             	else
             	{
