@@ -505,6 +505,7 @@ public class TextEditor extends TextArea{
 		
 		//Create and modify an alert object
 		saveQuitAlert = new Alert(AlertType.CONFIRMATION);
+		
 		saveQuitAlert.setGraphic(null);
 		saveQuitAlert.setTitle("Warning");
 		saveQuitAlert.setContentText("Discard all changes of the current file?");

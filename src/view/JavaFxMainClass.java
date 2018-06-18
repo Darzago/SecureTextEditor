@@ -116,21 +116,24 @@ public class JavaFxMainClass extends Application{
 						
 						Label pbeTypeLabel = new Label("PBE Type:");
 							ComboBox<PBEType> pbeTypeDropDown = new ComboBox<PBEType> ();
-							pbeTypeDropDown.setValue(PBEType.PBKDF2WithHmacSHA1);
+							pbeTypeDropDown.setValue(PBEType.PBEWithMD5AndDES);
 						pbeTypeDropDown.getItems().addAll(PBEType.values());
 						
 						//Adds all dropdown menus and labels to a GridPane
 						GridPane encryptionGridPane = new GridPane();
 						encryptionGridPane.add(operationLabel, 0, 0);
 						encryptionGridPane.add(operationDropDown, 0, 1);
+						
 						encryptionGridPane.add(encryptionLabel, 0, 2);
 						encryptionGridPane.add(encryptionDropDown, 0, 3);
 						encryptionGridPane.add(modeLabel, 1, 2);
 						encryptionGridPane.add(modeDropDown, 1, 3);
 						encryptionGridPane.add(paddingLabel, 2, 2);
 						encryptionGridPane.add(paddingDropDown, 2, 3);
+						
 						encryptionGridPane.add(hashFunctionLabel, 3, 2);
 						encryptionGridPane.add(hashFunctionDropDown, 3, 3);
+						
 						encryptionGridPane.add(keyLengthLabel, 4, 2);
 						encryptionGridPane.add(keyLengthDropDown, 4, 3);
 						
@@ -287,25 +290,12 @@ public class JavaFxMainClass extends Application{
 					
 					encryptionGridPane.add(operationLabel, 0, 0);
 					encryptionGridPane.add(operationDropDown, 0, 1);
-					encryptionGridPane.add(encryptionLabel, 0, 2);
-					encryptionGridPane.add(encryptionDropDown, 0, 3);
-					encryptionGridPane.add(modeLabel, 1, 2);
-					encryptionGridPane.add(modeDropDown, 1, 3);
-					encryptionGridPane.add(paddingLabel, 2, 2);
-					encryptionGridPane.add(paddingDropDown, 2, 3);
-					encryptionGridPane.add(hashFunctionLabel, 3, 2);
-					encryptionGridPane.add(hashFunctionDropDown, 3, 3);
-					encryptionGridPane.add(passwordLabel, 0, 4);
-					encryptionGridPane.add(passwordArea, 0, 5);
-					encryptionGridPane.add(pbeTypeLabel, 1, 4);
-					encryptionGridPane.add(pbeTypeDropDown, 1, 5);
-					
-					
-					encryptionDropDown.getItems().clear();
-					encryptionDropDown.setValue(EncryptionType.AES);
-					encryptionDropDown.getItems().addAll(EncryptionType.getValuesByOperation(OperationMode.Passwordbased));
-					
-					
+					encryptionGridPane.add(pbeTypeLabel, 0, 2);
+					encryptionGridPane.add(pbeTypeDropDown, 0, 3);
+					encryptionGridPane.add(passwordLabel, 1, 2);
+					encryptionGridPane.add(passwordArea, 1, 3);
+					encryptionGridPane.add(hashFunctionLabel, 2, 2);
+					encryptionGridPane.add(hashFunctionDropDown, 2, 3);
 					
 					break;
 				case Symmetric:

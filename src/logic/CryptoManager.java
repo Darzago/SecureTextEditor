@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
+import java.util.Optional;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -13,6 +14,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.PrivateKey;
 import java.security.KeyPair;
@@ -24,6 +26,7 @@ import enums.KeyLength;
 import enums.OperationMode;
 import persistence.FileManager;
 import persistence.MetaData;
+import view.PasswordDialog;
 
 /**
  * Used to de and encrypt data
@@ -86,7 +89,7 @@ public class CryptoManager {
 		Cipher cipher = null;
 		Key keyObject = null;
 		
-		if(fileData.getEncryptionType() != EncryptionType.none)
+		if(fileData.getEncryptionType() != EncryptionType.none && !input.isEmpty())
 		{
 			//TODO dont pull the keys from their respective key objects
 			switch(fileData.getOperationMode())
@@ -98,18 +101,16 @@ public class CryptoManager {
 				keyBytes =  new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded()).getEncoded();
 				break;
 			case Passwordbased:
-				byte[] salt = generateByteArray(16);
+				byte[] salt = generateByteArray(8);
+				fileData.setSalt(salt);
 				SecretKeyFactory factory = SecretKeyFactory.getInstance(fileData.getPbeType().toString(), "BC");
 				
-				//65536 = iteration count, 256=keylength only working with a variable keylength pbe cipher
-		        KeySpec spec = new PBEKeySpec(fileData.getPassword().toCharArray(), salt, 1024, 256);
-		        SecretKey tmp = factory.generateSecret(spec);
-		        SecretKey secret = new SecretKeySpec(tmp.getEncoded(), "AES");
-		        
-				System.out.println(tmp.getEncoded().length);
-			
-				iv = getIvIfNeeded(fileData);
-				cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, secret, iv, null);
+			    SecretKey key = factory.generateSecret(new PBEKeySpec(fileData.getPassword().toCharArray()));
+			    
+			    cipher = Cipher.getInstance(fileData.getPbeType().toString());
+			    
+			    cipher.init(Cipher.ENCRYPT_MODE, key, new PBEParameterSpec(salt, 1024));
+				
 				
 				break;
 			case Symmetric:
@@ -127,7 +128,7 @@ public class CryptoManager {
 			output = input.getBytes();
 		}
 		
-		fileData.setHashValue(generateHash(fileData.getHashFunction(), output));
+		fileData.setHashValue(generateHash(fileData, output));
 		
 		if(keyBytes != null)
 			FileManager.saveKey(keyBytes, fileData.getHashValue(), fileData.getUsbData().getDriveLetter());
@@ -226,6 +227,23 @@ public class CryptoManager {
 				cipher.init(Cipher.DECRYPT_MODE, privateKey);
 				break;
 			case Passwordbased:
+
+				PasswordDialog test = new PasswordDialog();
+				Optional<String> result = test.showAndWait();
+				if(result.get() != null)
+				{
+					System.out.println(result.get());
+				}
+				else
+				{
+					throw new Exception("No Password was entered.");
+				}
+				
+			    SecretKeyFactory keyFactory2 = SecretKeyFactory.getInstance(fileData.getPbeType().toString());
+			    SecretKey skey = keyFactory2.generateSecret(new PBEKeySpec(result.get().toCharArray()));
+			    cipher = Cipher.getInstance(fileData.getPbeType().toString());
+			    cipher.init(Cipher.DECRYPT_MODE, skey, new PBEParameterSpec(fileData.getSalt(), 1024));
+			    
 				
 				break;
 			case Symmetric:
@@ -303,7 +321,7 @@ public class CryptoManager {
 	private static IvParameterSpec getIvIfNeeded(MetaData fileData)
 	{
 		IvParameterSpec ivSpec = null;
-		if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")) && fileData.getEncryptionType() != EncryptionType.ARC4)
+		if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")) )
 		{
 			byte[] ivArray = generateMatchingIV(fileData.getEncryptionType());
 			fileData.setiV(Base64.getEncoder().encodeToString(ivArray));

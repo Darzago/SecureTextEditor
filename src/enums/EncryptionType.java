@@ -1,7 +1,7 @@
 package enums;
 
 public enum EncryptionType {
-	none, AES, DES, RSA, ARC4;
+	none, AES, DES, RSA;
 	
 
 	
@@ -11,8 +11,6 @@ public enum EncryptionType {
 		{
 		case Asymmetric:
 			return new EncryptionType[]{RSA}; 
-		case Passwordbased:
-			return new EncryptionType[]{AES, DES, ARC4};
 		case Symmetric:
 			return new EncryptionType[]{none, AES, DES};
 		default:
