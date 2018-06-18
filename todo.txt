@@ -1,27 +1,22 @@
 TODO	-----------------------------------------------------------------------------------------------------------------
-	
+	TEST
+		Basic tests for each operation mode
+		
 	CLEANUP
 		Create key & iv method
 		opertaion mode muss nicht übergeben werden --> erkennen anhand des types
-		move loadMetadata to filemanager
-	
-	Wenn der gleiche key mit 2 verschiedenen verschlüsselungen gespeichert wird überschreiben sich die keys
-		--> metadata in die berechnung des keys mit einbeziehen
-	
-	anwendung der hashfunktion macht so keinen sinn, der klartext sollte gehasht werden, sonst kann das ganze ja ganz einfach nachgebaut werden	
+		combine pbetype & encryptiontype
+		unnötiges umkonvertieren bei der validate/generateHash methode fixen
+		decrypt methode alleinstehend
 	
 	USB Komponente
 		-Auswahl auf welchem usb stick gespeichert werden soll wenn mehrere angeschlossen sind
 		-Passwort option für keyconfig.xml / Art der Passwortverschlüsselung auswählbar & in der config gespeichert
 		-Nur ein registrierter stick gleichzeitig angeschlossen sein
-	
-	Verschlüsselungen
-		-passwort basierte Verschlüsselungen
-			--> password checks
-		-ARC4 siehe seite 68 (nur mit PBE's)
-		
+			
 	SICHERHEITSLÜCKE
 		-angreifer kann einfach den drive namen in der config ändern und die keydatei auf seine festplatte schreiben
+			-->config hashen macht aber leider keinen sinn da es ganz einfach nachgestellt werden kann
 			
 DONE	-----------------------------------------------------------------------------------------------------------------
 		-Message Digest mit 5 Hash Arten
@@ -40,3 +35,8 @@ DONE	---------------------------------------------------------------------------
 		-Key generation
 		-key speicherung
 			-->finden anhand der datei hashes
+		-metadata in die berechnung des keys mit einbeziehen
+		-passwort basierte Verschlüsselungen
+			--> password checks
+		-ARC4 siehe seite 68
+		-move loadMetadata to filemanager

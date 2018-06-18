@@ -1,7 +1,5 @@
 package logic;
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -133,7 +131,8 @@ public class TextEditor extends TextArea{
         		
         		this.documentOrigin = openFileName;
         		
-        		loadMetaData(fileToOpen);
+    			currentFileData = FileManager.loadMetaData(fileToOpen);
+    			updateOutput(currentFileData);
         		
         		checkForValidUsbDevice();
         		
@@ -150,37 +149,6 @@ public class TextEditor extends TextArea{
     	}
 	}
 	
-	/**
-	 * TODO Move to filemanager
-	 * Searches the known metadata for an input file and loads its information into the editor
-	 * @param file
-	 */
-	private void loadMetaData(File file)
-	{
-		
-		try {
-			MetaData openedData = new MetaData();
-			openedData.setEncryptionType(EncryptionType.valueOf(getAttributeAsString(file, "user:Type")));
-			openedData.setEncryptionMode(EncryptionMode.valueOf(getAttributeAsString(file, "user:Mode")));
-			openedData.setPaddingType(PaddingType.valueOf(getAttributeAsString(file, "user:Padding")));
-			openedData.setHashFunction(HashFunction.valueOf(getAttributeAsString(file, "user:HashF")));
-			openedData.setHashValue(new String((byte[])Files.getAttribute(file.toPath(), "user:Hash")));
-			openedData.setKeyLength(KeyLength.valueOf(getAttributeAsString(file, "user:keyLength")));
-			openedData.setOperationMode(OperationMode.valueOf(getAttributeAsString(file, "user:operationMode")));
-			openedData.setPbeType(PBEType.valueOf(getAttributeAsString(file, "user:pbeType")));
-			openedData.setiV(getAttributeAsString(file, "user:IV"));
-			openedData.setSalt((byte[])Files.getAttribute(file.toPath(), "user:salt"));
-			currentFileData = openedData;
-			updateOutput(currentFileData);
-			
-		}
-		catch (Exception e) 
-		{
-			e.printStackTrace();
-		}
-		
-	}
-	
 	private void updateOutput(MetaData metadata)
 	{
 		this.encryptionTypeBox.setValue(metadata.getEncryptionType());
@@ -192,10 +160,7 @@ public class TextEditor extends TextArea{
 		this.pbeTypeBox.setValue(metadata.getPbeType());
 	}
 	
-	private String getAttributeAsString(File file, String attributeName) throws IOException
-	{
-		return (new String((byte[])Files.getAttribute(file.toPath(), attributeName)));
-	}
+
 	
 	/**
 	 * Saves the current content of the editor in a user specified directory using the filechooser

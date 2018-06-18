@@ -2,6 +2,7 @@ package persistence;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -25,6 +26,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import enums.EncryptionMode;
+import enums.EncryptionType;
+import enums.HashFunction;
+import enums.KeyLength;
+import enums.OperationMode;
+import enums.PBEType;
+import enums.PaddingType;
 import logic.CryptoManager;
 
 /**
@@ -77,7 +85,7 @@ public class FileManager {
 			//create an object of BufferedOutputStream
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			
-			//TODO 3 encrypt options
+			
 			byte[] contentToWrite = Base64.getEncoder().encode(CryptoManager.encryptString(fileContent, fileData));
 			
 			//these attributes need to set after the encoding because their values are generated while encoding
@@ -188,6 +196,41 @@ public class FileManager {
 		
 		saxParser.parse(usbConfigPath, handler);
 		return dataList;
+	}
+	
+	/**
+	 * TODO Move to filemanager
+	 * Searches the known metadata for an input file and loads its information into the editor
+	 * @param file
+	 */
+	public static MetaData loadMetaData(File file)
+	{
+		
+		try {
+			MetaData openedData = new MetaData();
+			openedData.setEncryptionType(EncryptionType.valueOf(getAttributeAsString(file, "user:Type")));
+			openedData.setEncryptionMode(EncryptionMode.valueOf(getAttributeAsString(file, "user:Mode")));
+			openedData.setPaddingType(PaddingType.valueOf(getAttributeAsString(file, "user:Padding")));
+			openedData.setHashFunction(HashFunction.valueOf(getAttributeAsString(file, "user:HashF")));
+			openedData.setHashValue(new String((byte[])Files.getAttribute(file.toPath(), "user:Hash")));
+			openedData.setKeyLength(KeyLength.valueOf(getAttributeAsString(file, "user:keyLength")));
+			openedData.setOperationMode(OperationMode.valueOf(getAttributeAsString(file, "user:operationMode")));
+			openedData.setPbeType(PBEType.valueOf(getAttributeAsString(file, "user:pbeType")));
+			openedData.setiV(getAttributeAsString(file, "user:IV"));
+			openedData.setSalt((byte[])Files.getAttribute(file.toPath(), "user:salt"));
+			return openedData;
+			
+		}
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private static String getAttributeAsString(File file, String attributeName) throws IOException
+	{
+		return (new String((byte[])Files.getAttribute(file.toPath(), attributeName)));
 	}
 	
 	//TODO Move to cryptomanager

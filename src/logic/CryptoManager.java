@@ -3,7 +3,6 @@ import java.security.Key;
 import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 import java.util.Optional;
@@ -21,7 +20,6 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 
 import enums.EncryptionType;
-import enums.HashFunction;
 import enums.KeyLength;
 import enums.OperationMode;
 import persistence.FileManager;
@@ -260,7 +258,6 @@ public class CryptoManager {
 		{
 			plainText = input;
 		}
-		
 		return new String(plainText, "UTF-8");
 	}
 	
