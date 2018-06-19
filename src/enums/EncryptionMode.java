@@ -1,5 +1,10 @@
 package enums;
 
+/**
+ * Represents an encryption mode
+ * @author Joel
+ *
+ */
 public enum EncryptionMode {
 ECB, CBC, CTS, CTR, OFB, CFB, CFB8, GCM, None;
 

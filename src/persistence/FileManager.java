@@ -85,28 +85,34 @@ public class FileManager {
 		}
 	}
 	
-	private static void writeMetaData(File path, MetaData fileData) throws Exception
+	/**
+	 * Writes the metadata into a file
+	 * @param file file whichs metadata will be written
+	 * @param fileData data to write
+	 * @throws Exception
+	 */
+	private static void writeMetaData(File file, MetaData fileData) throws Exception
 	{
 		OperationMode mode = fileData.getEncryptionType().getOperationMode();
 		
-		Files.setAttribute(path.toPath(), "user:Type", (fileData.getEncryptionType().toString() + "").getBytes() );
-		Files.setAttribute(path.toPath(), "user:HashF", (fileData.getHashFunction().toString()+ "").getBytes() );
-		Files.setAttribute(path.toPath(), "user:Hash", (fileData.getHashValue()).getBytes());
+		Files.setAttribute(file.toPath(), "user:Type", (fileData.getEncryptionType().toString() + "").getBytes() );
+		Files.setAttribute(file.toPath(), "user:HashF", (fileData.getHashFunction().toString()+ "").getBytes() );
+		Files.setAttribute(file.toPath(), "user:Hash", (fileData.getHashValue()).getBytes());
 		
 		if(mode == OperationMode.Symmetric)
 		{
-			Files.setAttribute(path.toPath(), "user:Mode", (fileData.getEncryptionMode().toString()+ "").getBytes() );
-			Files.setAttribute(path.toPath(), "user:Padding", (fileData.getPaddingType().toString()+ "").getBytes() );
-			Files.setAttribute(path.toPath(), "user:IV", (fileData.getiV() + "").getBytes());
-			Files.setAttribute(path.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes());
+			Files.setAttribute(file.toPath(), "user:Mode", (fileData.getEncryptionMode().toString()+ "").getBytes() );
+			Files.setAttribute(file.toPath(), "user:Padding", (fileData.getPaddingType().toString()+ "").getBytes() );
+			Files.setAttribute(file.toPath(), "user:IV", (fileData.getiV() + "").getBytes());
+			Files.setAttribute(file.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes());
 		}
 		else if(mode == OperationMode.Asymmetric)
 		{
-			Files.setAttribute(path.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes());
+			Files.setAttribute(file.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes());
 		}
 		else if(mode == OperationMode.Passwordbased)
 		{
-			Files.setAttribute(path.toPath(), "user:salt", (fileData.getSalt()));
+			Files.setAttribute(file.toPath(), "user:salt", (fileData.getSalt()));
 		}
 	}
 	
@@ -210,9 +216,10 @@ public class FileManager {
 	}
 	
 	/**
-	 * TODO Move to filemanager
-	 * Searches the known metadata for an input file and loads its information into the editor
-	 * @param file
+	 * Loads meta data from a file
+	 * @param file File to be read
+	 * @return read metadata
+	 * @throws Exception
 	 */
 	public static MetaData loadMetaData(File file) throws Exception
 	{
@@ -243,12 +250,25 @@ public class FileManager {
 		return openedData;
 	}
 	
+	/**
+	 * Returns an attribute of a file as a string
+	 * @param file file to be read
+	 * @param attributeName name of the attribute to be read
+	 * @return attribute as a string
+	 * @throws IOException
+	 */
 	private static String getAttributeAsString(File file, String attributeName) throws IOException
 	{
 		return (new String((byte[])Files.getAttribute(file.toPath(), attributeName)));
 	}
 	
-	//TODO Move to cryptomanager
+	/**
+	 * Saves a key to a .STEKEY file (hash value as name)
+	 * @param key Key to be written
+	 * @param hashValue Hash value to be used as name
+	 * @param driveLetter drive letter of the usb drive the file will be written on
+	 * @throws Exception
+	 */
 	public static void saveKey(byte[] key, String hashValue, String driveLetter) throws Exception
 	{
 		File testForFolder = new File(driveLetter + ":/STE-KeyFiles");
@@ -268,6 +288,11 @@ public class FileManager {
 		bos.close();
 	}
 	
+	/**
+	 * Removes all chars from a string that can not be used in a file name
+	 * @param input String to be processed
+	 * @return processed String
+	 */
 	private static String removeSpecialChars(String input)
 	{
 		input = input.replaceAll("/", "");
@@ -277,6 +302,13 @@ public class FileManager {
 		return input;
 	}
 	
+	/**
+	 * Loads a key from a file
+	 * @param hashValue hash value of the file
+	 * @param driveLetter drive letter of the drive the key is stored on
+	 * @return key in a byte array
+	 * @throws Exception
+	 */
 	public static byte[] getKeyFromFile(String hashValue, String driveLetter) throws Exception
 	{
 		hashValue = removeSpecialChars(hashValue);

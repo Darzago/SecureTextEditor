@@ -39,6 +39,7 @@ import logic.TextEditor;
  */
 public class JavaFxMainClass extends Application{
 	
+	//Stores the editor
 	TextEditor editor;
 	
 	public static void main(String[] args) {
@@ -49,13 +50,11 @@ public class JavaFxMainClass extends Application{
 	public void start(Stage primaryStage) throws Exception {
 
 		Stage encryptionOptionStage = new Stage();
-		
 
-		
 		TabPane tabPane = new TabPane();
 		MenuBar menuBar = new MenuBar();
 		
-		//Event Handlers of all menu options within the file menu
+		//Creation of all menu items
 		Menu fileMenu = new Menu("File");
 			MenuItem menuNewItem = new MenuItem("New");
 			MenuItem menuOpenItem = new MenuItem("Open");
@@ -77,26 +76,24 @@ public class JavaFxMainClass extends Application{
 		menuOpenItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
 		menuSaveItem.setAccelerator(new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN));
 		
-		//Options Menu	 ---------------------------------------------------------------------------------------
-		
-				//Label for the encryption dropdown
+//		Options Menu	 ---------------------------------------------------------------------------------------
+//					Creation of the encryption menu 
+						
+						//Creation of all dropdown menues
 						Label operationLabel = new Label("Operation Mode:  ");
 							ComboBox<OperationMode> operationDropDown = new ComboBox<OperationMode> ();
 							operationDropDown.setValue(OperationMode.Symmetric);
 						operationDropDown.getItems().addAll(OperationMode.values());
-						
-						//Label for the encryption dropdown
+
 						Label encryptionLabel = new Label("Encryption:  ");
 							ComboBox<EncryptionType> encryptionDropDown = new ComboBox<EncryptionType> ();
 							encryptionDropDown.setValue(EncryptionType.none);
 						encryptionDropDown.getItems().addAll(EncryptionType.getValuesByOperation(OperationMode.Symmetric));
 						
-						
 						Label modeLabel = new Label("Mode:  ");
 							ComboBox<EncryptionMode> modeDropDown = new ComboBox<EncryptionMode> ();
 							modeDropDown.setValue(EncryptionMode.ECB);
 						modeDropDown.getItems().addAll(EncryptionMode.values());
-						
 						
 						Label paddingLabel = new Label("Padding:  ");
 							ComboBox<PaddingType> paddingDropDown = new ComboBox<PaddingType> ();
@@ -140,7 +137,6 @@ public class JavaFxMainClass extends Application{
 						
 						Label passwordLabel = new Label("Password: ");
 						PasswordField  passwordArea = new PasswordField();
-						
 						
 						//Adds button(s) below the dropdown menus 
 						GridPane encryptionButtonsBox = new GridPane();
@@ -289,7 +285,7 @@ public class JavaFxMainClass extends Application{
 					encryptionGridPane.add(passwordArea, 1, 3);
 					encryptionGridPane.add(hashFunctionLabel, 2, 2);
 					encryptionGridPane.add(hashFunctionDropDown, 2, 3);
-					
+
 					encryptionDropDown.getItems().clear();
 					encryptionDropDown.setValue(EncryptionType.PBEWithMD5AndDES);
 					encryptionDropDown.getItems().addAll(EncryptionType.getValuesByOperation(OperationMode.Passwordbased));
@@ -336,5 +332,6 @@ public class JavaFxMainClass extends Application{
         primaryStage.show();
 
 	}
+
 	
 }

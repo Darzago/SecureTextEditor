@@ -15,6 +15,12 @@ import logic.CryptoManager;
 import persistence.MetaData;
 import persistence.USBMetaData;
 
+/**
+ * Test Class 
+ * 		implements several JUnit tests. 
+ * @author Joel
+ *
+ */
 public class TestClass {
 	String testString = "TestDaten";
 	MetaData testData = new MetaData(PaddingType.PKCS7Padding, EncryptionType.AES, EncryptionMode.CBC, HashFunction.MD5, KeyLength.x128, "");

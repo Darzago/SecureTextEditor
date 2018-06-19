@@ -4,15 +4,17 @@ TODO	---------------------------------------------------------------------------
 		
 	PBE
 		Passwörter sollten nicht allzu schlecht sein
+		salt größen individuell an die Blockgrößen anpassen
+		
+		Möglichkeit alle keydateinen bzw den ordner zu verschlüsseln (wie auch immer das gehen soll)
+			-->wenn keys in einem xml ähnlichen format gespeichert werden vielleicht
 		
 	CLEANUP
-		password bei der entschlüsselung auch aus der filedata hoeln
-		Aufteilung in 3 en & 3 decrypt functions?
 		IVs werden momentan noch als String gespeichert
 		Create key & iv method
 		
 		unnötiges umkonvertieren bei der validate/generateHash methode fixen
-		decrypt methode alleinstehend
+		decrypt methode alleinstehend	
 	
 	USB Komponente
 		-Passwort option für keyconfig.xml / Art der Passwortverschlüsselung auswählbar & in der config gespeichert
@@ -48,3 +50,4 @@ DONE	---------------------------------------------------------------------------
 		-nur die sachen speichern und laden die wirklich gebraucht werden
 		-opertaion mode muss nicht übergeben werden --> erkennen anhand des types
 		-combine pbetype & encryptiontype
+		-password bei der entschlüsselung auch aus der filedata holen

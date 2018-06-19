@@ -181,6 +181,15 @@ public class MetaData {
 
 	public MetaData(){}
 
+	/**
+	 * Constructor
+	 * @param paddingType Padding to be set
+	 * @param encryptionType EncryptionType to be set
+	 * @param encryptionMode Encryption mode to be set
+	 * @param hashFunction Hash function to be set
+	 * @param keyLength Key length to be set
+	 * @param filePath Filepath to be set
+	 */
 	public MetaData(PaddingType paddingType, EncryptionType encryptionType,
 			EncryptionMode encryptionMode, HashFunction hashFunction, KeyLength keyLength, String filePath) {
 		this.paddingType = paddingType;

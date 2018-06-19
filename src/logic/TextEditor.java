@@ -35,6 +35,7 @@ import persistence.FileManager;
  */
 public class TextEditor extends TextArea{
 	
+	//Default Strings displayed in the top of the window
 	public final String title = "Secure Text Editor - ";
 	private final String defaultName = "Unbenannt.txt";
 	
@@ -49,12 +50,13 @@ public class TextEditor extends TextArea{
 	//Flag that shows if there is unsaved progress
 	private boolean textHasChanged = false;
 	
-	//List of all currently known metadata
+	//List of all currently known usbData
 	List<USBMetaData> usbDataList = new ArrayList<USBMetaData>();
 	
 	//Metadata of the file the editor currently edits
 	private MetaData currentFileData;
 	
+	//Thread used to detect Usb drives
 	private USBDetection detectionThread;
 	
 	//Dropdown Menus in the encryption option window
@@ -64,7 +66,10 @@ public class TextEditor extends TextArea{
 	private ComboBox<HashFunction> hashFunctionModeBox;
 	private ComboBox<KeyLength> keyLengthBox;
 	
+	//Text displayed when you register a usb
 	private Text usbRegistrationText;
+	
+	//Text field where the password is entered
 	private PasswordField  passwordField;
 	
 	/**
@@ -163,6 +168,10 @@ public class TextEditor extends TextArea{
     	}
 	}
 	
+	/**
+	 * Updates the dropdown menus with the input metadata
+	 * @param metadata data used to update
+	 */
 	private void updateOutput(MetaData metadata)
 	{
 		this.encryptionTypeBox.setValue(metadata.getEncryptionType());
@@ -211,6 +220,10 @@ public class TextEditor extends TextArea{
 		}
 	}
 	
+	/**
+	 * Checks if there is a valid USB drive connected. If this is the case, the usb drive letter is written into the metadata, otherwise an error is displayed
+	 * @throws Exception
+	 */
 	private void checkForValidUsbDevice() throws Exception
 	{
 		USBMetaData usbData = null;
@@ -227,6 +240,10 @@ public class TextEditor extends TextArea{
 		currentFileData.setUsbData(usbData);
 	}
 	
+	/**
+	 * Gets the USBMetadata of a curretly connected usb drive
+	 * @return
+	 */
 	private USBMetaData getConnectedUsb()
 	{
 		USBMetaData foundUsb = null;
@@ -278,7 +295,6 @@ public class TextEditor extends TextArea{
 		}
 		
 	}
-	
 
 
 	/**
@@ -293,6 +309,10 @@ public class TextEditor extends TextArea{
 		}
 	}
 	
+	/**
+	 * Updates the title row of the window with the input string
+	 * @param _title new title
+	 */
 	private void updateTitle(String _title)
 	{
 		this.documentName = _title;
@@ -300,7 +320,11 @@ public class TextEditor extends TextArea{
 		textHasChanged = false;
 	}
 	
-	
+	/**
+	 * Registers a usb drive in the USB config, displays an error if it is already registered.
+	 * @param foundDeviceId
+	 * @param driveLetter
+	 */
 	public void registerUSBDrive(int foundDeviceId, String driveLetter)
 	{
 		USBMetaData foundData = null;
@@ -501,12 +525,18 @@ public class TextEditor extends TextArea{
 		return false;
 	}
 	
+	/**
+	 * Starts the usb detection
+	 */
 	public void startUSBDetection()
 	{
 		detectionThread = new USBDetection(this);
 		detectionThread.start();
 	}
 	
+	/**
+	 * Stops the usb detection
+	 */
 	public void stopUSBDetection()
 	{
 		if(detectionThread != null)
