@@ -17,7 +17,6 @@ import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
 import enums.OperationMode;
-import enums.PBEType;
 import enums.PaddingType;
 import logic.CryptoManager;
 import persistence.MetaData;
@@ -25,6 +24,7 @@ import persistence.USBMetaData;
 
 public class TestClass {
 	String testString = "TestDaten";
+	MetaData testData = new MetaData(PaddingType.PKCS7Padding, EncryptionType.AES, EncryptionMode.CBC, HashFunction.MD5, KeyLength.x128, "");
 	
 	/**
 	 * Clears all generated keys
@@ -44,11 +44,20 @@ public class TestClass {
 		}
 	}
 	
+	@Test
+	public void pbeTests() throws Exception
+	{
+		testData.setPassword("Password");
+		testData.setEncryptionMode(EncryptionMode.ECB);
+		testData.setEncryptionType(EncryptionType.PBEWithMD5AndDES);
+		testEncryptDecrypt(testData);
+		testData.setEncryptionType(EncryptionType.PBEWithSHAAnd40BitRC4);
+		testEncryptDecrypt(testData);
+	}
+	
     @Test
     public void modeTest() throws Exception
-    {
-    	MetaData testData = new MetaData(OperationMode.Symmetric, PaddingType.PKCS7Padding, EncryptionType.AES, EncryptionMode.CBC, HashFunction.MD5, KeyLength.x128, "", PBEType.PBEWisthSHAAnd128BitAES_CBC_BC);
-    	
+    {    	
     	EncryptionMode[] array = new EncryptionMode[]{EncryptionMode.ECB, EncryptionMode.CBC, EncryptionMode.CTS, EncryptionMode.CTR,  EncryptionMode.OFB, EncryptionMode.CFB, EncryptionMode.CFB8};
     	for(EncryptionMode mode : array)
     	{

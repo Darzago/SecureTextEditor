@@ -3,6 +3,9 @@ TODO	---------------------------------------------------------------------------
 		Basic tests for each operation mode
 		
 	CLEANUP
+		nur die sachen speichern und laden die wirklich gebraucht werden
+		Aufteilung in 3 en & 3 decrypt functions?
+		IVs werden momentan noch als String gespeichert
 		Create key & iv method
 		opertaion mode muss nicht übergeben werden --> erkennen anhand des types
 		combine pbetype & encryptiontype

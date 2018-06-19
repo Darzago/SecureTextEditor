@@ -4,7 +4,6 @@ import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
 import enums.OperationMode;
-import enums.PBEType;
 import enums.PaddingType;
 
 /**
@@ -14,7 +13,6 @@ import enums.PaddingType;
  */
 public class MetaData {
 	
-	private OperationMode operationMode;
 	private PaddingType paddingType;
 	private EncryptionType encryptionType;
 	private EncryptionMode encryptionMode;
@@ -26,21 +24,6 @@ public class MetaData {
 	private byte[] salt = new byte[]{0x00};
 	private USBMetaData usbData;
 	private String password;
-	private PBEType pbeType;
-	
-	/**
-	 * @return the pbeType
-	 */
-	public PBEType getPbeType() {
-		return pbeType;
-	}
-
-	/**
-	 * @param pbeType the pbeType to set
-	 */
-	public void setPbeType(PBEType pbeType) {
-		this.pbeType = pbeType;
-	}
 
 	/**
 	 * @return the password
@@ -68,20 +51,6 @@ public class MetaData {
 	 */
 	public void setSalt(byte[] salt) {
 		this.salt = salt;
-	}
-
-	/**
-	 * @return the operationMode
-	 */
-	public OperationMode getOperationMode() {
-		return operationMode;
-	}
-
-	/**
-	 * @param operationMode the operationMode to set
-	 */
-	public void setOperationMode(OperationMode operationMode) {
-		this.operationMode = operationMode;
 	}
 
 	/**
@@ -213,16 +182,14 @@ public class MetaData {
 
 	public MetaData(){}
 
-	public MetaData(OperationMode operationMode, PaddingType paddingType, EncryptionType encryptionType,
-			EncryptionMode encryptionMode, HashFunction hashFunction, KeyLength keyLength, String filePath, PBEType pbeType) {
-		this.operationMode = operationMode;
+	public MetaData(PaddingType paddingType, EncryptionType encryptionType,
+			EncryptionMode encryptionMode, HashFunction hashFunction, KeyLength keyLength, String filePath) {
 		this.paddingType = paddingType;
 		this.encryptionType = encryptionType;
 		this.encryptionMode = encryptionMode;
 		this.hashFunction = hashFunction;
 		this.keyLength = keyLength;
 		this.filePath = filePath;
-		this.pbeType = pbeType;
 	}
 
 }

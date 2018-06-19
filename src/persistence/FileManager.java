@@ -31,7 +31,6 @@ import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
 import enums.OperationMode;
-import enums.PBEType;
 import enums.PaddingType;
 import logic.CryptoManager;
 
@@ -71,31 +70,43 @@ public class FileManager {
 	{
 		if(path != null){
 			//create an object of FileOutputStream
-			FileOutputStream fos = new FileOutputStream(path);
-			
-			//Set the metadata of the file to be written
-			Files.setAttribute(path.toPath(), "user:operationMode", (fileData.getOperationMode().toString()+ "").getBytes() );
-			Files.setAttribute(path.toPath(), "user:Type", (fileData.getEncryptionType().toString() + "").getBytes() );
-			Files.setAttribute(path.toPath(), "user:Mode", (fileData.getEncryptionMode().toString()+ "").getBytes() );
-			Files.setAttribute(path.toPath(), "user:Padding", (fileData.getPaddingType().toString()+ "").getBytes() );
-			Files.setAttribute(path.toPath(), "user:HashF", (fileData.getHashFunction().toString()+ "").getBytes() );
-			Files.setAttribute(path.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes());
-			Files.setAttribute(path.toPath(), "user:pbeType", (fileData.getPbeType().toString() + "").getBytes());
+			FileOutputStream fos = new FileOutputStream(path);			
 				
 			//create an object of BufferedOutputStream
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			
-			
 			byte[] contentToWrite = Base64.getEncoder().encode(CryptoManager.encryptString(fileContent, fileData));
 			
-			//these attributes need to set after the encoding because their values are generated while encoding
-			Files.setAttribute(path.toPath(), "user:IV", (fileData.getiV() + "").getBytes() );
-			Files.setAttribute(path.toPath(), "user:Hash", (fileData.getHashValue()).getBytes());
-			Files.setAttribute(path.toPath(), "user:salt", (fileData.getSalt()));
+			writeMetaData(path, fileData);
 			
 			bos.write(contentToWrite);
 			
 			bos.close();
+		}
+	}
+	
+	private static void writeMetaData(File path, MetaData fileData) throws Exception
+	{
+		OperationMode mode = fileData.getEncryptionType().getOperationMode();
+		
+		Files.setAttribute(path.toPath(), "user:Type", (fileData.getEncryptionType().toString() + "").getBytes() );
+		Files.setAttribute(path.toPath(), "user:HashF", (fileData.getHashFunction().toString()+ "").getBytes() );
+		Files.setAttribute(path.toPath(), "user:Hash", (fileData.getHashValue()).getBytes());
+		
+		if(mode == OperationMode.Symmetric)
+		{
+			Files.setAttribute(path.toPath(), "user:Mode", (fileData.getEncryptionMode().toString()+ "").getBytes() );
+			Files.setAttribute(path.toPath(), "user:Padding", (fileData.getPaddingType().toString()+ "").getBytes() );
+			Files.setAttribute(path.toPath(), "user:IV", (fileData.getiV() + "").getBytes());
+			Files.setAttribute(path.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes());
+		}
+		else if(mode == OperationMode.Asymmetric)
+		{
+			Files.setAttribute(path.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes());
+		}
+		else if(mode == OperationMode.Passwordbased)
+		{
+			Files.setAttribute(path.toPath(), "user:salt", (fileData.getSalt()));
 		}
 	}
 	
@@ -203,29 +214,33 @@ public class FileManager {
 	 * Searches the known metadata for an input file and loads its information into the editor
 	 * @param file
 	 */
-	public static MetaData loadMetaData(File file)
+	public static MetaData loadMetaData(File file) throws Exception
 	{
+		MetaData openedData = new MetaData();
 		
-		try {
-			MetaData openedData = new MetaData();
-			openedData.setEncryptionType(EncryptionType.valueOf(getAttributeAsString(file, "user:Type")));
+		openedData.setEncryptionType(EncryptionType.valueOf(getAttributeAsString(file, "user:Type")));
+		
+		OperationMode mode = openedData.getEncryptionType().getOperationMode();
+		openedData.setHashFunction(HashFunction.valueOf(getAttributeAsString(file, "user:HashF")));
+		openedData.setHashValue(new String((byte[])Files.getAttribute(file.toPath(), "user:Hash")));
+		
+		if(mode == OperationMode.Symmetric)
+		{
 			openedData.setEncryptionMode(EncryptionMode.valueOf(getAttributeAsString(file, "user:Mode")));
 			openedData.setPaddingType(PaddingType.valueOf(getAttributeAsString(file, "user:Padding")));
-			openedData.setHashFunction(HashFunction.valueOf(getAttributeAsString(file, "user:HashF")));
-			openedData.setHashValue(new String((byte[])Files.getAttribute(file.toPath(), "user:Hash")));
-			openedData.setKeyLength(KeyLength.valueOf(getAttributeAsString(file, "user:keyLength")));
-			openedData.setOperationMode(OperationMode.valueOf(getAttributeAsString(file, "user:operationMode")));
-			openedData.setPbeType(PBEType.valueOf(getAttributeAsString(file, "user:pbeType")));
 			openedData.setiV(getAttributeAsString(file, "user:IV"));
-			openedData.setSalt((byte[])Files.getAttribute(file.toPath(), "user:salt"));
-			return openedData;
-			
+			openedData.setKeyLength(KeyLength.valueOf(getAttributeAsString(file, "user:keyLength")));
 		}
-		catch (Exception e) 
+		else if(mode == OperationMode.Asymmetric)
 		{
-			e.printStackTrace();
+			openedData.setKeyLength(KeyLength.valueOf(getAttributeAsString(file, "user:keyLength")));
 		}
-		return null;
+		else if(mode == OperationMode.Passwordbased)
+		{
+			openedData.setSalt((byte[])Files.getAttribute(file.toPath(), "user:salt"));
+		}
+		
+		return openedData;
 	}
 	
 	private static String getAttributeAsString(File file, String attributeName) throws IOException
