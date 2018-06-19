@@ -25,6 +25,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import persistence.MetaData;
 import persistence.USBMetaData;
+import view.PasswordDialog;
 import persistence.FileManager;
 
 /**
@@ -62,7 +63,6 @@ public class TextEditor extends TextArea{
 	private ComboBox<EncryptionMode> encryptionModeBox;
 	private ComboBox<HashFunction> hashFunctionModeBox;
 	private ComboBox<KeyLength> keyLengthBox;
-	private ComboBox<OperationMode> operationBox;
 	
 	private Text usbRegistrationText;
 	private PasswordField  passwordField;
@@ -130,8 +130,24 @@ public class TextEditor extends TextArea{
         		this.documentOrigin = openFileName;
         		
     			currentFileData = FileManager.loadMetaData(fileToOpen);
+    			
+    			if(currentFileData.getEncryptionType().getOperationMode() == OperationMode.Passwordbased)
+    			{
+    				PasswordDialog test = new PasswordDialog();
+    				Optional<String> result = test.showAndWait();
+    				if(result.get() != null)
+    				{
+    					System.out.println(result.get());
+    				}
+    				else
+    				{
+    					throw new Exception("No Password was entered.");
+    				}
+    				currentFileData.setPassword(result.get());
+    			}
+    			
     			updateOutput(currentFileData);
-        		
+    			
         		checkForValidUsbDevice();
         		
 				this.setText(FileManager.openFileFromPath(openFileName, currentFileData));
@@ -320,7 +336,7 @@ public class TextEditor extends TextArea{
 	 * @param _selectedMode currently selected {@link EncryptionMode}
 	 * @param _selectedPadding currently selected {@link PaddingType}
 	 */
-	public TextEditor(Stage _myStage, ComboBox<OperationMode> operationModeDropDown, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown, ComboBox<KeyLength> keylengthDropDown, Text usbRegistrationText, PasswordField  passwordArea)
+	public TextEditor(Stage _myStage, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown, ComboBox<KeyLength> keylengthDropDown, Text usbRegistrationText, PasswordField  passwordArea)
 	{
 		this.myStage = _myStage;
 		updateTitle(defaultName);
@@ -331,7 +347,6 @@ public class TextEditor extends TextArea{
 		this.hashFunctionModeBox = hashFunctionDropDown;
 		this.usbRegistrationText = usbRegistrationText;
 		this.keyLengthBox = keylengthDropDown;
-		this.operationBox = operationModeDropDown;
 		this.passwordField = passwordArea;
 		
 		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), keylengthDropDown.getValue(), "");
@@ -346,8 +361,6 @@ public class TextEditor extends TextArea{
             public void handle(ActionEvent t) {
             	textHasChanged = true;
             	currentFileData.setEncryptionType(encryptionDropDown.getValue());
-            	
-            	System.out.println("Changed");
             	
             	if(encryptionDropDown.getValue() != null)
             	{

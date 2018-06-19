@@ -176,7 +176,7 @@ public class JavaFxMainClass extends Application{
 		
 //Main Stage	 ---------------------------------------------------------------------------------------		
 		
-		editor = new TextEditor(primaryStage, operationDropDown, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown, keyLengthDropDown, usbText, passwordArea);
+		editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown, keyLengthDropDown, usbText, passwordArea);
 		
 		//Sets the general layout of the scene
 		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);

@@ -5,7 +5,6 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
-import java.util.Optional;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -23,7 +22,6 @@ import enums.EncryptionType;
 import enums.KeyLength;
 import persistence.FileManager;
 import persistence.MetaData;
-import view.PasswordDialog;
 
 /**
  * Used to de and encrypt data
@@ -108,17 +106,11 @@ public class CryptoManager {
 				keyBytes =  new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded()).getEncoded();
 				break;
 			case Passwordbased:
-				
 				byte[] salt = generateByteArray(8);
 				fileData.setSalt(salt);
-				
 				SecretKeyFactory factory = SecretKeyFactory.getInstance(fileData.getEncryptionType().toString(), "BC");
-				
 			    SecretKey key = factory.generateSecret(new PBEKeySpec(fileData.getPassword().toCharArray()));
-			    
-			    cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, key, new PBEParameterSpec(salt, 1024));
-
-				
+			    cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, key, new PBEParameterSpec(salt, 1024));				
 				break;
 			case Symmetric:
 				keyObject = generateSymmetricKey(fileData.getEncryptionType(), fileData.getKeyLength());
@@ -239,19 +231,8 @@ public class CryptoManager {
 				cipher.init(Cipher.DECRYPT_MODE, privateKey);
 				break;
 			case Passwordbased:
-				PasswordDialog test = new PasswordDialog();
-				Optional<String> result = test.showAndWait();
-				if(result.get() != null)
-				{
-					System.out.println(result.get());
-				}
-				else
-				{
-					throw new Exception("No Password was entered.");
-				}
-				
 			    SecretKeyFactory keyFactory2 = SecretKeyFactory.getInstance(fileData.getEncryptionType().toString());
-			    SecretKey skey = keyFactory2.generateSecret(new PBEKeySpec(result.get().toCharArray()));
+			    SecretKey skey = keyFactory2.generateSecret(new PBEKeySpec(fileData.getPassword().toCharArray()));
 			   
 			    cipher = generateCipher(Cipher.DECRYPT_MODE, fileData, skey, new PBEParameterSpec(fileData.getSalt(), 1024));
 				break;

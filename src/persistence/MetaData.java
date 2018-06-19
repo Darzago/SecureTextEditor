@@ -3,7 +3,6 @@ import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
-import enums.OperationMode;
 import enums.PaddingType;
 
 /**

@@ -2,21 +2,14 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.security.Security;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
-import enums.OperationMode;
 import enums.PaddingType;
 import logic.CryptoManager;
 import persistence.MetaData;

@@ -2,20 +2,22 @@ TODO	---------------------------------------------------------------------------
 	TEST
 		Basic tests for each operation mode
 		
+	PBE
+		Passwörter sollten nicht allzu schlecht sein
+		
 	CLEANUP
-		nur die sachen speichern und laden die wirklich gebraucht werden
+		password bei der entschlüsselung auch aus der filedata hoeln
 		Aufteilung in 3 en & 3 decrypt functions?
 		IVs werden momentan noch als String gespeichert
 		Create key & iv method
-		opertaion mode muss nicht übergeben werden --> erkennen anhand des types
-		combine pbetype & encryptiontype
+		
 		unnötiges umkonvertieren bei der validate/generateHash methode fixen
 		decrypt methode alleinstehend
 	
 	USB Komponente
-		-Auswahl auf welchem usb stick gespeichert werden soll wenn mehrere angeschlossen sind
 		-Passwort option für keyconfig.xml / Art der Passwortverschlüsselung auswählbar & in der config gespeichert
-		-Nur ein registrierter stick gleichzeitig angeschlossen sein
+		-Nur ein registrierter stick gleichzeitig angeschlossen sein |Auswahl auf welchem usb stick gespeichert werden soll wenn mehrere angeschlossen sind
+		-maybe an ex/import function
 			
 	SICHERHEITSLÜCKE
 		-angreifer kann einfach den drive namen in der config ändern und die keydatei auf seine festplatte schreiben
@@ -43,3 +45,6 @@ DONE	---------------------------------------------------------------------------
 			--> password checks
 		-ARC4 siehe seite 68
 		-move loadMetadata to filemanager
+		-nur die sachen speichern und laden die wirklich gebraucht werden
+		-opertaion mode muss nicht übergeben werden --> erkennen anhand des types
+		-combine pbetype & encryptiontype
