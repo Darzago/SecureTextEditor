@@ -119,7 +119,6 @@ public class MetaData {
 	 * @param iV the iV to set
 	 */
 	public void setiV(String iV) {
-		if(this.iV == null)
 			this.iV = iV;
 	}
 

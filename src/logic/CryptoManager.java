@@ -136,6 +136,7 @@ public class CryptoManager {
 				break;
 			case Symmetric:
 				keyObject = generateSymmetricKey(fileData.getEncryptionType(), fileData.getKeyLength());
+				
 				iv = getIvIfNeeded(fileData);
 				cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, keyObject, iv);
 				keyBytes = keyObject.getEncoded();
@@ -165,7 +166,7 @@ public class CryptoManager {
 	 * @return hash
 	 * @throws Exception
 	 */
-	private static String generateHash(MetaData metadata, byte[] input) throws Exception
+	public static String generateHash(MetaData metadata, byte[] input) throws Exception
 	{
 		MessageDigest hash = MessageDigest.getInstance(metadata.getHashFunction().toString(), "BC");
 		hash.update(input);
@@ -200,7 +201,7 @@ public class CryptoManager {
 	 * @param readHash read hash
 	 * @throws Exception
 	 */
-	private static void validateHash(MetaData fileData, byte[] input, String readHash) throws Exception
+	public static void validateHash(MetaData fileData, byte[] input, String readHash) throws Exception
 	{
 		//Compare the two hashes using a message digest helper function
 		
@@ -350,24 +351,19 @@ public class CryptoManager {
 	}
 	
 	/**
-	 * TODO why not generate the iv new every time, would be fucking glorious
 	 * Returns an iv one is needed. Returns a newly generated one if one is needed but not present, returns the present one if there is one. 
 	 * @param fileData 
 	 * @return
 	 */
 	private static IvParameterSpec getIvIfNeeded(MetaData fileData)
 	{
-		IvParameterSpec ivSpec = null;
-		if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")) )
+		IvParameterSpec ivSpec = null;		
+		if(fileData.getEncryptionMode().usesIV() && fileData.getEncryptionType() != EncryptionType.ARC4)
 		{
 			byte[] ivArray = generateMatchingIV(fileData.getEncryptionType());
 			fileData.setiV(Base64.getEncoder().encodeToString(ivArray));
 			ivSpec = new IvParameterSpec(ivArray);
 			
-		}
-		else if(fileData.getEncryptionMode().usesIV())
-		{
-			ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
 		}
 		return ivSpec;
 	}

@@ -10,6 +10,7 @@ import enums.EncryptionMode;
 import enums.EncryptionType;
 import enums.HashFunction;
 import enums.KeyLength;
+import enums.OperationMode;
 import enums.PaddingType;
 import logic.CryptoManager;
 import persistence.MetaData;
@@ -44,25 +45,57 @@ public class TestClass {
 	}
 	
 	@Test
-	public void pbeTests() throws Exception
+	public void testHashes() throws Exception
 	{
-		testData.setPassword("Password");
-		testData.setEncryptionMode(EncryptionMode.ECB);
-		testData.setEncryptionType(EncryptionType.PBEWithMD5AndDES);
-		testEncryptDecrypt(testData);
-		testData.setEncryptionType(EncryptionType.PBEWithSHAAnd40BitRC4);
-		testEncryptDecrypt(testData);
+		System.out.println("Hash Tests \t ---------------------------------------------------------------------------");
+		for(HashFunction function : HashFunction.values())
+		{
+			testData.setHashFunction(function);
+			String generatedHash = CryptoManager.generateHash(testData, testString.getBytes());
+			System.out.println("\t" + function.toString() + ":\t" + generatedHash);
+			CryptoManager.validateHash(testData, testString.getBytes(), generatedHash);
+		}
 	}
 	
     @Test
     public void modeTest() throws Exception
-    {    	
+    {
+    	System.out.println("EncMode Tests \t ---------------------------------------------------------------------------");
     	EncryptionMode[] array = new EncryptionMode[]{EncryptionMode.ECB, EncryptionMode.CBC, EncryptionMode.CTS, EncryptionMode.CTR,  EncryptionMode.OFB, EncryptionMode.CFB, EncryptionMode.CFB8};
     	for(EncryptionMode mode : array)
     	{
     		testData.setEncryptionMode(mode);
     		testEncryptDecrypt(testData);
     	}
+    }
+    
+    @Test
+    public void encTypeTest() throws Exception
+    {
+    	System.out.println("EncType Tests \t ---------------------------------------------------------------------------");
+    	testData.setPassword("Password");
+		testData.setEncryptionMode(EncryptionMode.ECB);
+		for(EncryptionType type : EncryptionType.values())
+		{
+			testData.setEncryptionType(type);
+			testData.setKeyLength(KeyLength.getFittingKeyLength(type)[0]);
+			
+			testData.setiV(null);
+			
+			if(type.getOperationMode() == OperationMode.Symmetric && type != EncryptionType.none && type != EncryptionType.ARC4)
+			{
+		    	EncryptionMode[] array = new EncryptionMode[]{EncryptionMode.ECB, EncryptionMode.CBC, EncryptionMode.CTS, EncryptionMode.CTR,  EncryptionMode.OFB, EncryptionMode.CFB, EncryptionMode.CFB8};
+		    	for(EncryptionMode mode : array)
+		    	{	
+		    		testData.setEncryptionMode(mode);
+		    		testEncryptDecrypt(testData);
+		    	}
+			}
+			else
+			{
+				testEncryptDecrypt(testData);
+			}
+		}
     }
     
     /**
@@ -72,6 +105,12 @@ public class TestClass {
      */
     public void testEncryptDecrypt(MetaData testData) throws Exception
     {
+    	System.out.print("\t EncType:\t" + testData.getEncryptionType().toString() + "\t" );
+    	if(testData.getEncryptionType() != EncryptionType.none && testData.getEncryptionType() != EncryptionType.ARC4 && testData.getEncryptionType().getOperationMode() == OperationMode.Symmetric)
+    	{
+    		System.out.print("Mode: " + testData.getEncryptionMode() + "\tPadding: " + testData.getPaddingType());
+    	}
+    	System.out.println("");
     	testData.setUsbData(new USBMetaData("C", 1));
     	byte[] result = CryptoManager.encryptString(testString, testData);
     	String resultString = CryptoManager.decryptString(result, testData);
