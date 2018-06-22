@@ -45,32 +45,21 @@ public class TestClass {
 	}
 	
 	@Test
-	public void testHashes() throws Exception
+	public void testAllHasheFunctions() throws Exception
 	{
 		System.out.println("Hash Tests \t ---------------------------------------------------------------------------");
 		for(HashFunction function : HashFunction.values())
 		{
 			testData.setHashFunction(function);
 			String generatedHash = CryptoManager.generateHash(testData, testString.getBytes());
-			System.out.println("\t" + function.toString() + ":\t" + generatedHash);
+			
 			CryptoManager.validateHash(testData, testString.getBytes(), generatedHash);
+			System.out.println("\t" + function.toString() + ":\tValid");
 		}
 	}
 	
     @Test
-    public void modeTest() throws Exception
-    {
-    	System.out.println("EncMode Tests \t ---------------------------------------------------------------------------");
-    	EncryptionMode[] array = new EncryptionMode[]{EncryptionMode.ECB, EncryptionMode.CBC, EncryptionMode.CTS, EncryptionMode.CTR,  EncryptionMode.OFB, EncryptionMode.CFB, EncryptionMode.CFB8};
-    	for(EncryptionMode mode : array)
-    	{
-    		testData.setEncryptionMode(mode);
-    		testEncryptDecrypt(testData);
-    	}
-    }
-    
-    @Test
-    public void encTypeTest() throws Exception
+    public void testAllEncTypesAndModes() throws Exception
     {
     	System.out.println("EncType Tests \t ---------------------------------------------------------------------------");
     	testData.setPassword("Password");
@@ -84,18 +73,39 @@ public class TestClass {
 			
 			if(type.getOperationMode() == OperationMode.Symmetric && type != EncryptionType.none && type != EncryptionType.ARC4)
 			{
-		    	EncryptionMode[] array = new EncryptionMode[]{EncryptionMode.ECB, EncryptionMode.CBC, EncryptionMode.CTS, EncryptionMode.CTR,  EncryptionMode.OFB, EncryptionMode.CFB, EncryptionMode.CFB8};
+		    	EncryptionMode[] array = new EncryptionMode[]{EncryptionMode.ECB, EncryptionMode.CBC, EncryptionMode.CTS, EncryptionMode.CTR,  EncryptionMode.OFB, EncryptionMode.CFB, EncryptionMode.CFB8, EncryptionMode.GCM};
 		    	for(EncryptionMode mode : array)
 		    	{	
 		    		testData.setEncryptionMode(mode);
-		    		testEncryptDecrypt(testData);
+		    		if(mode == EncryptionMode.GCM)
+		    		{
+		    			testData.setPaddingType(PaddingType.NoPadding);
+		    		}
+		    		else
+		    		{
+		    			testData.setPaddingType(PaddingType.PKCS7Padding);
+		    		}
+		    		if(!(testData.getEncryptionMode() == EncryptionMode.GCM && testData.getEncryptionType() == EncryptionType.DES))
+		    		{
+		    			testAllKeyLengths(testData);
+		    		}
+		    		
 		    	}
 			}
 			else
 			{
-				testEncryptDecrypt(testData);
+				testAllKeyLengths(testData);
 			}
 		}
+    }
+    
+    private void testAllKeyLengths(MetaData testData) throws Exception
+    {
+    	for(KeyLength currentLength : KeyLength.getFittingKeyLength(testData.getEncryptionType()))
+    	{
+    		testData.setKeyLength(currentLength);
+    		testEncryptDecrypt(testData);
+    	}
     }
     
     /**
@@ -109,6 +119,10 @@ public class TestClass {
     	if(testData.getEncryptionType() != EncryptionType.none && testData.getEncryptionType() != EncryptionType.ARC4 && testData.getEncryptionType().getOperationMode() == OperationMode.Symmetric)
     	{
     		System.out.print("Mode: " + testData.getEncryptionMode() + "\tPadding: " + testData.getPaddingType());
+    	}
+    	if(testData.getEncryptionType().getOperationMode() != OperationMode.Passwordbased && testData.getEncryptionType() != EncryptionType.none)
+    	{
+    		System.out.print("\tKeyLength: " + testData.getKeyLength());
     	}
     	System.out.println("");
     	testData.setUsbData(new USBMetaData("C", 1));

@@ -1,7 +1,7 @@
 package enums;
 
 public enum EncryptionType {
-	none, AES, DES, RSA, ARC4, PBEWithMD5AndDES, PBEWithSHAAnd40BitRC4;
+	none, AES, DES, RSA, ARC4, PBEWithMD5AndDES, PBEWithSHAAnd40BitRC4, PBEWithSHA256And128BitAES_CBC_BC;
 	
 	public OperationMode getOperationMode()
 	{
@@ -13,6 +13,7 @@ public enum EncryptionType {
 			return OperationMode.Symmetric;
 		case PBEWithMD5AndDES:
 		case PBEWithSHAAnd40BitRC4:
+		case PBEWithSHA256And128BitAES_CBC_BC:
 			return OperationMode.Passwordbased;
 		case RSA:
 			return OperationMode.Asymmetric;
@@ -35,6 +36,15 @@ public enum EncryptionType {
 		default:
 			return new EncryptionType[]{};		
 		}
+	}
+	
+	public String toString()
+	{
+		if(this == PBEWithSHA256And128BitAES_CBC_BC)
+		{
+			return "PBEWithSHA256And128BitAES-CBC-BC";
+		}
+		else return this.name();
 	}
 	
 }

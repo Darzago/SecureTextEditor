@@ -44,6 +44,12 @@ public class FileManager {
 	//Path of the config.xml file	
 	private static final String usbConfigPath = "usbConfig.xml";
 
+	
+	public static void encryptUSBConfig()
+	{
+		
+	}
+	
 	/**
 	 * Opens and decrypts a file from the given filepath using the given information
 	 * @param fileLocation file to be opened

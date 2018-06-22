@@ -132,6 +132,7 @@ public class CryptoManager {
 				fileData.setSalt(salt);
 				SecretKeyFactory factory = SecretKeyFactory.getInstance(fileData.getEncryptionType().toString(), "BC");
 			    SecretKey key = factory.generateSecret(new PBEKeySpec(fileData.getPassword().toCharArray()));
+			    
 			    cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, key, new PBEParameterSpec(salt, iterationCount));				
 				break;
 			case Symmetric:
