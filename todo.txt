@@ -1,6 +1,7 @@
 TODO	-----------------------------------------------------------------------------------------------------------------
 	TEST
-		Basic tests for each operation mode
+		Timer
+		Padding tests
 		
 	PBE
 		Passwörter sollten nicht allzu schlecht sein
@@ -51,3 +52,4 @@ DONE	---------------------------------------------------------------------------
 		-opertaion mode muss nicht übergeben werden --> erkennen anhand des types
 		-combine pbetype & encryptiontype
 		-password bei der entschlüsselung auch aus der filedata holen
+		-Basic tests for each operation mode

@@ -11,6 +11,7 @@ public enum EncryptionType {
 		case ARC4:
 		case DES:
 			return OperationMode.Symmetric;
+		
 		case PBEWithMD5AndDES:
 		case PBEWithSHAAnd40BitRC4:
 		case PBEWithSHA256And128BitAES_CBC_BC:
@@ -32,7 +33,7 @@ public enum EncryptionType {
 		case Symmetric:
 			return new EncryptionType[]{none, AES, DES, ARC4};
 		case Passwordbased:
-			return new EncryptionType[]{PBEWithMD5AndDES, PBEWithSHAAnd40BitRC4};
+			return new EncryptionType[]{PBEWithMD5AndDES, PBEWithSHAAnd40BitRC4, PBEWithSHA256And128BitAES_CBC_BC};
 		default:
 			return new EncryptionType[]{};		
 		}

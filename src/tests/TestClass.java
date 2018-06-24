@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 import java.io.File;
 
 import org.junit.After;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import enums.EncryptionMode;
@@ -23,8 +25,12 @@ import persistence.USBMetaData;
  *
  */
 public class TestClass {
+
+	
+	StopWatch stopwatch = new StopWatch();
 	String testString = "TestDaten";
 	MetaData testData = new MetaData(PaddingType.PKCS7Padding, EncryptionType.AES, EncryptionMode.CBC, HashFunction.MD5, KeyLength.x128, "");
+	
 	
 	/**
 	 * Clears all generated keys
@@ -51,17 +57,29 @@ public class TestClass {
 		for(HashFunction function : HashFunction.values())
 		{
 			testData.setHashFunction(function);
-			String generatedHash = CryptoManager.generateHash(testData, testString.getBytes());
 			
+			stopwatch.stopAndStart();
+			String generatedHash = CryptoManager.generateHash(testData, testString.getBytes());
 			CryptoManager.validateHash(testData, testString.getBytes(), generatedHash);
-			System.out.println("\t" + function.toString() + ":\tValid");
+			float time = stopwatch.getTimeInSec();
+			
+			String out = function.toString() + ": ";
+			if(out.length() < 8)
+			{
+				out += "\t";
+			}
+			System.out.println("\t" + out + "\tValid \t" + time + "s");
 		}
 	}
 	
     @Test
     public void testAllEncTypesAndModes() throws Exception
     {
-    	System.out.println("EncType Tests \t ---------------------------------------------------------------------------");
+    	System.out.println("EncType Tests \t ---------------------------------------------------------------------------\n");
+    	
+    	System.out.println("\tType\tMode\t\tPadding\t\tKeyLength\tTime in s");
+    	System.out.println("\t---------------------------------------------------------------------------");
+    	
     	testData.setPassword("Password");
 		testData.setEncryptionMode(EncryptionMode.ECB);
 		for(EncryptionType type : EncryptionType.values())
@@ -73,7 +91,7 @@ public class TestClass {
 			
 			if(type.getOperationMode() == OperationMode.Symmetric && type != EncryptionType.none && type != EncryptionType.ARC4)
 			{
-		    	EncryptionMode[] array = new EncryptionMode[]{EncryptionMode.ECB, EncryptionMode.CBC, EncryptionMode.CTS, EncryptionMode.CTR,  EncryptionMode.OFB, EncryptionMode.CFB, EncryptionMode.CFB8, EncryptionMode.GCM};
+		    	EncryptionMode[] array = new EncryptionMode[]{EncryptionMode.ECB, EncryptionMode.CBC, EncryptionMode.CTS, EncryptionMode.CTR,  EncryptionMode.OFB, EncryptionMode.CFB, EncryptionMode.CFB8, EncryptionMode.GCM, EncryptionMode.OpenPGPCFB};
 		    	for(EncryptionMode mode : array)
 		    	{	
 		    		testData.setEncryptionMode(mode);
@@ -115,19 +133,39 @@ public class TestClass {
      */
     public void testEncryptDecrypt(MetaData testData) throws Exception
     {
-    	System.out.print("\t EncType:\t" + testData.getEncryptionType().toString() + "\t" );
+    	System.out.print("\t" + testData.getEncryptionType().toString() + "\t" );
     	if(testData.getEncryptionType() != EncryptionType.none && testData.getEncryptionType() != EncryptionType.ARC4 && testData.getEncryptionType().getOperationMode() == OperationMode.Symmetric)
     	{
-    		System.out.print("Mode: " + testData.getEncryptionMode() + "\tPadding: " + testData.getPaddingType());
+    		//used to line up the outup
+    		String outputMode = testData.getEncryptionMode().toString();
+    		if(outputMode.length() < 8)
+    		{
+    			outputMode += "\t";
+    		}
+    		System.out.print(outputMode + "\t" + testData.getPaddingType() + "\t");
+    	}
+    	else 
+    	{
+    		System.out.print("\t\t\t");
     	}
     	if(testData.getEncryptionType().getOperationMode() != OperationMode.Passwordbased && testData.getEncryptionType() != EncryptionType.none)
     	{
-    		System.out.print("\tKeyLength: " + testData.getKeyLength());
+    		System.out.print(testData.getKeyLength() + "\t");
     	}
-    	System.out.println("");
+    	else
+    	{
+    		System.out.print("\t\t");
+    	}
+    	
     	testData.setUsbData(new USBMetaData("C", 1));
+    	
+    	stopwatch.stopAndStart();
     	byte[] result = CryptoManager.encryptString(testString, testData);
     	String resultString = CryptoManager.decryptString(result, testData);
+    	
+    	System.out.println("\t" + stopwatch.getTimeInSec() + "s");
+  
+    	
         assertEquals(testString, removeSpaces(resultString));
     }
     
