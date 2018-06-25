@@ -148,6 +148,10 @@ public class TestClass {
     	{
     		System.out.print("\t\t\t");
     	}
+    	if(testData.getEncryptionType() == EncryptionType.ARC4 || testData.getEncryptionType() == EncryptionType.RSA)
+    	{
+    		System.out.print("\t");
+    	}
     	if(testData.getEncryptionType().getOperationMode() != OperationMode.Passwordbased && testData.getEncryptionType() != EncryptionType.none)
     	{
     		System.out.print(testData.getKeyLength() + "\t");

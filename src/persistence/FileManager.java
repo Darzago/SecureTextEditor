@@ -231,7 +231,7 @@ public class FileManager {
 	{
 		MetaData openedData = new MetaData();
 		
-		openedData.setEncryptionType(EncryptionType.valueOf(getAttributeAsString(file, "user:Type")));
+		openedData.setEncryptionType(EncryptionType.filteredValueOf(getAttributeAsString(file, "user:Type")));
 		
 		OperationMode mode = openedData.getEncryptionType().getOperationMode();
 		openedData.setHashFunction(HashFunction.valueOf(getAttributeAsString(file, "user:HashF")));

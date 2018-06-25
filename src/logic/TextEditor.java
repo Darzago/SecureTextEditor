@@ -150,10 +150,15 @@ public class TextEditor extends TextArea{
     				}
     				currentFileData.setPassword(result.get());
     			}
+    			else
+    			{
+    				checkForValidUsbDevice();
+    			}
     			
     			updateOutput(currentFileData);
     			
-        		checkForValidUsbDevice();
+    			
+        		
         		
 				this.setText(FileManager.openFileFromPath(openFileName, currentFileData));
 				

@@ -39,8 +39,18 @@ public enum EncryptionType {
 		}
 	}
 	
+	public static EncryptionType filteredValueOf(String arg)
+	{
+		if(arg.equals("PBEWithSHA256And128BitAES-CBC-BC"))
+		{
+			return PBEWithSHA256And128BitAES_CBC_BC;
+		}
+		return valueOf(arg);
+	}
+	
 	public String toString()
 	{
+		
 		if(this == PBEWithSHA256And128BitAES_CBC_BC)
 		{
 			return "PBEWithSHA256And128BitAES-CBC-BC";
