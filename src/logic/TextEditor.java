@@ -389,27 +389,37 @@ public class TextEditor extends TextArea{
 	 */
 	public void registerUSBDrive(int foundDeviceId, String driveLetter)
 	{
+		//stores the found usbdata
 		USBMetaData foundData = null;
+		
+		//Loop through all known usbdata
 		for(USBMetaData currentData : usbDataList)
 		{
+			//if the device is already known
 			if(currentData.getHash() ==  foundDeviceId)
 			{
+				//save the already registered usb sick in the 'foundData' variable to return it later
 				foundData = currentData;
+				//Display a text that informs the user that this usb stick is already registered
 				usbRegistrationText.setText("Usb drive has already been registered.");
 			}
 		}
 		
+		//If the usb stick is not known
 		if (foundData == null)
 		{
+			//add it to the lisst of known devices
 			usbDataList.add(new USBMetaData(driveLetter, foundDeviceId));
 			try 
 			{
+				//Save the list/config of all known usb stick because the list changed
 				FileManager.writeUSBConfig(usbDataList);
 			} 
 			catch (Exception e) 
 			{
 				showError(e);
 			}
+			//Display a registration text
 			usbRegistrationText.setText("USB Stick Nr: " + foundDeviceId + " has been registered");
 		}
 	}
@@ -424,9 +434,11 @@ public class TextEditor extends TextArea{
 	 */
 	public TextEditor(Stage _myStage, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown, ComboBox<KeyLength> keylengthDropDown, Text usbRegistrationText, PasswordField  passwordArea)
 	{
-		this.myStage = _myStage;
-		updateTitle(defaultName);
+		//Used to expand the textarea to the maximum size
 		this.setPrefRowCount(999999);
+		
+		//Set the fields of the editor
+		this.myStage = _myStage;
 		this.encryptionTypeBox = encryptionDropDown;
 		this.paddingTypeBox = paddingDropDown;
 		this.encryptionModeBox = encryptionModeDropDown;
@@ -435,6 +447,10 @@ public class TextEditor extends TextArea{
 		this.keyLengthBox = keylengthDropDown;
 		this.passwordField = passwordArea;
 		
+		//Set the displayed file name to the default name 
+		updateTitle(defaultName);
+		
+		//Create a 'default' metadata
 		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), keylengthDropDown.getValue());
 		
 		//Disable these dropdown menus since the (at start) selected encryption is 'none'
@@ -442,88 +458,124 @@ public class TextEditor extends TextArea{
 		encryptionModeDropDown.setDisable(true);
 		keyLengthBox.setDisable(true);
 		
-		
+		//TODO own method?
+		//Create the Eventhandler that is called when the value of the menu changes. Implements the dropdown logic of the encryptiontype dropdown menu
 		encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
+            	
+            	//Since the selected value changed, set the changed flag
             	textHasChanged = true;
+            	
+            	//Set the encryption type of the current metadata
             	currentFileData.setEncryptionType(encryptionDropDown.getValue());
             	
-            	if(encryptionDropDown.getValue() != null)
-            	{
-	            	keyLengthBox.getItems().clear();
-	            	keyLengthBox.getItems().addAll(KeyLength.getFittingKeyLength(encryptionDropDown.getValue()));
-	            	keyLengthBox.setValue(KeyLength.getFittingKeyLength(encryptionDropDown.getValue())[0]);
-            	}
+            	//Set the content of the keylength drpodown box depending on the selected encryption type
+	            keyLengthBox.getItems().clear();
+	            keyLengthBox.getItems().addAll(KeyLength.getFittingKeyLength(encryptionDropDown.getValue()));
+	            keyLengthBox.setValue(KeyLength.getFittingKeyLength(encryptionDropDown.getValue())[0]);
             	
+            	//if the type is none
             	if(encryptionDropDown.getValue() == EncryptionType.none)
             	{
+            		//Disable padding, mode, and keylength menus
             		paddingDropDown.setDisable(true);
             		encryptionModeDropDown.setDisable(true);
             		keylengthDropDown.setDisable(true);
             	}
+            	//If it is ARC4
             	else if(encryptionDropDown.getValue() == EncryptionType.ARC4)
             	{
+            		//Disable padding and mode, enable keylength menus
             		paddingDropDown.setDisable(true);
             		encryptionModeDropDown.setDisable(true);
             		keylengthDropDown.setDisable(false);
             	}
+            	//if it is anything else
             	else
             	{
+            		//enable all other dropdown menus
             		paddingDropDown.setDisable(false);
             		encryptionModeDropDown.setDisable(false);
             		keyLengthBox.setDisable(false);
             	}
             	
+            	//if the encryption is DES
             	if(encryptionDropDown.getValue() == EncryptionType.DES)
             	{
+            		//Remove the GCM Mode from the list of available modes, since the GCM mode does not work with DES
             		encryptionModeDropDown.getItems().remove(EncryptionMode.GCM);
             	}
+            	//If the encryption is not DES
             	else
             	{
+            		//And the mode menu does not contain the GCM mode
             		if(!encryptionModeDropDown.getItems().contains(EncryptionMode.GCM))
             		{
+            			//add the GCM mode to the mode options
             			encryptionModeDropDown.getItems().add(EncryptionMode.GCM);
             		}
             	}
             }
         });
 		
+		//Eventhandler that adds logic to the Encryprion mode menu
 		encryptionModeDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
+            	
+            	//Since the selected value changed, set the changed flag
             	textHasChanged = true;
             	
+            	//If the selected mode is GCM
             	if(encryptionModeDropDown.getValue() == EncryptionMode.GCM)
             	{
+            		//Set the padding to noPadding and Disable the padding menu, because GCM only works with NoPadding
             		paddingDropDown.setValue(PaddingType.NoPadding);
             		paddingDropDown.setDisable(true);
             	}
+            	//otherwise of the padding menu is disabled
             	else if(paddingDropDown.isDisable())
             	{
+            		//Enable the padding menu
             		paddingDropDown.setDisable(false);
             	}
             	
+            	//Set the encryption mode of the current metadata
             	currentFileData.setEncryptionMode(encryptionModeDropDown.getValue());
             }
         });
 		
+		//Create the Eventhandler for the padding menu that is called when the value of the menu changes.
 		paddingDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
+            	
+            	//Since the selected value changed, set the changed flag
             	textHasChanged = true;
+            	
+            	//Set the padding of the current metadata
             	currentFileData.setPaddingType(paddingDropDown.getValue());
             }
         });
 		
+		//Create the Eventhandler for the hash function menu that is called when the value of the menu changes.
 		hashFunctionDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
+            	
+            	//Since the selected value changed, set the changed flag
             	textHasChanged = true;
+            	
+            	//Set the hash function of the current metadata
             	currentFileData.setHashFunction(hashFunctionDropDown.getValue());
             }
         });
 
-		
+		//Create the Eventhandler for the keylength value that is called when the value of the menu changes.
 		keylengthDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
+            	
+            	//Since the selected value changed, set the changed flag
             	textHasChanged = true;
+            	
+            	//Set the keylength of the current metadata
             	currentFileData.setKeyLength(keyLengthBox.getValue());
             }
         });
@@ -531,6 +583,7 @@ public class TextEditor extends TextArea{
 		
 		try 
 		{
+			//Load the usb config/the list of all known usb filed
 			usbDataList = FileManager.loadUSBConfig();
 		} 
 		catch (Exception e) 
@@ -538,19 +591,26 @@ public class TextEditor extends TextArea{
 			showError(e);
 		}
 		
+		//creates a reference to 'this' Texteditor to refer to it inside the change listener
 		TextEditor copy = this;
 		
+		//Adds a listener to the text area that is called whenever the text changes
 		this.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) {
+		    	//If the 'textChanged' flag is not set yet
 		    	if(!copy.textHasChanged)
 		    	{
+		    		//appends an asterisk to show that the text has been changed
 		    		copy.myStage.setTitle(title + "*" + documentName);
+		    		
+		    		//Set the flag since the text has changed
 		    		copy.textHasChanged = true;
 		    	}		    	
 		    }
 		});
 		
+		//Eventhandler that saves the content of the password area to the current metadata if it is changed
 		passwordField.textProperty().addListener(new ChangeListener<String>() {
 		    @Override
 		    public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) 
@@ -561,7 +621,6 @@ public class TextEditor extends TextArea{
 		
 		//Create and modify an alert object
 		saveQuitAlert = new Alert(AlertType.CONFIRMATION);
-		
 		saveQuitAlert.setGraphic(null);
 		saveQuitAlert.setTitle("Warning");
 		saveQuitAlert.setContentText("Discard all changes of the current file?");
@@ -574,12 +633,16 @@ public class TextEditor extends TextArea{
 	 */
 	private boolean displaySaveAlert()
 	{
+		//display an alert and wait for a response
 		Optional<ButtonType> result = saveQuitAlert.showAndWait();
+		
+		//If the 'ok' button was pressed
 		if(result.get() == ButtonType.OK)
 		{
 			return true;
 		}
 		else
+			//If the 'cancel' button was pressed
 		if(result.get() == ButtonType.CANCEL)
 		{
 			return false;
@@ -588,7 +651,7 @@ public class TextEditor extends TextArea{
 	}
 	
 	/**
-	 * Starts the usb detection
+	 * Starts the usb detection thread
 	 */
 	public void startUSBDetection()
 	{
@@ -597,14 +660,16 @@ public class TextEditor extends TextArea{
 	}
 	
 	/**
-	 * Stops the usb detection
+	 * Stops the usb detection thread
 	 */
 	public void stopUSBDetection()
 	{
 		if(detectionThread != null)
 		{
+			//If the thread is running
 			if(detectionThread.isAlive())
 			{
+				//set the running flag of the thread to false to make it die
 				detectionThread.setRunning(false);
 			}
 		}
@@ -615,6 +680,8 @@ public class TextEditor extends TextArea{
 	 * @param e Exception that caused the error
 	 */
     private void showError(Exception e) {
+    	
+    	//Create and modify an alert message
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Error alert");
         alert.setHeaderText(e.getMessage());
@@ -628,12 +695,13 @@ public class TextEditor extends TextArea{
         
         TextArea textArea = new TextArea();
         textArea.setText(stackTrace);
- 
+        
         VBox dialogPaneContent = new VBox(textArea);
  
         // Set content for Dialog Pane
         alert.getDialogPane().setContent(dialogPaneContent);
- 
+        
+        //display the alert and wait for a response
         alert.showAndWait();
     }
 	
