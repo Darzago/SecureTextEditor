@@ -1,6 +1,9 @@
 TODO	-----------------------------------------------------------------------------------------------------------------
+	REMOVE
+		Filepath variable in the metadata
+	
+	
 	TEST
-		Timer
 		Padding tests
 		
 	PBE
@@ -53,3 +56,4 @@ DONE	---------------------------------------------------------------------------
 		-combine pbetype & encryptiontype
 		-password bei der entschlüsselung auch aus der filedata holen
 		-Basic tests for each operation mode
+		-Timer

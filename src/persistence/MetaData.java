@@ -18,7 +18,6 @@ public class MetaData {
 	private HashFunction hashFunction;
 	private KeyLength keyLength;
 	private String hashValue;
-	private String filePath;
 	private String iV;
 	private byte[] salt = new byte[]{0x00};
 	private USBMetaData usbData;
@@ -164,19 +163,6 @@ public class MetaData {
 			this.encryptionMode = encryptionMode;
 	}
 
-	/**
-	 * @return the filePath
-	 */
-	public String getFilePath() {
-		return filePath;
-	}
-
-	/**
-	 * @param filePath the filePath to set
-	 */
-	public void setFilePath(String filePath) {
-			this.filePath = filePath;
-	}
 
 	public MetaData(){}
 
@@ -190,13 +176,12 @@ public class MetaData {
 	 * @param filePath Filepath to be set
 	 */
 	public MetaData(PaddingType paddingType, EncryptionType encryptionType,
-			EncryptionMode encryptionMode, HashFunction hashFunction, KeyLength keyLength, String filePath) {
+			EncryptionMode encryptionMode, HashFunction hashFunction, KeyLength keyLength) {
 		this.paddingType = paddingType;
 		this.encryptionType = encryptionType;
 		this.encryptionMode = encryptionMode;
 		this.hashFunction = hashFunction;
 		this.keyLength = keyLength;
-		this.filePath = filePath;
 	}
 
 }

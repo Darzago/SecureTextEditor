@@ -76,16 +76,21 @@ public class TextEditor extends TextArea{
 	 * Displays a new window if the current file has been changed but not saved, otherwise opens the new file
 	 */
 	public void newFileDialogue()
-	{		
+	{
+		//If there are unsaved changes
 		if(textHasChanged)
 		{
+			//Display an alert, if its confirmed
 			if(displaySaveAlert())
 			{
+				//Open a new file
 				newFile();
 			}
 		}
+		//If there are no unsaved changes
 		else 
 		{
+			//open a new file
 			newFile();
 		}
 	}
@@ -95,13 +100,17 @@ public class TextEditor extends TextArea{
 	 */
 	public void openFileDialogue()
 	{
+		//if there are unsaved changes
 		if(textHasChanged)
 		{
+			//Display an alert, if its confirmed
 			if(displaySaveAlert())
 			{
+				//open the file
 				openFile();
 			}
 		}
+		//if there are no unsaved changes, open the file
 		else 
 		{
 			openFile();
@@ -124,20 +133,34 @@ public class TextEditor extends TextArea{
 	 */
 	private void openFile()
 	{
+		//display a dialog to choose the file to be opened
     	FileChooser fileChooser = new FileChooser();
     	File fileToOpen = fileChooser.showOpenDialog(null);
     	
-    	//if clause prevents an error if the user pressed the x of the 'save' dialogue
+    	try {
+    	
+    	//If the chosen file does not exist, or is a directory
+    	if(!fileToOpen.exists() || fileToOpen.isDirectory())
+    	{
+    		throw new Exception("Chosen file is not a file!");
+    	}
+    	
+    	//if clause prevents an error if the user pressed the x of the 'save' dialogue 
     	if(fileToOpen != null){
-    		try {
+    		
+    			//get the actual path of the file
         		String openFileName = fileToOpen.getAbsolutePath();
         		
+        		//set the document origin 
         		this.documentOrigin = openFileName;
         		
+        		//Load metadata from the file and set it as the currently viewed data
     			currentFileData = FileManager.loadMetaData(fileToOpen);
     			
+    			//if the encryption is password based
     			if(currentFileData.getEncryptionType().getOperationMode() == OperationMode.Passwordbased)
     			{
+    				//Display password dialog
     				PasswordDialog test = new PasswordDialog();
     				Optional<String> result = test.showAndWait();
     				if(result.get() != null)
@@ -148,29 +171,32 @@ public class TextEditor extends TextArea{
     				{
     					throw new Exception("No Password was entered.");
     				}
+    				
+    				//Save the entered password in the metadata to pass it into the decryption
     				currentFileData.setPassword(result.get());
     			}
+    			//If the encryption is not password based
     			else
     			{
-    				checkForValidUsbDevice();
+    				//check if there is a valid usb drive connected
+    				checkAndLoadUsbDevice();
     			}
     			
+    			//Update the dropdowns of the options menu
     			updateOutput(currentFileData);
     			
-    			
-        		
-        		
+        		//set the content of the textarea
 				this.setText(FileManager.openFileFromPath(openFileName, currentFileData));
 				
+				//Update the title displayed in the top of the window
 				updateTitle(fileToOpen.getName());
-			} 
-    		catch (Exception e) 
-    		{
-    			showError(e);
-				e.printStackTrace();
-			}
-    		
+			} 	
     	}
+    	catch (Exception e) 
+		{
+			showError(e);
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -179,6 +205,7 @@ public class TextEditor extends TextArea{
 	 */
 	private void updateOutput(MetaData metadata)
 	{
+		//Updates the values displayed in the options menu
 		this.encryptionTypeBox.setValue(metadata.getEncryptionType());
 		this.encryptionModeBox.setValue(metadata.getEncryptionMode());
 		this.paddingTypeBox.setValue(metadata.getPaddingType());
@@ -194,29 +221,38 @@ public class TextEditor extends TextArea{
 	public void saveFileAs()
 	{
 		try {
+			
+			//Create filechooser to modify
 			FileChooser fileChooser = new FileChooser();
+			
+			//Set the initial file name displayed in the bottom of the dialog
 			fileChooser.setInitialFileName(documentName);
 			
 			//Sets the datatype that is displayed in the filechooser
 			FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text file (*.txt)", "*.txt");
 			fileChooser.getExtensionFilters().add(extFilter);
 			
-			checkForValidUsbDevice();
-			
+			//Display modified filechooser
 			File fileToSave = fileChooser.showSaveDialog(null);
 			
+			//If the encryption is not password based
+			if(currentFileData.getEncryptionType().getOperationMode() != OperationMode.Passwordbased)
+			{
+				//Check for a valid usb drive
+				checkAndLoadUsbDevice();
+			}
+		
 			//if claus eprevents an error if the user pressed on the x of the save dialogue
 			if(fileToSave!= null){
 				
-				//TODO WENN DIE AUSGEWÄHLE VERSCHLÜSSELUNG != NULL IST MUSS EIN USB STICK CONNECTED SEIN (ODER DER OPERATIONSMODUS PBE)
+				//Change the origin of the file to the now selected path
 				changeFileOrigin(fileToSave);
 				
+				//Save the file in the chosen path
 				FileManager.saveFileInPath(fileToSave, this.getText(), 	currentFileData);
-
-				myStage.setTitle(documentName);
 				
+				//updates the title displayed at the top of the window
 				updateTitle(fileToSave.getName());
-				
 			
 			}
 		} catch (Exception e) {
@@ -229,19 +265,25 @@ public class TextEditor extends TextArea{
 	 * Checks if there is a valid USB drive connected. If this is the case, the usb drive letter is written into the metadata, otherwise an error is displayed
 	 * @throws Exception
 	 */
-	private void checkForValidUsbDevice() throws Exception
+	private void checkAndLoadUsbDevice() throws Exception
 	{
+		//variable to store found usbdata
 		USBMetaData usbData = null;
+		
+		//If the encryption type is something other than none
 		if(currentFileData.getEncryptionType() != EncryptionType.none)
 		{
-			
+			//Get the connected usb drive
 			usbData = getConnectedUsb();
 			
+			//if none is found
 			if(usbData == null)
 			{
+				//Throw an error
 				throw new Exception("No known usb stick connected");
 			}
 		}
+		//write the found usb stick into the current metadata
 		currentFileData.setUsbData(usbData);
 	}
 	
@@ -251,20 +293,27 @@ public class TextEditor extends TextArea{
 	 */
 	private USBMetaData getConnectedUsb()
 	{
+		//Variable used to store the found metadata
 		USBMetaData foundUsb = null;
+		
+		//List of all hsahed of connected usb devices
 		int[] usbList = USBDetection.getUSBList();
 		
+		//Check if any known usb hashes fit any of the hashes in the usb List.
 		for(USBMetaData currentData : usbDataList)
 		{
 			int searchedHash = currentData.getHash();
 			for(int currentInt : usbList)
 			{
+				//If they fit
 				if(searchedHash == currentInt)
 				{
+					//save the found usb device in the 'foundUsb' variable to return it
 					foundUsb = currentData;			
 				}
 			}
 		}
+		//return the found data
 		return foundUsb;
 	}
 	
@@ -273,18 +322,26 @@ public class TextEditor extends TextArea{
 	 */
 	public void saveFile()
 	{
+		//If the file has an origin
 		if(documentOrigin != null)
-		{			
+		{
+			//Create a file object from the documentOrigin to save it
 			File fileToWrite = new File(documentOrigin);
 			
 			try 
 			{
-				checkForValidUsbDevice();
+				//If the encryption type is not password based
+				if(currentFileData.getEncryptionType().getOperationMode() != OperationMode.Passwordbased)
+				{
+					//Check and load a valid usb drive
+					checkAndLoadUsbDevice();
+				}
 				
+				//save the content of the editor in the specified path
 				FileManager.saveFileInPath(fileToWrite, this.getText(), currentFileData);
-
-				myStage.setTitle(documentName);
 				
+				
+				//Change the title displayed at the top of the window
 				updateTitle(fileToWrite.getName());
 			} 
 			catch (Exception e) 
@@ -308,9 +365,9 @@ public class TextEditor extends TextArea{
 	 */
 	private void changeFileOrigin(File newOrigin)
 	{
+		//if the new origin is not null
 		if(newOrigin != null){
 			documentOrigin = newOrigin.getPath();
-			currentFileData.setFilePath(newOrigin.getName());
 		}
 	}
 	
@@ -378,7 +435,7 @@ public class TextEditor extends TextArea{
 		this.keyLengthBox = keylengthDropDown;
 		this.passwordField = passwordArea;
 		
-		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), keylengthDropDown.getValue(), "");
+		this.currentFileData = new MetaData(paddingDropDown.getValue(), encryptionDropDown.getValue(), encryptionModeDropDown.getValue(), hashFunctionDropDown.getValue(), keylengthDropDown.getValue());
 		
 		//Disable these dropdown menus since the (at start) selected encryption is 'none'
 		paddingDropDown.setDisable(true);

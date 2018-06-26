@@ -29,7 +29,7 @@ public class TestClass {
 	
 	StopWatch stopwatch = new StopWatch();
 	String testString = "TestDaten";
-	MetaData testData = new MetaData(PaddingType.PKCS7Padding, EncryptionType.AES, EncryptionMode.CBC, HashFunction.MD5, KeyLength.x128, "");
+	MetaData testData = new MetaData(PaddingType.PKCS7Padding, EncryptionType.AES, EncryptionMode.CBC, HashFunction.MD5, KeyLength.x128);
 	
 	
 	/**
