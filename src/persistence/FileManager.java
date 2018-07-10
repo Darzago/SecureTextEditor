@@ -53,8 +53,11 @@ public class FileManager {
 	 */
 	public static String openFileFromPath(String fileLocation, MetaData fileData) throws Exception
 	{
+		//Get a path object from the location String to read all bytes
     	Path filePath = Paths.get(fileLocation);
     	byte[] readByteArray= Files.readAllBytes(filePath);
+    	
+    	//Return the decrypted string
     	return CryptoManager.decryptString(Base64.getDecoder().decode(readByteArray), fileData);
 	}
 	
@@ -75,12 +78,16 @@ public class FileManager {
 			//create an object of BufferedOutputStream
 			BufferedOutputStream bos = new BufferedOutputStream(fos);
 			
+			//Encode the content & write it into a byte array
 			byte[] contentToWrite = Base64.getEncoder().encode(CryptoManager.encryptString(fileContent, fileData));
 			
+			//write metadata to the file so that it can be decrypted
 			writeMetaData(path, fileData);
 			
+			//Write the file
 			bos.write(contentToWrite);
 			
+			//Close the output stream
 			bos.close();
 		}
 	}
@@ -93,25 +100,33 @@ public class FileManager {
 	 */
 	private static void writeMetaData(File file, MetaData fileData) throws Exception
 	{
+		//Get the operation Mode of the encryption type the file was encrypted with
 		OperationMode mode = fileData.getEncryptionType().getOperationMode();
 		
 		Files.setAttribute(file.toPath(), "user:Type", (fileData.getEncryptionType().toString() + "").getBytes() );
 		Files.setAttribute(file.toPath(), "user:HashF", (fileData.getHashFunction().toString()+ "").getBytes() );
 		Files.setAttribute(file.toPath(), "user:Hash", (fileData.getHashValue()).getBytes());
 		
+		//Depending on the mode, write different parameters
+		//If the mode is Symmetric
 		if(mode == OperationMode.Symmetric)
 		{
+			//Write mode, padding, iv, and keylength
 			Files.setAttribute(file.toPath(), "user:Mode", (fileData.getEncryptionMode().toString()+ "").getBytes() );
 			Files.setAttribute(file.toPath(), "user:Padding", (fileData.getPaddingType().toString()+ "").getBytes() );
 			Files.setAttribute(file.toPath(), "user:IV", (fileData.getiV() + "").getBytes());
 			Files.setAttribute(file.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes());
 		}
+		//if the mode is asymmetric
 		else if(mode == OperationMode.Asymmetric)
 		{
+			//Write keylength
 			Files.setAttribute(file.toPath(), "user:keyLength", (fileData.getKeyLength().toString() + "").getBytes());
 		}
+		//If the mode is passwordbased
 		else if(mode == OperationMode.Passwordbased)
 		{
+			//Write the salt
 			Files.setAttribute(file.toPath(), "user:salt", (fileData.getSalt()));
 		}
 	}
@@ -132,6 +147,7 @@ public class FileManager {
 		config.appendChild(rootElement);
 		
 		for(USBMetaData filedata : dataList){
+			
 			//options
 			Element fileElement = config.createElement("usbdrive");
 			rootElement.appendChild(fileElement);
@@ -227,26 +243,36 @@ public class FileManager {
 		
 		openedData.setEncryptionType(EncryptionType.filteredValueOf(getAttributeAsString(file, "user:Type")));
 		
+		//Get the operation mode of the read encryption type to determine which parameters should be loaded
 		OperationMode mode = openedData.getEncryptionType().getOperationMode();
+		
+		//Load hash function and value
 		openedData.setHashFunction(HashFunction.valueOf(getAttributeAsString(file, "user:HashF")));
 		openedData.setHashValue(new String((byte[])Files.getAttribute(file.toPath(), "user:Hash")));
 		
+		//If the mode is symmetric
 		if(mode == OperationMode.Symmetric)
 		{
+			//Load mode, padding, iv and keylength
 			openedData.setEncryptionMode(EncryptionMode.valueOf(getAttributeAsString(file, "user:Mode")));
 			openedData.setPaddingType(PaddingType.valueOf(getAttributeAsString(file, "user:Padding")));
 			openedData.setiV(getAttributeAsString(file, "user:IV"));
 			openedData.setKeyLength(KeyLength.valueOf(getAttributeAsString(file, "user:keyLength")));
 		}
+		//if the mode is asymmetric
 		else if(mode == OperationMode.Asymmetric)
 		{
+			//Load keylength
 			openedData.setKeyLength(KeyLength.valueOf(getAttributeAsString(file, "user:keyLength")));
 		}
+		//if the mode is passsword based
 		else if(mode == OperationMode.Passwordbased)
 		{
+			//load the salt
 			openedData.setSalt((byte[])Files.getAttribute(file.toPath(), "user:salt"));
 		}
 		
+		//Return the read metadata as a metadata object
 		return openedData;
 	}
 	
@@ -271,20 +297,34 @@ public class FileManager {
 	 */
 	public static void saveKey(byte[] key, String hashValue, String driveLetter) throws Exception
 	{
+		//Get a file object from the dir the file will be saved in
 		File testForFolder = new File(driveLetter + ":/STE-KeyFiles");
+		
+		//if the dir does not exist or it is not a directory
 		if( !testForFolder.exists() || !testForFolder.isDirectory())
 		{
+			//Create the dir
 			boolean dirCreated = testForFolder.mkdir();
+			
+			//If the directory could not be created
 			if(!dirCreated)
 			{
+				//Throw an error
 				throw new Exception("Key File Directory could not be created!");
 			}
 		}
 		
+		//Remove all chars that can not be used in a file name from the files hash to use it as file name
 		hashValue = removeSpecialChars(hashValue);
+		
+		//Setup up an output stream
 		FileOutputStream fos = new FileOutputStream(driveLetter + ":/STE-KeyFiles/" + hashValue + ".STEkey");
 		BufferedOutputStream bos = new BufferedOutputStream(fos);
+		
+		//Write the key (with a Base64 encodding)
 		bos.write(Base64.getEncoder().encode(key));
+		
+		//Close the output stream
 		bos.close();
 	}
 	
@@ -311,16 +351,22 @@ public class FileManager {
 	 */
 	public static byte[] getKeyFromFile(String hashValue, String driveLetter) throws Exception
 	{
+		//Remove all chars that can not be used in a file name from the files hash to use it as file name
 		hashValue = removeSpecialChars(hashValue);
-
+		
+		//Create a file object from the path
 		File fileToOpen = new File(driveLetter + ":/STE-KeyFiles/" + hashValue + ".STEkey");
 		
+		//If the key file exists
 		if(fileToOpen.exists())
 		{
+			//decode the file content and return it as a byte array
 			return Base64.getDecoder().decode(Files.readAllBytes(fileToOpen.toPath()));
 		}
+		//if the key file does not exist
 		else
 		{
+			//throw an error
 			throw new Exception("Key File not found");
 		}
 	}

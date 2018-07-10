@@ -1,11 +1,9 @@
-package tests;
+ package tests;
 import static org.junit.Assert.*;
 
 import java.io.File;
 
 import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import enums.EncryptionMode;
@@ -168,8 +166,7 @@ public class TestClass {
     	String resultString = CryptoManager.decryptString(result, testData);
     	
     	System.out.println("\t" + stopwatch.getTimeInSec() + "s");
-  
-    	
+
         assertEquals(testString, removeSpaces(resultString));
     }
     

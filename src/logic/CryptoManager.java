@@ -30,6 +30,7 @@ import persistence.MetaData;
  */
 public class CryptoManager {
 	
+	
 	private static final int iterationCount = 1000;
     private static final int saltLength = 8;
 	
@@ -46,23 +47,33 @@ public class CryptoManager {
     {
     	Cipher cipher = null;
     	
+    	//if the enc type is ARC4
     	if(fileData.getEncryptionType() == EncryptionType.ARC4)
     	{
+    		//The Cipher.getInstance only takes the 'ARC4' argument, no padding or mode
     		cipher = Cipher.getInstance(EncryptionType.ARC4.toString(), "BC");
     	}
     	else
+    	{
+    		//create the cipher object with the concatenated string 'encType/encMode/padding'
     		cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/" + fileData.getEncryptionMode().toString() + "/" + fileData.getPaddingType().toString(), "BC");
-		
+    	}
+    	
+    	//If there is an iv present
 		if(ivSpec != null)
 		{
+			//init the cipher with an iv
 			cipher.init(mode, key, ivSpec);
 		}
+		//if there is none
 		else
 		{
+			//init the cipher without an iv
 			cipher.init(mode, key);
 		}
 
 		
+		//Return the initialized cipher object
 		return cipher;
     }
     
@@ -77,7 +88,10 @@ public class CryptoManager {
      */
     private static Cipher generateCipher(int mode, MetaData fileData, Key key, SecureRandom random) throws Exception
     {
-    	Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/None/NoPadding", "BC");;
+    	//RSA ciphers are created with "RSA/None/NoPadding"
+    	Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/None/NoPadding", "BC");
+    	
+    	//TODO how to 
     	cipher.init(mode, key, random);
     	return cipher;
     }
@@ -116,6 +130,8 @@ public class CryptoManager {
 		Cipher cipher = null;
 		Key keyObject = null;
 		
+		fileData.setHashValue(generateHash(fileData, input.trim().getBytes()));
+		
 		if(fileData.getEncryptionType() != EncryptionType.none && !input.isEmpty())
 		{
 			//TODO dont pull the keys from their respective key objects
@@ -151,7 +167,7 @@ public class CryptoManager {
 			output = input.getBytes();
 		}
 		
-		fileData.setHashValue(generateHash(fileData, output));
+		
 		
 		if(keyBytes != null)
 			FileManager.saveKey(keyBytes, fileData.getHashValue(), fileData.getUsbData().getDriveLetter());
@@ -227,7 +243,7 @@ public class CryptoManager {
 	{
 		byte[] plainText;
 		
-		validateHash(fileData, input, fileData.getHashValue());
+		
 		
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
@@ -281,6 +297,9 @@ public class CryptoManager {
 		{
 			plainText = input;
 		}
+		
+		validateHash(fileData, new String(plainText, "UTF-8").trim().getBytes(), fileData.getHashValue());
+		
 		return new String(plainText, "UTF-8");
 	}
 	

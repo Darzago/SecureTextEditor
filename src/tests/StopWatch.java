@@ -1,6 +1,7 @@
 package tests;
 
 public class StopWatch {
+	
 	private long lastTime;
 	
 	public void stopAndStart()

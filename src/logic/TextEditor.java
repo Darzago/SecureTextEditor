@@ -471,8 +471,14 @@ public class TextEditor extends TextArea{
             	
             	//Set the content of the keylength drpodown box depending on the selected encryption type
 	            keyLengthBox.getItems().clear();
-	            keyLengthBox.getItems().addAll(KeyLength.getFittingKeyLength(encryptionDropDown.getValue()));
-	            keyLengthBox.setValue(KeyLength.getFittingKeyLength(encryptionDropDown.getValue())[0]);
+	            
+	            //TODO find out error origin
+	            //Fixes an error
+	            if(encryptionDropDown.getValue() != null)
+	            {
+		            keyLengthBox.getItems().addAll(KeyLength.getFittingKeyLength(currentFileData.getEncryptionType()));
+		            keyLengthBox.setValue(KeyLength.getFittingKeyLength(encryptionDropDown.getValue())[0]);
+	            }
             	
             	//if the type is none
             	if(encryptionDropDown.getValue() == EncryptionType.none)
