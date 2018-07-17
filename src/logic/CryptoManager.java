@@ -132,6 +132,8 @@ public class CryptoManager {
 		
 		fileData.setHashValue(generateHash(fileData, input.trim().getBytes()));
 		
+		input = input + (char)3 + fileData.getHashValue();
+		
 		if(fileData.getEncryptionType() != EncryptionType.none && !input.isEmpty())
 		{
 			//TODO dont pull the keys from their respective key objects
@@ -174,6 +176,7 @@ public class CryptoManager {
 		
 		return output;
 	}
+	
 
 	
 	/**
@@ -298,10 +301,27 @@ public class CryptoManager {
 			plainText = input;
 		}
 		
-		validateHash(fileData, new String(plainText, "UTF-8").trim().getBytes(), fileData.getHashValue());
+		String outputString = new String(plainText, "UTF-8").trim();
+		String hash = "";
 		
-		return new String(plainText, "UTF-8");
+		for(int count = outputString.length() - 1; count > 0; count --)
+		{
+			//Char 3 is a char used to symbolize the end of a transmission (ASCII)
+			if(outputString.charAt(count) == (char)3)
+			{
+				hash = outputString.substring(count +1, outputString.length());
+				outputString = outputString.substring(0,count);
+			}
+		}
+		
+		validateHash(fileData, outputString.trim().getBytes(), hash);
+		
+		return outputString;
 	}
+	
+	
+	
+	
 	
 	/**
 	 * Generates a key for a symmetric encryption

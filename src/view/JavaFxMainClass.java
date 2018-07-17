@@ -71,6 +71,8 @@ public class JavaFxMainClass extends Application{
 		//Adds all menu items to the "file" menu
 		menuBar.getMenus().addAll(fileMenu, encryptionMenu);
 		
+		
+		
 		//Sets up keyboard shortcuts
 		menuNewItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
 		menuOpenItem.setAccelerator(new KeyCodeCombination(KeyCode.O, KeyCombination.CONTROL_DOWN));
@@ -179,6 +181,8 @@ public class JavaFxMainClass extends Application{
         layoutMainWindow.setFillWidth(true);
 		Scene mainWindow = new Scene(layoutMainWindow, 600, 400);
 
+		
+		
 		
 //Event Handler -----------------------------------------------------------------------------------------------
 		

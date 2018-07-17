@@ -21,6 +21,7 @@ public class PasswordDialog extends Dialog<String> {
     ButtonType passwordButtonType = new ButtonType("Decrypt", ButtonData.OK_DONE);
     getDialogPane().getButtonTypes().addAll(passwordButtonType, ButtonType.CANCEL);
 
+    //Not secure since passwords should not be stored in a string but in a char array
     passwordField = new PasswordField();
     passwordField.setPromptText("Password");
 
