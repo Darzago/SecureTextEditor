@@ -1,4 +1,6 @@
 TODO	-----------------------------------------------------------------------------------------------------------------
+	TODO Nur char arrays speichern !!ERwähnen in der klausur
+	
 	Bei normalen MAC's funktionieren known plaintext angriffe, 
 		bei HMAC's nicht da ein weiterer Key genutzt wird
 	

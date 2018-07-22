@@ -103,9 +103,9 @@ public class FileManager {
 		//Get the operation Mode of the encryption type the file was encrypted with
 		OperationMode mode = fileData.getEncryptionType().getOperationMode();
 		
+		//Load hash function
 		Files.setAttribute(file.toPath(), "user:Type", (fileData.getEncryptionType().toString() + "").getBytes() );
 		Files.setAttribute(file.toPath(), "user:HashF", (fileData.getHashFunction().toString()+ "").getBytes() );
-		Files.setAttribute(file.toPath(), "user:Hash", (fileData.getHashValue()).getBytes());
 		
 		//Depending on the mode, write different parameters
 		//If the mode is Symmetric
@@ -246,9 +246,8 @@ public class FileManager {
 		//Get the operation mode of the read encryption type to determine which parameters should be loaded
 		OperationMode mode = openedData.getEncryptionType().getOperationMode();
 		
-		//Load hash function and value
+		//Load hash function
 		openedData.setHashFunction(HashFunction.valueOf(getAttributeAsString(file, "user:HashF")));
-		openedData.setHashValue(new String((byte[])Files.getAttribute(file.toPath(), "user:Hash")));
 		
 		//If the mode is symmetric
 		if(mode == OperationMode.Symmetric)

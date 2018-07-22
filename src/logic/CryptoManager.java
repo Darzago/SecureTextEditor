@@ -130,9 +130,7 @@ public class CryptoManager {
 		Cipher cipher = null;
 		Key keyObject = null;
 		
-		fileData.setHashValue(generateHash(fileData, input.trim().getBytes()));
-		
-		input = input + (char)3 + fileData.getHashValue();
+		input = input + (char)3 + generateHash(fileData, input.trim().getBytes());
 		
 		if(fileData.getEncryptionType() != EncryptionType.none && !input.isEmpty())
 		{
@@ -169,7 +167,7 @@ public class CryptoManager {
 			output = input.getBytes();
 		}
 		
-		
+		fileData.setHashValue(generateHash(fileData, output));
 		
 		if(keyBytes != null)
 			FileManager.saveKey(keyBytes, fileData.getHashValue(), fileData.getUsbData().getDriveLetter());
@@ -185,6 +183,8 @@ public class CryptoManager {
 	 * @param input input to be hashed
 	 * @return hash
 	 * @throws Exception
+	 * 
+	 *TODO Save it in a char array, not in a string to limit the lifetime of sensitive data 
 	 */
 	public static String generateHash(MetaData metadata, byte[] input) throws Exception
 	{
@@ -193,7 +193,10 @@ public class CryptoManager {
 		//TODO
 		//hash.update(metadata.getEncryptionType().toString().getBytes());
 		//hash.update(metadata.getUsbData().toString().getBytes());
-		return Base64.getEncoder().encodeToString(hash.digest());
+		
+		String generatedHash= Base64.getEncoder().encodeToString(hash.digest());
+		System.out.println(generatedHash);
+		return generatedHash;
 	}
 	
 	/**
@@ -224,7 +227,6 @@ public class CryptoManager {
 	public static void validateHash(MetaData fileData, byte[] input, String readHash) throws Exception
 	{
 		//Compare the two hashes using a message digest helper function
-		
 		if(!MessageDigest.isEqual(Base64.getDecoder().decode(readHash) , Base64.getDecoder().decode(generateHash(fileData, input))))
 		{
 			throw new Exception("File has been altered!");
@@ -246,7 +248,7 @@ public class CryptoManager {
 	{
 		byte[] plainText;
 		
-		
+		fileData.setHashValue(generateHash(fileData, input));
 		
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
@@ -319,10 +321,6 @@ public class CryptoManager {
 		return outputString;
 	}
 	
-	
-	
-	
-	
 	/**
 	 * Generates a key for a symmetric encryption
 	 * @param encryptionType encryption type that the key will be used with
@@ -352,7 +350,6 @@ public class CryptoManager {
 		KeyPair pair = generator.generateKeyPair();
 		return pair;
 	}
-	
 	
 	/**
 	 * Gets an iv matching the fitting length depending on the encryption type
