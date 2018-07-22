@@ -162,7 +162,7 @@ public class TextEditor extends TextArea{
     			{
     				//Display password dialog
     				PasswordDialog test = new PasswordDialog();
-    				Optional<String> result = test.showAndWait();
+    				Optional<char[]> result = test.showAndWait();
     				if(result.get() != null)
     				{
     					System.out.println(result.get());
@@ -172,6 +172,7 @@ public class TextEditor extends TextArea{
     					throw new Exception("No Password was entered.");
     				}
     				
+    				//!!!Insecure because the password is retrieved as a string and strings are immutable
     				//Save the entered password in the metadata to pass it into the decryption
     				currentFileData.setPassword(result.get());
     			}
@@ -621,7 +622,16 @@ public class TextEditor extends TextArea{
 		    @Override
 		    public void changed(final ObservableValue<? extends String> observable, final String oldValue, final String newValue) 
 		    {
-		    	currentFileData.setPassword(passwordField.getText());
+		    	
+		    	//Convert the input into a char array
+		    	  CharSequence charSequence = passwordField.getCharacters();
+		    	  char[] array = new char[charSequence.length()];
+		    	  for(int i = 0; i < charSequence.length(); i++)
+		    	  {
+		    		  array[i] = charSequence.charAt(i);
+		    	  }
+		    	  
+		    	currentFileData.setPassword(array);
 		    }
 		});
 		

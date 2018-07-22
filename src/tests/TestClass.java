@@ -78,7 +78,7 @@ public class TestClass {
     	System.out.println("\tType\tMode\t\tPadding\t\tKeyLength\tTime in s");
     	System.out.println("\t---------------------------------------------------------------------------");
     	
-    	testData.setPassword("Password");
+    	testData.setPassword("Password".toCharArray());
 		testData.setEncryptionMode(EncryptionMode.ECB);
 		for(EncryptionType type : EncryptionType.values())
 		{

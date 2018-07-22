@@ -147,7 +147,7 @@ public class CryptoManager {
 				byte[] salt = generateByteArray(saltLength);
 				fileData.setSalt(salt);
 				SecretKeyFactory factory = SecretKeyFactory.getInstance(fileData.getEncryptionType().toString(), "BC");
-			    SecretKey key = factory.generateSecret(new PBEKeySpec(fileData.getPassword().toCharArray()));
+			    SecretKey key = factory.generateSecret(new PBEKeySpec(fileData.getPassword()));
 			    
 			    cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, key, new PBEParameterSpec(salt, iterationCount));				
 				break;
@@ -167,10 +167,8 @@ public class CryptoManager {
 			output = input.getBytes();
 		}
 		
-		fileData.setHashValue(generateHash(fileData, output));
-		
 		if(keyBytes != null)
-			FileManager.saveKey(keyBytes, fileData.getHashValue(), fileData.getUsbData().getDriveLetter());
+			FileManager.saveKey(keyBytes, generateHash(fileData, output), fileData.getUsbData().getDriveLetter());
 		
 		return output;
 	}
@@ -248,8 +246,6 @@ public class CryptoManager {
 	{
 		byte[] plainText;
 		
-		fileData.setHashValue(generateHash(fileData, input));
-		
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
 			
@@ -274,7 +270,7 @@ public class CryptoManager {
 			{
 			case Asymmetric:
 				KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-				PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(FileManager.getKeyFromFile(fileData.getHashValue(), fileData.getUsbData().getDriveLetter()));
+				PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(FileManager.getKeyFromFile(generateHash(fileData, input), fileData.getUsbData().getDriveLetter()));
 				PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
 				
 				//Instantiate the cipher with a private key
@@ -283,12 +279,12 @@ public class CryptoManager {
 				break;
 			case Passwordbased:
 			    SecretKeyFactory keyFactory2 = SecretKeyFactory.getInstance(fileData.getEncryptionType().toString());
-			    SecretKey skey = keyFactory2.generateSecret(new PBEKeySpec(fileData.getPassword().toCharArray()));
+			    SecretKey skey = keyFactory2.generateSecret(new PBEKeySpec(fileData.getPassword()));
 			   
 			    cipher = generateCipher(Cipher.DECRYPT_MODE, fileData, skey, new PBEParameterSpec(fileData.getSalt(), iterationCount));
 				break;
 			case Symmetric:
-				Key key = new SecretKeySpec(FileManager.getKeyFromFile(fileData.getHashValue(), fileData.getUsbData().getDriveLetter()), fileData.getEncryptionType().toString());
+				Key key = new SecretKeySpec(FileManager.getKeyFromFile(generateHash(fileData, input), fileData.getUsbData().getDriveLetter()), fileData.getEncryptionType().toString());
 				cipher = generateCipher(Cipher.DECRYPT_MODE, fileData, key, ivSpec);
 				break;
 			default:

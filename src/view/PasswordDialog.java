@@ -11,7 +11,7 @@ import javafx.scene.layout.Priority;
 
 
 //Source: https://gist.github.com/drguildo/ba2834bf52d624113041
-public class PasswordDialog extends Dialog<String> {
+public class PasswordDialog extends Dialog<char[]> {
   private PasswordField passwordField;
 
   public PasswordDialog() {
@@ -37,7 +37,15 @@ public class PasswordDialog extends Dialog<String> {
 
     setResultConverter(dialogButton -> {
       if (dialogButton == passwordButtonType) {
-        return passwordField.getText();
+    	  
+    	  //Convert the input into a char array
+    	  CharSequence charSequence = passwordField.getCharacters();
+    	  char[] array = new char[charSequence.length()];
+    	  for(int i = 0; i < charSequence.length(); i++)
+    	  {
+    		  array[i] = charSequence.charAt(i);
+    	  }
+        return array;
       }
       return null;
     });

@@ -17,23 +17,23 @@ public class MetaData {
 	private EncryptionMode encryptionMode;
 	private HashFunction hashFunction;
 	private KeyLength keyLength;
-	private String hashValue;
 	private String iV;
 	private byte[] salt = new byte[]{0x00};
 	private USBMetaData usbData;
-	private String password;
+	private char[] password;
 
 	/**
 	 * @return the password
 	 */
-	public String getPassword() {
+	public char[] getPassword() {
+		
 		return password;
 	}
 
 	/**
 	 * @param password the password to set
 	 */
-	public void setPassword(String password) {
+	public void setPassword(char[] password) {
 		this.password = password;
 	}
 
@@ -77,20 +77,6 @@ public class MetaData {
 	 */
 	public void setKeyLength(KeyLength keyLength) {
 		this.keyLength = keyLength;
-	}
-	
-	/**
-	 * @return the hashValue
-	 */
-	public String getHashValue() {
-		return hashValue;
-	}
-
-	/**
-	 * @param hashValue the hashValue to set
-	 */
-	public void setHashValue(String hashValue) {
-		this.hashValue = hashValue;
 	}
 	
 	/**
