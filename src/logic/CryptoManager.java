@@ -91,7 +91,6 @@ public class CryptoManager {
     	//RSA ciphers are created with "RSA/None/NoPadding"
     	Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString() + "/None/NoPadding", "BC");
     	
-    	//TODO how to 
     	cipher.init(mode, key, random);
     	return cipher;
     }
@@ -124,51 +123,83 @@ public class CryptoManager {
 	 */
 	public static byte[] encryptString(String input, MetaData fileData) throws Exception
 	{ 
+		//Prepare variables
 		byte[] output;
 		byte[] keyBytes = null;
-		IvParameterSpec iv;
-		Cipher cipher = null;
-		Key keyObject = null;
-		
+				
+		//appends the hash to the plaintext, using char '3' (ETX/End of Text in ASCI) as a seperation character
 		input = input + (char)3 + generateHash(fileData, input.trim().getBytes());
 		
-		if(fileData.getEncryptionType() != EncryptionType.none && !input.isEmpty())
+		//if the encryption type is not 'None' 
+		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
-			//TODO dont pull the keys from their respective key objects
+			//Prepare a cipher reference
+			Cipher cipher = null;
+
+			//Create the correct type of cipher based on the operation mode
 			switch(fileData.getEncryptionType().getOperationMode())
 			{
 			case Asymmetric:
+				//Create a secure random (always should be properly seeded, do not use sth like the date/current time)
 				SecureRandom random = new SecureRandom();
+				
+				//Generate a keypair
 				KeyPair keyPair = generateAsymmetricKeys(random, fileData.getKeyLength());
+				
+				//Generate a cipher for the encryption using the generated public key
 				cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, keyPair.getPublic(), random);
+				
+				//encode the Private key to make it possible to save it in a file, since asymmetric keys consist of 2 parts, the modulo and a large int
 				keyBytes =  new PKCS8EncodedKeySpec(keyPair.getPrivate().getEncoded()).getEncoded();
 				break;
 			case Passwordbased:
-				byte[] salt = generateByteArray(saltLength);
+				
+				//generate a random salt and save it in the filedata to save it in the metadata
+				byte[] salt = generateRandomByteArray(saltLength);
 				fileData.setSalt(salt);
+				
+				//Generate a key from the selected password
 				SecretKeyFactory factory = SecretKeyFactory.getInstance(fileData.getEncryptionType().toString(), "BC");
 			    SecretKey key = factory.generateSecret(new PBEKeySpec(fileData.getPassword()));
 			    
+			    //Generate a cipher from the salt, iterationcount and the generated key
 			    cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, key, new PBEParameterSpec(salt, iterationCount));				
 				break;
 			case Symmetric:
-				keyObject = generateSymmetricKey(fileData.getEncryptionType(), fileData.getKeyLength());
 				
-				iv = getIvIfNeeded(fileData);
+				//Generate a random symmetric key of the desired key length
+				Key keyObject = generateSymmetricKey(fileData.getEncryptionType(), fileData.getKeyLength());
+				
+				//Create an iv if the currently selected mode needs one
+				IvParameterSpec iv = getIvIfNeeded(fileData);
+				
+				//generate a cipher from the key and, if needed, the iv
 				cipher = generateCipher(Cipher.ENCRYPT_MODE, fileData, keyObject, iv);
+				
+				//Get the encoded key to save it in a file
 				keyBytes = keyObject.getEncoded();
 				break;
 			}
 			
+			//Apply the generated cipher to the input bytes
 			output = applyCipher(cipher, input.getBytes());
 		}
+		//If the encryption type is 'none' or null
 		else
 		{
+			//forward the content without encrypting it
 			output = input.getBytes();
 		}
 		
+		//If the keybyte array is not empty
 		if(keyBytes != null)
+		{
+			//Save the key in a file with the filename being the hash of the encrypted file content
 			FileManager.saveKey(keyBytes, generateHash(fileData, output), fileData.getUsbData().getDriveLetter());
+		}
+		
+		//Reset the keybyte array to 'remove' it from the random access memory
+		keyBytes = null;
 		
 		return output;
 	}
@@ -186,14 +217,15 @@ public class CryptoManager {
 	 */
 	public static String generateHash(MetaData metadata, byte[] input) throws Exception
 	{
+		//create a message digest of the selected hashfunction of the input metadata
 		MessageDigest hash = MessageDigest.getInstance(metadata.getHashFunction().toString(), "BC");
-		hash.update(input);
-		//TODO
-		//hash.update(metadata.getEncryptionType().toString().getBytes());
-		//hash.update(metadata.getUsbData().toString().getBytes());
 		
+		//Apply the hash to the input
+		hash.update(input);
+
+		//finalize the hash generation by invoking the digest method and encoding it in base64
 		String generatedHash= Base64.getEncoder().encodeToString(hash.digest());
-		System.out.println(generatedHash);
+
 		return generatedHash;
 	}
 	
@@ -206,12 +238,17 @@ public class CryptoManager {
 	 */
 	private static byte[] applyCipher(Cipher cipher, byte[] input) throws Exception
 	{
+		//create an output array appropriate size, dependinng on the size of the plaintext and the encryption used
 		byte [] output = new byte[cipher.getOutputSize(input.length)];
 		
+		//Ctlength stores the length of the data that has already been processed by the cipher
+		//Arguments: input array,input offset, input length, output array, output offset
 		int ctLength = cipher.update(input, 0, input.length, output, 0);
 		
+		//Finalize the encryption
 		ctLength += cipher.doFinal(output, ctLength);
 		
+		//return the en/de - crypted output
 		return output;
 	}
 	
@@ -224,9 +261,11 @@ public class CryptoManager {
 	 */
 	public static void validateHash(MetaData fileData, byte[] input, String readHash) throws Exception
 	{
-		//Compare the two hashes using a message digest helper function
+		//Compare the two hashes using a message digest helper function.
+		//If the hashed were not equal
 		if(!MessageDigest.isEqual(Base64.getDecoder().decode(readHash) , Base64.getDecoder().decode(generateHash(fileData, input))))
 		{
+			//Throw a custom exception
 			throw new Exception("File has been altered!");
 		}
 	}
@@ -244,64 +283,87 @@ public class CryptoManager {
 	 */
 	public static String decryptString(byte[] input, MetaData fileData) throws Exception
 	{
+		//Array to hold the plaintext
 		byte[] plainText;
 		
+		//if the encryption type is something other than 'none'
 		if(fileData.getEncryptionType() != EncryptionType.none)
 		{
-			
-			IvParameterSpec ivSpec = null; 
-			
-			if(fileData.getiV() != null)
-			{
-				if(fileData.getEncryptionMode().usesIV() && !fileData.getiV().equals("null"))
-				{
-					ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
-				}
-				else if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
-				{
-					throw new Exception("IV WAS NOT SET");
-				}
-			}
-			
-			
+			//Prepare a cipher reference
 			Cipher cipher = null;
 			
+			//Create the correct type of cipher based on the mode of operation
 			switch(fileData.getEncryptionType().getOperationMode())
 			{
 			case Asymmetric:
+				//Create a keyfactory to reproduce the private key from the keyfile
 				KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+				
+				//get the private key from the file, as an PKCS8EncodedKeySpec
 				PKCS8EncodedKeySpec privateKeySpec = new PKCS8EncodedKeySpec(FileManager.getKeyFromFile(generateHash(fileData, input), fileData.getUsbData().getDriveLetter()));
+				
+				//generate the private key from the PKCS8EncodedKeySpec
 				PrivateKey privateKey = keyFactory.generatePrivate(privateKeySpec);
 				
 				//Instantiate the cipher with a private key
 				cipher = Cipher.getInstance("RSA/None/NoPadding", "BC");
 				cipher.init(Cipher.DECRYPT_MODE, privateKey);
+				
 				break;
 			case Passwordbased:
-			    SecretKeyFactory keyFactory2 = SecretKeyFactory.getInstance(fileData.getEncryptionType().toString());
-			    SecretKey skey = keyFactory2.generateSecret(new PBEKeySpec(fileData.getPassword()));
+				//Create a keyfactory to generate a SecretKey from the input password
+			    SecretKeyFactory keyFactoryPBE = SecretKeyFactory.getInstance(fileData.getEncryptionType().toString());
+			    SecretKey skey = keyFactoryPBE.generateSecret(new PBEKeySpec(fileData.getPassword()));
 			   
+			    //Generate a cipher with the key, the salt from the metadata of the file and the iteration count.
 			    cipher = generateCipher(Cipher.DECRYPT_MODE, fileData, skey, new PBEParameterSpec(fileData.getSalt(), iterationCount));
 				break;
 			case Symmetric:
+				
+				IvParameterSpec ivSpec = null; 
+				
+				//If the loaded filedata has 'content'
+				if(fileData.getiV() != null)
+				{
+					//If the block mode uses an iv 
+					if(fileData.getEncryptionMode().usesIV() && !fileData.getiV().equals("null"))
+					{
+						//Create an iv object from the iv that was loaded from the filedata
+						ivSpec = new IvParameterSpec(Base64.getDecoder().decode(fileData.getiV()));
+					}
+					//If the filedata has content, but is not a proper iv
+					else if(fileData.getEncryptionMode().usesIV() && (fileData.getiV() == null || fileData.getiV().equals("null")))
+					{
+						//Throw a custom exception
+						throw new Exception("IV WAS NOT SET");
+					}
+				}
+				
+				//Get the corresponding key from the keyfile directory
 				Key key = new SecretKeySpec(FileManager.getKeyFromFile(generateHash(fileData, input), fileData.getUsbData().getDriveLetter()), fileData.getEncryptionType().toString());
+				
+				//Generate a cipher with an iv and the loaded key
 				cipher = generateCipher(Cipher.DECRYPT_MODE, fileData, key, ivSpec);
 				break;
 			default:
 				break;
 			
 			}
-
+			
+			//Apply the generated cipher and store the result in the plaintext array
 			plainText = applyCipher(cipher, input);
 		}
+		//If the encryption type is 'none' or null
 		else
 		{
+			//load the input as plaintext without decrypting anything
 			plainText = input;
 		}
 		
 		String outputString = new String(plainText, "UTF-8").trim();
-		String hash = "";
 		
+		//Read the hash that was added to the end of the plaintext 
+		String hash = "";
 		for(int count = outputString.length() - 1; count > 0; count --)
 		{
 			//Char 3 is a char used to symbolize the end of a transmission (ASCII)
@@ -312,8 +374,10 @@ public class CryptoManager {
 			}
 		}
 		
+		//Validate the read hash
 		validateHash(fileData, outputString.trim().getBytes(), hash);
 		
+		//Return the decrypted content
 		return outputString;
 	}
 	
@@ -326,8 +390,11 @@ public class CryptoManager {
 	 */
 	private static Key generateSymmetricKey(EncryptionType encryptionType, KeyLength keyLength) throws Exception
 	{
+		//Init the keygen with an encryptiontype and keylength
 		KeyGenerator generator = KeyGenerator.getInstance(encryptionType.toString(), "BC");
 		generator.init(keyLength.returnAsInt());
+		
+		//Generate the key and return it
 		Key encryptionKey = generator.generateKey();
 		return encryptionKey;
 	}
@@ -341,8 +408,11 @@ public class CryptoManager {
 	 */
 	private static KeyPair generateAsymmetricKeys(SecureRandom random, KeyLength keyLength) throws Exception
 	{
+		//Init the KeyGen with a keylength and a securerandom object
 		KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
 		generator.initialize(keyLength.returnAsInt(), random);
+		
+		//Generate the keypair and return it
 		KeyPair pair = generator.generateKeyPair();
 		return pair;
 	}
@@ -357,9 +427,9 @@ public class CryptoManager {
 		switch(encryption)
 		{
 		case DES:
-			return generateByteArray(8);
+			return generateRandomByteArray(8);
 		case AES:
-			return generateByteArray(16);
+			return generateRandomByteArray(16);
 		case none:
 		default:
 			return null;
@@ -371,16 +441,20 @@ public class CryptoManager {
 	 * @param length length of the array
 	 * @return array
 	 */
-	private static byte[] generateByteArray(int length)
+	private static byte[] generateRandomByteArray(int length)
 	{
+		//If the desired length is greater than 0
 		if(length > 0)
 		{
+			//Create a array and fill it with random bytes
 			SecureRandom random = new SecureRandom();
 			byte[] randomBytes = new byte[length];
 			random.nextBytes(randomBytes);
 			return randomBytes;
 		}
-		return null;
+		
+		//If the desired length was not greater than 0, return an empty array
+		return new byte[0];
 	}
 	
 	/**
@@ -390,14 +464,23 @@ public class CryptoManager {
 	 */
 	private static IvParameterSpec getIvIfNeeded(MetaData fileData)
 	{
-		IvParameterSpec ivSpec = null;		
+		IvParameterSpec ivSpec = null;
+		
+		//if the mode uses an iv and the selected type is not ARC4
 		if(fileData.getEncryptionMode().usesIV() && fileData.getEncryptionType() != EncryptionType.ARC4)
 		{
+			//Generate a random byte array with the matching length
 			byte[] ivArray = generateMatchingIV(fileData.getEncryptionType());
+			
+			//save the iv in the passed filedata
 			fileData.setiV(Base64.getEncoder().encodeToString(ivArray));
+			
+			//Create an IvParameterSpec to return
 			ivSpec = new IvParameterSpec(ivArray);
 			
 		}
+		
+		//Return the generated object
 		return ivSpec;
 	}
 	

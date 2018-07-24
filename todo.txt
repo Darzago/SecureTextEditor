@@ -4,10 +4,7 @@ TODO	---------------------------------------------------------------------------
 	Bei normalen MAC's funktionieren known plaintext angriffe, 
 		bei HMAC's nicht da ein weiterer Key genutzt wird
 	
-	hashdata nicht mehr im File selber speichern
-	
-	key id erzeugen mit dem bereits verschlüsselten
-	
+
 		Limit the lifetime of sensitive data
 			Daten die geschützt werden sollen sollten nur so lange wie nötig im RAM liegen
 			passwort sollte nicht in einem String gespeichert werden sondern in einem char array
@@ -85,3 +82,5 @@ DONE	---------------------------------------------------------------------------
 		-password bei der entschlüsselung auch aus der filedata holen
 		-Basic tests for each operation mode
 		-Timer
+		-hashdata nicht mehr im File selber speichern
+		-key id erzeugen mit dem bereits verschlüsselten
