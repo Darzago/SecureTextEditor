@@ -24,14 +24,18 @@ import persistence.USBMetaData;
  */
 public class TestClass {
 
-	
+	//Stopwatch to display the time that was needed for each encryption
 	StopWatch stopwatch = new StopWatch();
+	
+	//Testdata to be encrypted
 	String testString = "TestDaten";
+	
+	//Test metadata
 	MetaData testData = new MetaData(PaddingType.PKCS7Padding, EncryptionType.AES, EncryptionMode.CBC, HashFunction.MD5, KeyLength.x128);
 	
 	
 	/**
-	 * Clears all generated keys
+	 * Clears all generated keys after the test
 	 */
 	@After
 	public void clearKeys()

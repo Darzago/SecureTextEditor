@@ -1,6 +1,7 @@
 package persistence;
 
 public class USBMetaData {
+	
 	private String driveLetter;
 	private int Hash;
 	

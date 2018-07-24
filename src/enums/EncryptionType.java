@@ -1,8 +1,17 @@
 package enums;
 
+/**
+ * Enum that represents encryption types
+ * @author Joel
+ *
+ */
 public enum EncryptionType {
 	none, AES, DES, RSA, ARC4, PBEWithMD5AndDES, PBEWithSHAAnd40BitRC4, PBEWithSHA256And128BitAES_CBC_BC;
 	
+	/**
+	 * Returns the Operation mode of this encryption type
+	 * @return Opertaion mode of this type
+	 */
 	public OperationMode getOperationMode()
 	{
 		switch(this)
@@ -24,6 +33,11 @@ public enum EncryptionType {
 		}
 	}
 	
+	/**
+	 * Returns all encryption typesof the passed operation mode 
+	 * @param operation operation
+	 * @return Array of all encryption types of the corresponding operation
+	 */
 	public static EncryptionType[] getValuesByOperation(OperationMode operation)
 	{
 		switch(operation)
@@ -39,6 +53,11 @@ public enum EncryptionType {
 		}
 	}
 	
+	/**
+	 * ValueOf method with the special case PBEWithSHA256And128BitAES-CBC-BC because '-' can not be used in Strings
+	 * @param arg String to be converted to an enum
+	 * @return encryption type
+	 */
 	public static EncryptionType filteredValueOf(String arg)
 	{
 		if(arg.equals("PBEWithSHA256And128BitAES-CBC-BC"))
@@ -48,9 +67,12 @@ public enum EncryptionType {
 		return valueOf(arg);
 	}
 	
+	/**
+	 * ToString method with the special case PBEWithSHA256And128BitAES-CBC-BC because '-' can not be used in Strings
+	 * @return type as a string that can be used ti init a cipher
+	 */
 	public String toString()
 	{
-		
 		if(this == PBEWithSHA256And128BitAES_CBC_BC)
 		{
 			return "PBEWithSHA256And128BitAES-CBC-BC";

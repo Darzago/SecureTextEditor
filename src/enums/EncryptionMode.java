@@ -1,7 +1,7 @@
 package enums;
 
 /**
- * Represents an encryption mode
+ * Enum that represents encryption mode
  * @author Joel
  */
 public enum EncryptionMode {
