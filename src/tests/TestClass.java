@@ -97,17 +97,10 @@ public class TestClass {
 		    	for(EncryptionMode mode : array)
 		    	{	
 		    		testData.setEncryptionMode(mode);
-		    		if(mode == EncryptionMode.GCM)
-		    		{
-		    			testData.setPaddingType(PaddingType.NoPadding);
-		    		}
-		    		else
-		    		{
-		    			testData.setPaddingType(PaddingType.PKCS7Padding);
-		    		}
+		    		
 		    		if(!(testData.getEncryptionMode() == EncryptionMode.GCM && testData.getEncryptionType() == EncryptionType.DES))
 		    		{
-		    			testAllKeyLengths(testData);
+		    			testAllPaddings(testData);
 		    		}
 		    		
 		    	}
@@ -117,6 +110,23 @@ public class TestClass {
 				testAllKeyLengths(testData);
 			}
 		}
+    }
+    
+    private void testAllPaddings(MetaData testData) throws Exception
+    {
+    	for(PaddingType padding : PaddingType.values())
+    	{
+    		testData.setPaddingType(padding);
+    		
+    		if(!(testData.getEncryptionMode().needsPadding() && testData.getPaddingType() == PaddingType.NoPadding) && testData.getEncryptionMode() != EncryptionMode.GCM)
+    		{
+    			testAllKeyLengths(testData);
+    		}
+    		else if(testData.getEncryptionMode() == EncryptionMode.GCM)
+    		{
+    			testData.setPaddingType(PaddingType.NoPadding);
+    		}
+    	}
     }
     
     private void testAllKeyLengths(MetaData testData) throws Exception
@@ -146,10 +156,15 @@ public class TestClass {
     		}
     		System.out.print(outputMode + "\t" + testData.getPaddingType() + "\t");
     	}
+    	else if(testData.getEncryptionType().getOperationMode() == OperationMode.Passwordbased)
+    	{
+    		System.out.print("\t");
+    	}
     	else 
     	{
     		System.out.print("\t\t\t");
     	}
+    	
     	if(testData.getEncryptionType() == EncryptionType.ARC4 || testData.getEncryptionType() == EncryptionType.RSA)
     	{
     		System.out.print("\t");

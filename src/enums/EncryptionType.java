@@ -8,7 +8,10 @@ package enums;
 public enum EncryptionType {
 	none, AES, DES, RSA, ARC4, PBEWithMD5AndDES, PBEWithSHAAnd40BitRC4, PBEWithSHA256And128BitAES_CBC_BC;
 
-	
+	/**
+	 * Returns the fitting salt length for an encryption type
+	 * @return fitting Salt length
+	 */
 	public int getPBESaltLength()
 	{
 		switch(this)

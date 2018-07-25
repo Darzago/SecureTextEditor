@@ -23,5 +23,15 @@ ECB, CBC, CTS, CTR, OFB, CFB, CFB8, GCM, OpenPGPCFB,None;
 		return false;
 	}
 	
+	public boolean needsPadding()
+	{
+		 
+		if(this == EncryptionMode.ECB || this == EncryptionMode.CBC)
+		{
+			return true;
+		}
+		return false;
+	}
+	
 }
 

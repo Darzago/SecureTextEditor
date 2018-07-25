@@ -30,7 +30,6 @@ import persistence.MetaData;
  */
 public class CryptoManager {
 	
-	
 	private static final int iterationCount = 1000;
 	
 	/**
