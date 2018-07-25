@@ -7,6 +7,28 @@ package enums;
  */
 public enum EncryptionType {
 	none, AES, DES, RSA, ARC4, PBEWithMD5AndDES, PBEWithSHAAnd40BitRC4, PBEWithSHA256And128BitAES_CBC_BC;
+
+	
+	public int getPBESaltLength()
+	{
+		switch(this)
+		{
+		case PBEWithMD5AndDES:
+			return 8;
+		case PBEWithSHA256And128BitAES_CBC_BC:
+			return 16;
+		case PBEWithSHAAnd40BitRC4:
+			return 40;
+			
+		case AES:
+		case ARC4:
+		case DES:
+		case RSA:
+		case none:
+		default:
+			return 0;
+		}
+	}
 	
 	/**
 	 * Returns the Operation mode of this encryption type

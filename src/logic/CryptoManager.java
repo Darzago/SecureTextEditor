@@ -32,7 +32,6 @@ public class CryptoManager {
 	
 	
 	private static final int iterationCount = 1000;
-    private static final int saltLength = 8;
 	
 	/**
 	 * Creates a cipher object for symmetric en & decryption
@@ -107,12 +106,12 @@ public class CryptoManager {
     private static Cipher generateCipher(int mode, MetaData fileData,SecretKey key, PBEParameterSpec spec) throws Exception
     {
 	    Cipher cipher = Cipher.getInstance(fileData.getEncryptionType().toString());
+	    
 	    cipher.init(mode, key, spec);
+	    
 	    return cipher;
     }
-    
-
-    
+        
 	/**
 	 * Encrypts a given string with the desired encryption, encryption mode and padding type 
 	 * @param input String to be encrypted
@@ -155,7 +154,7 @@ public class CryptoManager {
 			case Passwordbased:
 				
 				//generate a random salt and save it in the filedata to save it in the metadata
-				byte[] salt = generateRandomByteArray(saltLength);
+				byte[] salt = generateRandomByteArray(fileData.getEncryptionType().getPBESaltLength());
 				fileData.setSalt(salt);
 				
 				//Generate a key from the selected password
@@ -203,9 +202,7 @@ public class CryptoManager {
 		
 		return output;
 	}
-	
 
-	
 	/**
 	 * Generates a hash of the desired hashfunction
 	 * @param hashFunction Hashfunction to be applied
