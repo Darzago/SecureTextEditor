@@ -155,11 +155,10 @@ public class MetaData {
 	/**
 	 * Constructor
 	 * @param paddingType Padding to be set
-	 * @param encryptionType EncryptionType to be set
-	 * @param encryptionMode Encryption mode to be set
-	 * @param hashFunction Hash function to be set
-	 * @param keyLength Key length to be set
-	 * @param filePath Filepath to be set
+	 * @param encryptionType EncType to be set
+	 * @param encryptionMode Mode to be set
+	 * @param hashFunction Hash Function to be set
+	 * @param keyLength KeyLength to be set
 	 */
 	public MetaData(PaddingType paddingType, EncryptionType encryptionType,
 			EncryptionMode encryptionMode, HashFunction hashFunction, KeyLength keyLength) {

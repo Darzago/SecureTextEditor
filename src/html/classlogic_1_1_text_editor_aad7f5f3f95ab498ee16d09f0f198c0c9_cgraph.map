@@ -1,0 +1,5 @@
+<map id="logic.TextEditor.newFileDialogue" name="logic.TextEditor.newFileDialogue">
+<area shape="rect" id="node2" href="$classlogic_1_1_text_editor.html#aed9266aefb6a34921fdb12776a4c84cc" title="logic.TextEditor.display\lSaveAlert" alt="" coords="215,5,372,47"/>
+<area shape="rect" id="node3" href="$classlogic_1_1_text_editor.html#a03b71fe113e6549963206a005913176a" title="logic.TextEditor.newFile" alt="" coords="213,71,373,98"/>
+<area shape="rect" id="node4" href="$classlogic_1_1_text_editor.html#a3e994bcaa8e3e6983c8867003347af20" title="logic.TextEditor.updateTitle" alt="" coords="421,71,600,98"/>
+</map>

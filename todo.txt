@@ -1,6 +1,5 @@
 TODO	-----------------------------------------------------------------------------------------------------------------
-	TODO Nur char arrays speichern !!ERwähnen in der klausur
-	
+
 	Bei normalen MAC's funktionieren known plaintext angriffe, 
 		bei HMAC's nicht da ein weiterer Key genutzt wird
 	
@@ -21,9 +20,6 @@ TODO	---------------------------------------------------------------------------
 			
 	Reliability
 		Return an empty array or collection instead of returning null
-
-	REMOVE
-		Filepath variable in the metadata
 	
 	HASH
 		plaintext hashen, nicht den cipher text, so rum macht halt wirklich keinen sinn
@@ -84,3 +80,4 @@ DONE	---------------------------------------------------------------------------
 		-Timer
 		-hashdata nicht mehr im File selber speichern
 		-key id erzeugen mit dem bereits verschlüsselten
+		-removed Filepath variable in the metadata

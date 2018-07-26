@@ -202,14 +202,13 @@ public class CryptoManager {
 		return output;
 	}
 
+
 	/**
 	 * Generates a hash of the desired hashfunction
-	 * @param hashFunction Hashfunction to be applied
-	 * @param input input to be hashed
-	 * @return hash
-	 * @throws Exception
-	 * 
-	 *TODO Save it in a char array, not in a string to limit the lifetime of sensitive data 
+	 * @param metadata Metadata containing the hashfunction
+	 * @param input data to be hashed
+	 * @return Hash as a string
+	 * @throws Exception 
 	 */
 	public static String generateHash(MetaData metadata, byte[] input) throws Exception
 	{
@@ -267,15 +266,11 @@ public class CryptoManager {
 	}
 	
 	/**
-	 * Decrypts a given byte array using the given parameters
-	 * @param input byte array to be decrypted
-	 * @param encryptionType encryption type used to decrypt
-	 * @param encryptionMode encryption mode used to decrypt
-	 * @param paddingType padding type used to decrypt
-	 * @return Decrypted String
+	 * Decrypts a given byte array using the given metadata
+	 * @param input Data to be encrypted
+	 * @param fileData metadata containing the encryption that will be applied
+	 * @return Encrypted data
 	 * @throws Exception
-	 * 
-	 * 		Cipher-Based I/O ?
 	 */
 	public static String decryptString(byte[] input, MetaData fileData) throws Exception
 	{

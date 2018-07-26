@@ -1,0 +1,369 @@
+\hypertarget{classlogic_1_1_crypto_manager}{}\section{logic.\+Crypto\+Manager Class Reference}
+\label{classlogic_1_1_crypto_manager}\index{logic.\+Crypto\+Manager@{logic.\+Crypto\+Manager}}
+
+
+Collaboration diagram for logic.\+Crypto\+Manager\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=226pt]{classlogic_1_1_crypto_manager__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static byte \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classlogic_1_1_crypto_manager_a36145e4757e6a380388baddf5e36e984}{encrypt\+String}} (String input, \mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} file\+Data)  throws Exception 	
+\item 
+static String \mbox{\hyperlink{classlogic_1_1_crypto_manager_a103625add9feb832706c59b3f7708d80}{generate\+Hash}} (\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} metadata, byte\mbox{[}$\,$\mbox{]} input)  throws Exception 	
+\item 
+static void \mbox{\hyperlink{classlogic_1_1_crypto_manager_acf7654dc6d2cdab1b9161f428145a6b8}{validate\+Hash}} (\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} file\+Data, byte\mbox{[}$\,$\mbox{]} input, String read\+Hash)  throws Exception 	
+\item 
+static String \mbox{\hyperlink{classlogic_1_1_crypto_manager_a50efd094cbcfb11a49a74007ddb05155}{decrypt\+String}} (byte\mbox{[}$\,$\mbox{]} input, \mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} file\+Data)  throws Exception 	
+\end{DoxyCompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static Cipher \mbox{\hyperlink{classlogic_1_1_crypto_manager_abb2490bd6132789d350254da3864e768}{generate\+Cipher}} (int mode, \mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} file\+Data, Key key, Iv\+Parameter\+Spec iv\+Spec)  throws Exception     
+\item 
+static Cipher \mbox{\hyperlink{classlogic_1_1_crypto_manager_ab826af05efd0cd4a8ad081af9adf4a51}{generate\+Cipher}} (int mode, \mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} file\+Data, Key key, Secure\+Random random)  throws Exception     
+\item 
+static Cipher \mbox{\hyperlink{classlogic_1_1_crypto_manager_a54d442b4db4886dae8d6ec305f778797}{generate\+Cipher}} (int mode, \mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} file\+Data, Secret\+Key key, P\+B\+E\+Parameter\+Spec spec)  throws Exception     
+\item 
+static byte \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classlogic_1_1_crypto_manager_acd250bd4f2301a12c018ad2bfb5f9831}{apply\+Cipher}} (Cipher cipher, byte\mbox{[}$\,$\mbox{]} input)  throws Exception 	
+\item 
+static Key \mbox{\hyperlink{classlogic_1_1_crypto_manager_ae9e89bef6dad93ba25682d76017437bf}{generate\+Symmetric\+Key}} (\mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}} encryption\+Type, \mbox{\hyperlink{enumenums_1_1_key_length}{Key\+Length}} key\+Length)  throws Exception 	
+\item 
+static Key\+Pair \mbox{\hyperlink{classlogic_1_1_crypto_manager_a769894ae14be3ae193f48941fa38c460}{generate\+Asymmetric\+Keys}} (Secure\+Random random, \mbox{\hyperlink{enumenums_1_1_key_length}{Key\+Length}} key\+Length)  throws Exception 	
+\item 
+static byte \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classlogic_1_1_crypto_manager_ab2b0c505d44383d199f21aaa829290c4}{generate\+Matching\+IV}} (\mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}} encryption)
+\item 
+static byte \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classlogic_1_1_crypto_manager_ab8b195435e4051b57895f72f4d3d1661}{generate\+Random\+Byte\+Array}} (int length)
+\item 
+static Iv\+Parameter\+Spec \mbox{\hyperlink{classlogic_1_1_crypto_manager_a2d1e7744033690a5eaaeed1e5a127485}{get\+Iv\+If\+Needed}} (\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} file\+Data)
+\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final int \mbox{\hyperlink{classlogic_1_1_crypto_manager_a286c951ffc4dfc987e7ea8c23338fd07}{iteration\+Count}} = 1000
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Used to de and encrypt data \begin{DoxyAuthor}{Author}
+Joel 
+\end{DoxyAuthor}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_acd250bd4f2301a12c018ad2bfb5f9831}\label{classlogic_1_1_crypto_manager_acd250bd4f2301a12c018ad2bfb5f9831}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!apply\+Cipher@{apply\+Cipher}}
+\index{apply\+Cipher@{apply\+Cipher}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{apply\+Cipher()}{applyCipher()}}
+{\footnotesize\ttfamily static byte \mbox{[}$\,$\mbox{]} logic.\+Crypto\+Manager.\+apply\+Cipher (\begin{DoxyParamCaption}\item[{Cipher}]{cipher,  }\item[{byte \mbox{[}$\,$\mbox{]}}]{input }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Applys the given cipher to a given input and returns it 
+\begin{DoxyParams}{Parameters}
+{\em cipher} & Cipher to apply \\
+\hline
+{\em input} & input to cipher \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+ciphered output 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_a50efd094cbcfb11a49a74007ddb05155}\label{classlogic_1_1_crypto_manager_a50efd094cbcfb11a49a74007ddb05155}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!decrypt\+String@{decrypt\+String}}
+\index{decrypt\+String@{decrypt\+String}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{decrypt\+String()}{decryptString()}}
+{\footnotesize\ttfamily static String logic.\+Crypto\+Manager.\+decrypt\+String (\begin{DoxyParamCaption}\item[{byte \mbox{[}$\,$\mbox{]}}]{input,  }\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{file\+Data }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Decrypts a given byte array using the given metadata 
+\begin{DoxyParams}{Parameters}
+{\em input} & Data to be encrypted \\
+\hline
+{\em file\+Data} & metadata containing the encryption that will be applied \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Encrypted data 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_crypto_manager_a50efd094cbcfb11a49a74007ddb05155_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_a36145e4757e6a380388baddf5e36e984}\label{classlogic_1_1_crypto_manager_a36145e4757e6a380388baddf5e36e984}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!encrypt\+String@{encrypt\+String}}
+\index{encrypt\+String@{encrypt\+String}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{encrypt\+String()}{encryptString()}}
+{\footnotesize\ttfamily static byte \mbox{[}$\,$\mbox{]} logic.\+Crypto\+Manager.\+encrypt\+String (\begin{DoxyParamCaption}\item[{String}]{input,  }\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{file\+Data }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Encrypts a given string with the desired encryption, encryption mode and padding type 
+\begin{DoxyParams}{Parameters}
+{\em input} & String to be encrypted \\
+\hline
+{\em file\+Data} & file metadata \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+encrypted string in a byte array 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_crypto_manager_a36145e4757e6a380388baddf5e36e984_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_a769894ae14be3ae193f48941fa38c460}\label{classlogic_1_1_crypto_manager_a769894ae14be3ae193f48941fa38c460}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!generate\+Asymmetric\+Keys@{generate\+Asymmetric\+Keys}}
+\index{generate\+Asymmetric\+Keys@{generate\+Asymmetric\+Keys}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{generate\+Asymmetric\+Keys()}{generateAsymmetricKeys()}}
+{\footnotesize\ttfamily static Key\+Pair logic.\+Crypto\+Manager.\+generate\+Asymmetric\+Keys (\begin{DoxyParamCaption}\item[{Secure\+Random}]{random,  }\item[{\mbox{\hyperlink{enumenums_1_1_key_length}{Key\+Length}}}]{key\+Length }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Generates a Key\+Pair for an asymmetric encryption 
+\begin{DoxyParams}{Parameters}
+{\em random} & Secure\+Random object to generate the key \\
+\hline
+{\em key\+Length} & desired key length \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Key\+Pair 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_abb2490bd6132789d350254da3864e768}\label{classlogic_1_1_crypto_manager_abb2490bd6132789d350254da3864e768}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!generate\+Cipher@{generate\+Cipher}}
+\index{generate\+Cipher@{generate\+Cipher}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{generate\+Cipher()}{generateCipher()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily static Cipher logic.\+Crypto\+Manager.\+generate\+Cipher (\begin{DoxyParamCaption}\item[{int}]{mode,  }\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{file\+Data,  }\item[{Key}]{key,  }\item[{Iv\+Parameter\+Spec}]{iv\+Spec }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Creates a cipher object for symmetric en \& decryption 
+\begin{DoxyParams}{Parameters}
+{\em mode} & cipher mode \\
+\hline
+{\em file\+Data} & metadata of the file \\
+\hline
+{\em key} & key to be used \\
+\hline
+{\em iv\+Spec} & iv to be used \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+generated cipher 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_ab826af05efd0cd4a8ad081af9adf4a51}\label{classlogic_1_1_crypto_manager_ab826af05efd0cd4a8ad081af9adf4a51}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!generate\+Cipher@{generate\+Cipher}}
+\index{generate\+Cipher@{generate\+Cipher}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{generate\+Cipher()}{generateCipher()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily static Cipher logic.\+Crypto\+Manager.\+generate\+Cipher (\begin{DoxyParamCaption}\item[{int}]{mode,  }\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{file\+Data,  }\item[{Key}]{key,  }\item[{Secure\+Random}]{random }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Creates a cipher for an asymmetric en \& decryption 
+\begin{DoxyParams}{Parameters}
+{\em mode} & cipher mode \\
+\hline
+{\em file\+Data} & metadata of the file \\
+\hline
+{\em key} & key to be used \\
+\hline
+{\em random} & Secure\+Random object to be used \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+generated cipher 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_a54d442b4db4886dae8d6ec305f778797}\label{classlogic_1_1_crypto_manager_a54d442b4db4886dae8d6ec305f778797}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!generate\+Cipher@{generate\+Cipher}}
+\index{generate\+Cipher@{generate\+Cipher}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{generate\+Cipher()}{generateCipher()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily static Cipher logic.\+Crypto\+Manager.\+generate\+Cipher (\begin{DoxyParamCaption}\item[{int}]{mode,  }\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{file\+Data,  }\item[{Secret\+Key}]{key,  }\item[{P\+B\+E\+Parameter\+Spec}]{spec }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Creates a cipher for a pbe en \& decryption 
+\begin{DoxyParams}{Parameters}
+{\em mode} & cipher mode \\
+\hline
+{\em file\+Data} & metadata of the file \\
+\hline
+{\em key} & key to be used \\
+\hline
+{\em spec} & Pbe param specs to be used in the cipher \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+generated cipher 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_a103625add9feb832706c59b3f7708d80}\label{classlogic_1_1_crypto_manager_a103625add9feb832706c59b3f7708d80}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!generate\+Hash@{generate\+Hash}}
+\index{generate\+Hash@{generate\+Hash}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{generate\+Hash()}{generateHash()}}
+{\footnotesize\ttfamily static String logic.\+Crypto\+Manager.\+generate\+Hash (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{metadata,  }\item[{byte \mbox{[}$\,$\mbox{]}}]{input }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Generates a hash of the desired hashfunction 
+\begin{DoxyParams}{Parameters}
+{\em metadata} & Metadata containing the hashfunction \\
+\hline
+{\em input} & data to be hashed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Hash as a string 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_ab2b0c505d44383d199f21aaa829290c4}\label{classlogic_1_1_crypto_manager_ab2b0c505d44383d199f21aaa829290c4}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!generate\+Matching\+IV@{generate\+Matching\+IV}}
+\index{generate\+Matching\+IV@{generate\+Matching\+IV}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{generate\+Matching\+I\+V()}{generateMatchingIV()}}
+{\footnotesize\ttfamily static byte \mbox{[}$\,$\mbox{]} logic.\+Crypto\+Manager.\+generate\+Matching\+IV (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}}}]{encryption }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Gets an iv matching the fitting length depending on the encryption type 
+\begin{DoxyParams}{Parameters}
+{\em encryption} & encryption to be used \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+iv 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_crypto_manager_ab2b0c505d44383d199f21aaa829290c4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_ab8b195435e4051b57895f72f4d3d1661}\label{classlogic_1_1_crypto_manager_ab8b195435e4051b57895f72f4d3d1661}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!generate\+Random\+Byte\+Array@{generate\+Random\+Byte\+Array}}
+\index{generate\+Random\+Byte\+Array@{generate\+Random\+Byte\+Array}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{generate\+Random\+Byte\+Array()}{generateRandomByteArray()}}
+{\footnotesize\ttfamily static byte \mbox{[}$\,$\mbox{]} logic.\+Crypto\+Manager.\+generate\+Random\+Byte\+Array (\begin{DoxyParamCaption}\item[{int}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Randomly generates a random byte array with the given length 
+\begin{DoxyParams}{Parameters}
+{\em length} & length of the array \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+array 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_ae9e89bef6dad93ba25682d76017437bf}\label{classlogic_1_1_crypto_manager_ae9e89bef6dad93ba25682d76017437bf}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!generate\+Symmetric\+Key@{generate\+Symmetric\+Key}}
+\index{generate\+Symmetric\+Key@{generate\+Symmetric\+Key}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{generate\+Symmetric\+Key()}{generateSymmetricKey()}}
+{\footnotesize\ttfamily static Key logic.\+Crypto\+Manager.\+generate\+Symmetric\+Key (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}}}]{encryption\+Type,  }\item[{\mbox{\hyperlink{enumenums_1_1_key_length}{Key\+Length}}}]{key\+Length }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Generates a key for a symmetric encryption 
+\begin{DoxyParams}{Parameters}
+{\em encryption\+Type} & encryption type that the key will be used with \\
+\hline
+{\em key\+Length} & desired key length \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Key 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_a2d1e7744033690a5eaaeed1e5a127485}\label{classlogic_1_1_crypto_manager_a2d1e7744033690a5eaaeed1e5a127485}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!get\+Iv\+If\+Needed@{get\+Iv\+If\+Needed}}
+\index{get\+Iv\+If\+Needed@{get\+Iv\+If\+Needed}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{get\+Iv\+If\+Needed()}{getIvIfNeeded()}}
+{\footnotesize\ttfamily static Iv\+Parameter\+Spec logic.\+Crypto\+Manager.\+get\+Iv\+If\+Needed (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{file\+Data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Returns an iv one is needed. Returns a newly generated one if one is needed but not present, returns the present one if there is one. 
+\begin{DoxyParams}{Parameters}
+{\em file\+Data} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_crypto_manager_a2d1e7744033690a5eaaeed1e5a127485_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_acf7654dc6d2cdab1b9161f428145a6b8}\label{classlogic_1_1_crypto_manager_acf7654dc6d2cdab1b9161f428145a6b8}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!validate\+Hash@{validate\+Hash}}
+\index{validate\+Hash@{validate\+Hash}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{validate\+Hash()}{validateHash()}}
+{\footnotesize\ttfamily static void logic.\+Crypto\+Manager.\+validate\+Hash (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{file\+Data,  }\item[{byte \mbox{[}$\,$\mbox{]}}]{input,  }\item[{String}]{read\+Hash }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Compares the stored hash and one generated by the input. If they dont match, an error is displayed 
+\begin{DoxyParams}{Parameters}
+{\em file\+Data} & metadata of the read file \\
+\hline
+{\em input} & input array to be hashed \\
+\hline
+{\em read\+Hash} & read hash \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_crypto_manager_acf7654dc6d2cdab1b9161f428145a6b8_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlogic_1_1_crypto_manager_a286c951ffc4dfc987e7ea8c23338fd07}\label{classlogic_1_1_crypto_manager_a286c951ffc4dfc987e7ea8c23338fd07}} 
+\index{logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}!iteration\+Count@{iteration\+Count}}
+\index{iteration\+Count@{iteration\+Count}!logic\+::\+Crypto\+Manager@{logic\+::\+Crypto\+Manager}}
+\subsubsection{\texorpdfstring{iteration\+Count}{iterationCount}}
+{\footnotesize\ttfamily final int logic.\+Crypto\+Manager.\+iteration\+Count = 1000\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+logic/\mbox{\hyperlink{_crypto_manager_8java}{Crypto\+Manager.\+java}}\end{DoxyCompactItemize}

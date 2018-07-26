@@ -1,0 +1,457 @@
+\hypertarget{classlogic_1_1_text_editor}{}\section{logic.\+Text\+Editor Class Reference}
+\label{classlogic_1_1_text_editor}\index{logic.\+Text\+Editor@{logic.\+Text\+Editor}}
+
+
+Inheritance diagram for logic.\+Text\+Editor\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=550pt]{classlogic_1_1_text_editor__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logic.\+Text\+Editor\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_aad7f5f3f95ab498ee16d09f0f198c0c9}{new\+File\+Dialogue}} ()
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_ae6690cbd84b9162df386bb319690a810}{open\+File\+Dialogue}} ()
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_a0581e73a9b3b6ae54a8e69de49fb9ed5}{save\+File\+As}} ()
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_ae11be4a147a095ce667576ce50f210b2}{save\+File}} ()
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_aeb8b26927002020f35d2dc6cc8ececfe}{register\+U\+S\+B\+Drive}} (int found\+Device\+Id, String drive\+Letter)
+\item 
+\mbox{\hyperlink{classlogic_1_1_text_editor_a1ee7c49f953dac5de4dfbd8e8c350e76}{Text\+Editor}} (Stage \+\_\+my\+Stage, Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}} $>$ encryption\+Drop\+Down, Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_encryption_mode}{Encryption\+Mode}} $>$ encryption\+Mode\+Drop\+Down, Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_padding_type}{Padding\+Type}} $>$ padding\+Drop\+Down, Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_hash_function}{Hash\+Function}} $>$ hash\+Function\+Drop\+Down, Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_key_length}{Key\+Length}} $>$ keylength\+Drop\+Down, Text \mbox{\hyperlink{classlogic_1_1_text_editor_ac75c41480833a18c2cfd0f569cf10a45}{usb\+Registration\+Text}}, Password\+Field password\+Area)
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_a2f6a603d1650e3a718598a46c64c3c6d}{start\+U\+S\+B\+Detection}} ()
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_a6f0bfd6368a5cb94a2b0fe8699892772}{stop\+U\+S\+B\+Detection}} ()
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final String \mbox{\hyperlink{classlogic_1_1_text_editor_a86db3912b74760463213b2936f20f08f}{title}} = \char`\"{}Secure Text Editor -\/ \char`\"{}
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_a03b71fe113e6549963206a005913176a}{new\+File}} ()
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_a52437fbd2159a657602a75860c18051f}{open\+File}} ()
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_ab03a3aa2457f10c003cc12c08e806e43}{update\+Output}} (\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} metadata)
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_aa70bd7664e38609c8a3697ecb39795b5}{check\+And\+Load\+Usb\+Device}} ()  throws Exception 	
+\item 
+\mbox{\hyperlink{classpersistence_1_1_u_s_b_meta_data}{U\+S\+B\+Meta\+Data}} \mbox{\hyperlink{classlogic_1_1_text_editor_abc9623f0e47f9ffaf55f6489ef2965f4}{get\+Connected\+Usb}} ()
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_a40b3be71ec12cbe4b4fb10ce4bdab6c5}{change\+File\+Origin}} (File new\+Origin)
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_a3e994bcaa8e3e6983c8867003347af20}{update\+Title}} (String \+\_\+title)
+\item 
+boolean \mbox{\hyperlink{classlogic_1_1_text_editor_aed9266aefb6a34921fdb12776a4c84cc}{display\+Save\+Alert}} ()
+\item 
+void \mbox{\hyperlink{classlogic_1_1_text_editor_a5fc087a73d335d9a76ebff363f073a8d}{show\+Error}} (Exception e)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+final String \mbox{\hyperlink{classlogic_1_1_text_editor_afe454a9184e51274d9c8517214d35fe3}{default\+Name}} = \char`\"{}Unbenannt.\+txt\char`\"{}
+\item 
+String \mbox{\hyperlink{classlogic_1_1_text_editor_a526595e3a12437964c1b84aa161700ee}{document\+Origin}}
+\item 
+String \mbox{\hyperlink{classlogic_1_1_text_editor_a14a98b22137de411478049472a854d4c}{document\+Name}} = \mbox{\hyperlink{classlogic_1_1_text_editor_afe454a9184e51274d9c8517214d35fe3}{default\+Name}}
+\item 
+Stage \mbox{\hyperlink{classlogic_1_1_text_editor_a1744032ec4f1f81cf1450953a9daca21}{my\+Stage}}
+\item 
+Alert \mbox{\hyperlink{classlogic_1_1_text_editor_a123fc6cb55b7be3b134f9eab544ab7f6}{save\+Quit\+Alert}}
+\item 
+boolean \mbox{\hyperlink{classlogic_1_1_text_editor_a39b4d4873626fe93955c44e0f236faf5}{text\+Has\+Changed}} = false
+\item 
+\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} \mbox{\hyperlink{classlogic_1_1_text_editor_a2d7ebcd9cdb125ce4c6feb1637e384c7}{current\+File\+Data}}
+\item 
+\mbox{\hyperlink{classlogic_1_1_u_s_b_detection}{U\+S\+B\+Detection}} \mbox{\hyperlink{classlogic_1_1_text_editor_adb15888ec5d957cc8bf3aa7ead49b21c}{detection\+Thread}}
+\item 
+Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_padding_type}{Padding\+Type}} $>$ \mbox{\hyperlink{classlogic_1_1_text_editor_a8511001a70aaa122b8d07998a8aa097c}{padding\+Type\+Box}}
+\item 
+Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}} $>$ \mbox{\hyperlink{classlogic_1_1_text_editor_a4257d8a1420b6776c104edd8da3d206b}{encryption\+Type\+Box}}
+\item 
+Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_encryption_mode}{Encryption\+Mode}} $>$ \mbox{\hyperlink{classlogic_1_1_text_editor_a72df7a38010ef819f6b1bd05ac5d0463}{encryption\+Mode\+Box}}
+\item 
+Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_hash_function}{Hash\+Function}} $>$ \mbox{\hyperlink{classlogic_1_1_text_editor_a30923a0c85c1393f7cc87e3688193ded}{hash\+Function\+Mode\+Box}}
+\item 
+Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_key_length}{Key\+Length}} $>$ \mbox{\hyperlink{classlogic_1_1_text_editor_a2dc9646e867663bd5681146ec51d201e}{key\+Length\+Box}}
+\item 
+Text \mbox{\hyperlink{classlogic_1_1_text_editor_ac75c41480833a18c2cfd0f569cf10a45}{usb\+Registration\+Text}}
+\item 
+Password\+Field \mbox{\hyperlink{classlogic_1_1_text_editor_a61986d9e5914571cf56ad72fa252efb7}{password\+Field}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Implements the logic of the editor \begin{DoxyAuthor}{Author}
+Joel 
+\end{DoxyAuthor}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a1ee7c49f953dac5de4dfbd8e8c350e76}\label{classlogic_1_1_text_editor_a1ee7c49f953dac5de4dfbd8e8c350e76}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!Text\+Editor@{Text\+Editor}}
+\index{Text\+Editor@{Text\+Editor}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{Text\+Editor()}{TextEditor()}}
+{\footnotesize\ttfamily logic.\+Text\+Editor.\+Text\+Editor (\begin{DoxyParamCaption}\item[{Stage}]{\+\_\+my\+Stage,  }\item[{Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}} $>$}]{encryption\+Drop\+Down,  }\item[{Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_encryption_mode}{Encryption\+Mode}} $>$}]{encryption\+Mode\+Drop\+Down,  }\item[{Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_padding_type}{Padding\+Type}} $>$}]{padding\+Drop\+Down,  }\item[{Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_hash_function}{Hash\+Function}} $>$}]{hash\+Function\+Drop\+Down,  }\item[{Combo\+Box$<$ \mbox{\hyperlink{enumenums_1_1_key_length}{Key\+Length}} $>$}]{keylength\+Drop\+Down,  }\item[{Text}]{usb\+Registration\+Text,  }\item[{Password\+Field}]{password\+Area }\end{DoxyParamCaption})}
+
+Constructor Sets the stage and adds a listener to detect if the content of the text area has changed 
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+my\+Stage} & Main stage \\
+\hline
+{\em encryption\+Drop\+Down} & Encryption type dropdown menu \\
+\hline
+{\em encryption\+Mode\+Drop\+Down} & Encryption mode dropdown menu \\
+\hline
+{\em padding\+Drop\+Down} & Padding dropdown menu \\
+\hline
+{\em hash\+Function\+Drop\+Down} & Hash function dropdown menu \\
+\hline
+{\em keylength\+Drop\+Down} & Key\+Length dropdown menu \\
+\hline
+{\em usb\+Registration\+Text} & Text that is shown in the usb window \\
+\hline
+{\em password\+Area} & Password field \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_a1ee7c49f953dac5de4dfbd8e8c350e76_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a40b3be71ec12cbe4b4fb10ce4bdab6c5}\label{classlogic_1_1_text_editor_a40b3be71ec12cbe4b4fb10ce4bdab6c5}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!change\+File\+Origin@{change\+File\+Origin}}
+\index{change\+File\+Origin@{change\+File\+Origin}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{change\+File\+Origin()}{changeFileOrigin()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+change\+File\+Origin (\begin{DoxyParamCaption}\item[{File}]{new\+Origin }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Changes the origin directory of the file if the new directory is not null 
+\begin{DoxyParams}{Parameters}
+{\em new\+Origin} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_aa70bd7664e38609c8a3697ecb39795b5}\label{classlogic_1_1_text_editor_aa70bd7664e38609c8a3697ecb39795b5}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!check\+And\+Load\+Usb\+Device@{check\+And\+Load\+Usb\+Device}}
+\index{check\+And\+Load\+Usb\+Device@{check\+And\+Load\+Usb\+Device}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{check\+And\+Load\+Usb\+Device()}{checkAndLoadUsbDevice()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+check\+And\+Load\+Usb\+Device (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [private]}}
+
+Checks if there is a valid U\+SB drive connected. If this is the case, the usb drive letter is written into the metadata, otherwise an error is displayed 
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_aa70bd7664e38609c8a3697ecb39795b5_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_aed9266aefb6a34921fdb12776a4c84cc}\label{classlogic_1_1_text_editor_aed9266aefb6a34921fdb12776a4c84cc}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!display\+Save\+Alert@{display\+Save\+Alert}}
+\index{display\+Save\+Alert@{display\+Save\+Alert}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{display\+Save\+Alert()}{displaySaveAlert()}}
+{\footnotesize\ttfamily boolean logic.\+Text\+Editor.\+display\+Save\+Alert (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Displays an Alert that the user has to respond to \begin{DoxyReturn}{Returns}
+returns the answer of the user (true = OK false = C\+A\+N\+C\+EL) 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_abc9623f0e47f9ffaf55f6489ef2965f4}\label{classlogic_1_1_text_editor_abc9623f0e47f9ffaf55f6489ef2965f4}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!get\+Connected\+Usb@{get\+Connected\+Usb}}
+\index{get\+Connected\+Usb@{get\+Connected\+Usb}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{get\+Connected\+Usb()}{getConnectedUsb()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classpersistence_1_1_u_s_b_meta_data}{U\+S\+B\+Meta\+Data}} logic.\+Text\+Editor.\+get\+Connected\+Usb (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Gets the U\+S\+B\+Metadata of a curretly connected usb drive \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_abc9623f0e47f9ffaf55f6489ef2965f4_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a03b71fe113e6549963206a005913176a}\label{classlogic_1_1_text_editor_a03b71fe113e6549963206a005913176a}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!new\+File@{new\+File}}
+\index{new\+File@{new\+File}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{new\+File()}{newFile()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+new\+File (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Resets the content and origin of the file Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_a03b71fe113e6549963206a005913176a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_aad7f5f3f95ab498ee16d09f0f198c0c9}\label{classlogic_1_1_text_editor_aad7f5f3f95ab498ee16d09f0f198c0c9}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!new\+File\+Dialogue@{new\+File\+Dialogue}}
+\index{new\+File\+Dialogue@{new\+File\+Dialogue}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{new\+File\+Dialogue()}{newFileDialogue()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+new\+File\+Dialogue (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Displays a new window if the current file has been changed but not saved, otherwise opens the new file Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_aad7f5f3f95ab498ee16d09f0f198c0c9_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a52437fbd2159a657602a75860c18051f}\label{classlogic_1_1_text_editor_a52437fbd2159a657602a75860c18051f}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!open\+File@{open\+File}}
+\index{open\+File@{open\+File}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{open\+File()}{openFile()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+open\+File (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Opens a file from the file system and displays it in the editor !!\+Insecure because the password is retrieved as a string and strings are immutable Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_a52437fbd2159a657602a75860c18051f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_ae6690cbd84b9162df386bb319690a810}\label{classlogic_1_1_text_editor_ae6690cbd84b9162df386bb319690a810}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!open\+File\+Dialogue@{open\+File\+Dialogue}}
+\index{open\+File\+Dialogue@{open\+File\+Dialogue}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{open\+File\+Dialogue()}{openFileDialogue()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+open\+File\+Dialogue (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Displays a new window if the current file has been changed but not saved, otherwise creates a new file Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_ae6690cbd84b9162df386bb319690a810_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_aeb8b26927002020f35d2dc6cc8ececfe}\label{classlogic_1_1_text_editor_aeb8b26927002020f35d2dc6cc8ececfe}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!register\+U\+S\+B\+Drive@{register\+U\+S\+B\+Drive}}
+\index{register\+U\+S\+B\+Drive@{register\+U\+S\+B\+Drive}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{register\+U\+S\+B\+Drive()}{registerUSBDrive()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+register\+U\+S\+B\+Drive (\begin{DoxyParamCaption}\item[{int}]{found\+Device\+Id,  }\item[{String}]{drive\+Letter }\end{DoxyParamCaption})}
+
+Registers a usb drive in the U\+SB config, displays an error if it is already registered. 
+\begin{DoxyParams}{Parameters}
+{\em found\+Device\+Id} & \\
+\hline
+{\em drive\+Letter} & \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_aeb8b26927002020f35d2dc6cc8ececfe_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_ae11be4a147a095ce667576ce50f210b2}\label{classlogic_1_1_text_editor_ae11be4a147a095ce667576ce50f210b2}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!save\+File@{save\+File}}
+\index{save\+File@{save\+File}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{save\+File()}{saveFile()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+save\+File (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Saves the content in the editor in a specified directory/its origin directory Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_ae11be4a147a095ce667576ce50f210b2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a0581e73a9b3b6ae54a8e69de49fb9ed5}\label{classlogic_1_1_text_editor_a0581e73a9b3b6ae54a8e69de49fb9ed5}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!save\+File\+As@{save\+File\+As}}
+\index{save\+File\+As@{save\+File\+As}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{save\+File\+As()}{saveFileAs()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+save\+File\+As (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Saves the current content of the editor in a user specified directory using the filechooser Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_a0581e73a9b3b6ae54a8e69de49fb9ed5_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a5fc087a73d335d9a76ebff363f073a8d}\label{classlogic_1_1_text_editor_a5fc087a73d335d9a76ebff363f073a8d}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!show\+Error@{show\+Error}}
+\index{show\+Error@{show\+Error}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{show\+Error()}{showError()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+show\+Error (\begin{DoxyParamCaption}\item[{Exception}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Displays an error message 
+\begin{DoxyParams}{Parameters}
+{\em e} & Exception that caused the error \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a2f6a603d1650e3a718598a46c64c3c6d}\label{classlogic_1_1_text_editor_a2f6a603d1650e3a718598a46c64c3c6d}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!start\+U\+S\+B\+Detection@{start\+U\+S\+B\+Detection}}
+\index{start\+U\+S\+B\+Detection@{start\+U\+S\+B\+Detection}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{start\+U\+S\+B\+Detection()}{startUSBDetection()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+start\+U\+S\+B\+Detection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Starts the usb detection thread \mbox{\Hypertarget{classlogic_1_1_text_editor_a6f0bfd6368a5cb94a2b0fe8699892772}\label{classlogic_1_1_text_editor_a6f0bfd6368a5cb94a2b0fe8699892772}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!stop\+U\+S\+B\+Detection@{stop\+U\+S\+B\+Detection}}
+\index{stop\+U\+S\+B\+Detection@{stop\+U\+S\+B\+Detection}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{stop\+U\+S\+B\+Detection()}{stopUSBDetection()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+stop\+U\+S\+B\+Detection (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Stops the usb detection thread Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_a6f0bfd6368a5cb94a2b0fe8699892772_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_ab03a3aa2457f10c003cc12c08e806e43}\label{classlogic_1_1_text_editor_ab03a3aa2457f10c003cc12c08e806e43}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!update\+Output@{update\+Output}}
+\index{update\+Output@{update\+Output}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{update\+Output()}{updateOutput()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+update\+Output (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{metadata }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Updates the dropdown menus with the input metadata 
+\begin{DoxyParams}{Parameters}
+{\em metadata} & data used to update \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_text_editor_ab03a3aa2457f10c003cc12c08e806e43_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a3e994bcaa8e3e6983c8867003347af20}\label{classlogic_1_1_text_editor_a3e994bcaa8e3e6983c8867003347af20}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!update\+Title@{update\+Title}}
+\index{update\+Title@{update\+Title}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{update\+Title()}{updateTitle()}}
+{\footnotesize\ttfamily void logic.\+Text\+Editor.\+update\+Title (\begin{DoxyParamCaption}\item[{String}]{\+\_\+title }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Updates the title row of the window with the input string 
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+title} & new title \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a2d7ebcd9cdb125ce4c6feb1637e384c7}\label{classlogic_1_1_text_editor_a2d7ebcd9cdb125ce4c6feb1637e384c7}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!current\+File\+Data@{current\+File\+Data}}
+\index{current\+File\+Data@{current\+File\+Data}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{current\+File\+Data}{currentFileData}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} logic.\+Text\+Editor.\+current\+File\+Data\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_afe454a9184e51274d9c8517214d35fe3}\label{classlogic_1_1_text_editor_afe454a9184e51274d9c8517214d35fe3}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!default\+Name@{default\+Name}}
+\index{default\+Name@{default\+Name}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{default\+Name}{defaultName}}
+{\footnotesize\ttfamily final String logic.\+Text\+Editor.\+default\+Name = \char`\"{}Unbenannt.\+txt\char`\"{}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_adb15888ec5d957cc8bf3aa7ead49b21c}\label{classlogic_1_1_text_editor_adb15888ec5d957cc8bf3aa7ead49b21c}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!detection\+Thread@{detection\+Thread}}
+\index{detection\+Thread@{detection\+Thread}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{detection\+Thread}{detectionThread}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogic_1_1_u_s_b_detection}{U\+S\+B\+Detection}} logic.\+Text\+Editor.\+detection\+Thread\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a14a98b22137de411478049472a854d4c}\label{classlogic_1_1_text_editor_a14a98b22137de411478049472a854d4c}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!document\+Name@{document\+Name}}
+\index{document\+Name@{document\+Name}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{document\+Name}{documentName}}
+{\footnotesize\ttfamily String logic.\+Text\+Editor.\+document\+Name = \mbox{\hyperlink{classlogic_1_1_text_editor_afe454a9184e51274d9c8517214d35fe3}{default\+Name}}\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a526595e3a12437964c1b84aa161700ee}\label{classlogic_1_1_text_editor_a526595e3a12437964c1b84aa161700ee}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!document\+Origin@{document\+Origin}}
+\index{document\+Origin@{document\+Origin}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{document\+Origin}{documentOrigin}}
+{\footnotesize\ttfamily String logic.\+Text\+Editor.\+document\+Origin\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a72df7a38010ef819f6b1bd05ac5d0463}\label{classlogic_1_1_text_editor_a72df7a38010ef819f6b1bd05ac5d0463}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!encryption\+Mode\+Box@{encryption\+Mode\+Box}}
+\index{encryption\+Mode\+Box@{encryption\+Mode\+Box}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{encryption\+Mode\+Box}{encryptionModeBox}}
+{\footnotesize\ttfamily Combo\+Box$<$\mbox{\hyperlink{enumenums_1_1_encryption_mode}{Encryption\+Mode}}$>$ logic.\+Text\+Editor.\+encryption\+Mode\+Box\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a4257d8a1420b6776c104edd8da3d206b}\label{classlogic_1_1_text_editor_a4257d8a1420b6776c104edd8da3d206b}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!encryption\+Type\+Box@{encryption\+Type\+Box}}
+\index{encryption\+Type\+Box@{encryption\+Type\+Box}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{encryption\+Type\+Box}{encryptionTypeBox}}
+{\footnotesize\ttfamily Combo\+Box$<$\mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}}$>$ logic.\+Text\+Editor.\+encryption\+Type\+Box\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a30923a0c85c1393f7cc87e3688193ded}\label{classlogic_1_1_text_editor_a30923a0c85c1393f7cc87e3688193ded}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!hash\+Function\+Mode\+Box@{hash\+Function\+Mode\+Box}}
+\index{hash\+Function\+Mode\+Box@{hash\+Function\+Mode\+Box}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{hash\+Function\+Mode\+Box}{hashFunctionModeBox}}
+{\footnotesize\ttfamily Combo\+Box$<$\mbox{\hyperlink{enumenums_1_1_hash_function}{Hash\+Function}}$>$ logic.\+Text\+Editor.\+hash\+Function\+Mode\+Box\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a2dc9646e867663bd5681146ec51d201e}\label{classlogic_1_1_text_editor_a2dc9646e867663bd5681146ec51d201e}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!key\+Length\+Box@{key\+Length\+Box}}
+\index{key\+Length\+Box@{key\+Length\+Box}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{key\+Length\+Box}{keyLengthBox}}
+{\footnotesize\ttfamily Combo\+Box$<$\mbox{\hyperlink{enumenums_1_1_key_length}{Key\+Length}}$>$ logic.\+Text\+Editor.\+key\+Length\+Box\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a1744032ec4f1f81cf1450953a9daca21}\label{classlogic_1_1_text_editor_a1744032ec4f1f81cf1450953a9daca21}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!my\+Stage@{my\+Stage}}
+\index{my\+Stage@{my\+Stage}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{my\+Stage}{myStage}}
+{\footnotesize\ttfamily Stage logic.\+Text\+Editor.\+my\+Stage\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a8511001a70aaa122b8d07998a8aa097c}\label{classlogic_1_1_text_editor_a8511001a70aaa122b8d07998a8aa097c}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!padding\+Type\+Box@{padding\+Type\+Box}}
+\index{padding\+Type\+Box@{padding\+Type\+Box}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{padding\+Type\+Box}{paddingTypeBox}}
+{\footnotesize\ttfamily Combo\+Box$<$\mbox{\hyperlink{enumenums_1_1_padding_type}{Padding\+Type}}$>$ logic.\+Text\+Editor.\+padding\+Type\+Box\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a61986d9e5914571cf56ad72fa252efb7}\label{classlogic_1_1_text_editor_a61986d9e5914571cf56ad72fa252efb7}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!password\+Field@{password\+Field}}
+\index{password\+Field@{password\+Field}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{password\+Field}{passwordField}}
+{\footnotesize\ttfamily Password\+Field logic.\+Text\+Editor.\+password\+Field\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a123fc6cb55b7be3b134f9eab544ab7f6}\label{classlogic_1_1_text_editor_a123fc6cb55b7be3b134f9eab544ab7f6}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!save\+Quit\+Alert@{save\+Quit\+Alert}}
+\index{save\+Quit\+Alert@{save\+Quit\+Alert}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{save\+Quit\+Alert}{saveQuitAlert}}
+{\footnotesize\ttfamily Alert logic.\+Text\+Editor.\+save\+Quit\+Alert\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a39b4d4873626fe93955c44e0f236faf5}\label{classlogic_1_1_text_editor_a39b4d4873626fe93955c44e0f236faf5}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!text\+Has\+Changed@{text\+Has\+Changed}}
+\index{text\+Has\+Changed@{text\+Has\+Changed}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{text\+Has\+Changed}{textHasChanged}}
+{\footnotesize\ttfamily boolean logic.\+Text\+Editor.\+text\+Has\+Changed = false\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_a86db3912b74760463213b2936f20f08f}\label{classlogic_1_1_text_editor_a86db3912b74760463213b2936f20f08f}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!title@{title}}
+\index{title@{title}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{title}{title}}
+{\footnotesize\ttfamily final String logic.\+Text\+Editor.\+title = \char`\"{}Secure Text Editor -\/ \char`\"{}}
+
+\mbox{\Hypertarget{classlogic_1_1_text_editor_ac75c41480833a18c2cfd0f569cf10a45}\label{classlogic_1_1_text_editor_ac75c41480833a18c2cfd0f569cf10a45}} 
+\index{logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}!usb\+Registration\+Text@{usb\+Registration\+Text}}
+\index{usb\+Registration\+Text@{usb\+Registration\+Text}!logic\+::\+Text\+Editor@{logic\+::\+Text\+Editor}}
+\subsubsection{\texorpdfstring{usb\+Registration\+Text}{usbRegistrationText}}
+{\footnotesize\ttfamily Text logic.\+Text\+Editor.\+usb\+Registration\+Text\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+logic/\mbox{\hyperlink{_text_editor_8java}{Text\+Editor.\+java}}\end{DoxyCompactItemize}

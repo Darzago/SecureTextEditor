@@ -1,0 +1,281 @@
+\hypertarget{classpersistence_1_1_file_manager}{}\section{persistence.\+File\+Manager Class Reference}
+\label{classpersistence_1_1_file_manager}\index{persistence.\+File\+Manager@{persistence.\+File\+Manager}}
+
+
+Collaboration diagram for persistence.\+File\+Manager\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=203pt]{classpersistence_1_1_file_manager__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static String \mbox{\hyperlink{classpersistence_1_1_file_manager_adfbb7817aa088a174d2a78be57462e71}{open\+File\+From\+Path}} (String file\+Location, \mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} file\+Data)  throws Exception 	
+\item 
+static void \mbox{\hyperlink{classpersistence_1_1_file_manager_a0630ee2ca01aad2ec24cff07a764bbd2}{save\+File\+In\+Path}} (File path, String file\+Content, \mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} file\+Data)  throws Exception 	
+\item 
+static void \mbox{\hyperlink{classpersistence_1_1_file_manager_a0d94f3c5d697af23544d161541eaed0f}{write\+U\+S\+B\+Config}} (List$<$ \mbox{\hyperlink{classpersistence_1_1_u_s_b_meta_data}{U\+S\+B\+Meta\+Data}} $>$ data\+List)  throws Exception 	
+\item 
+static List$<$ \mbox{\hyperlink{classpersistence_1_1_u_s_b_meta_data}{U\+S\+B\+Meta\+Data}} $>$ \mbox{\hyperlink{classpersistence_1_1_file_manager_a5cc9f22a6f81dbba2ff9cbffd9e0c250}{load\+U\+S\+B\+Config}} ()  throws Exception 	
+\item 
+static \mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} \mbox{\hyperlink{classpersistence_1_1_file_manager_a4600d8fe734a758688b9b41688862aac}{load\+Meta\+Data}} (File file)  throws Exception 	
+\item 
+static void \mbox{\hyperlink{classpersistence_1_1_file_manager_a2cdbe54741a0a0af658787da34923a5e}{save\+Key}} (byte\mbox{[}$\,$\mbox{]} key, String hash\+Value, String drive\+Letter)  throws Exception 	
+\item 
+static byte \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classpersistence_1_1_file_manager_adcb4a47e8759e6fa7560fd5c98d26be9}{get\+Key\+From\+File}} (String hash\+Value, String drive\+Letter)  throws Exception 	
+\end{DoxyCompactItemize}
+\subsection*{Static Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{classpersistence_1_1_file_manager_a3e1b3600f691fcc13014ad944b8c1a0d}{write\+Meta\+Data}} (File file, \mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} file\+Data)  throws Exception 	
+\item 
+static String \mbox{\hyperlink{classpersistence_1_1_file_manager_a2cb506a3762432736083455b762e840b}{get\+Attribute\+As\+String}} (File file, String attribute\+Name)  throws I\+O\+Exception 	
+\item 
+static String \mbox{\hyperlink{classpersistence_1_1_file_manager_ab4359d704a98bbf6635b9027c3d137ca}{remove\+Special\+Chars}} (String input)
+\end{DoxyCompactItemize}
+\subsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static final String \mbox{\hyperlink{classpersistence_1_1_file_manager_a41f3194a363708961b2e56f3f93c3786}{usb\+Config\+Path}} = \char`\"{}usb\+Config.\+xml\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Saves and loads files and configs \begin{DoxyAuthor}{Author}
+Joel 
+\end{DoxyAuthor}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classpersistence_1_1_file_manager_a2cb506a3762432736083455b762e840b}\label{classpersistence_1_1_file_manager_a2cb506a3762432736083455b762e840b}} 
+\index{persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}!get\+Attribute\+As\+String@{get\+Attribute\+As\+String}}
+\index{get\+Attribute\+As\+String@{get\+Attribute\+As\+String}!persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}}
+\subsubsection{\texorpdfstring{get\+Attribute\+As\+String()}{getAttributeAsString()}}
+{\footnotesize\ttfamily static String persistence.\+File\+Manager.\+get\+Attribute\+As\+String (\begin{DoxyParamCaption}\item[{File}]{file,  }\item[{String}]{attribute\+Name }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Returns an attribute of a file as a string 
+\begin{DoxyParams}{Parameters}
+{\em file} & file to be read \\
+\hline
+{\em attribute\+Name} & name of the attribute to be read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+attribute as a string 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em I\+O\+Exception} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classpersistence_1_1_file_manager_adcb4a47e8759e6fa7560fd5c98d26be9}\label{classpersistence_1_1_file_manager_adcb4a47e8759e6fa7560fd5c98d26be9}} 
+\index{persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}!get\+Key\+From\+File@{get\+Key\+From\+File}}
+\index{get\+Key\+From\+File@{get\+Key\+From\+File}!persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}}
+\subsubsection{\texorpdfstring{get\+Key\+From\+File()}{getKeyFromFile()}}
+{\footnotesize\ttfamily static byte \mbox{[}$\,$\mbox{]} persistence.\+File\+Manager.\+get\+Key\+From\+File (\begin{DoxyParamCaption}\item[{String}]{hash\+Value,  }\item[{String}]{drive\+Letter }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Loads a key from a file 
+\begin{DoxyParams}{Parameters}
+{\em hash\+Value} & hash value of the file \\
+\hline
+{\em drive\+Letter} & drive letter of the drive the key is stored on \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+key in a byte array 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classpersistence_1_1_file_manager_adcb4a47e8759e6fa7560fd5c98d26be9_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classpersistence_1_1_file_manager_a4600d8fe734a758688b9b41688862aac}\label{classpersistence_1_1_file_manager_a4600d8fe734a758688b9b41688862aac}} 
+\index{persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}!load\+Meta\+Data@{load\+Meta\+Data}}
+\index{load\+Meta\+Data@{load\+Meta\+Data}!persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}}
+\subsubsection{\texorpdfstring{load\+Meta\+Data()}{loadMetaData()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} persistence.\+File\+Manager.\+load\+Meta\+Data (\begin{DoxyParamCaption}\item[{File}]{file }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Loads meta data from a file 
+\begin{DoxyParams}{Parameters}
+{\em file} & File to be read \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+read metadata 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classpersistence_1_1_file_manager_a4600d8fe734a758688b9b41688862aac_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classpersistence_1_1_file_manager_a5cc9f22a6f81dbba2ff9cbffd9e0c250}\label{classpersistence_1_1_file_manager_a5cc9f22a6f81dbba2ff9cbffd9e0c250}} 
+\index{persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}!load\+U\+S\+B\+Config@{load\+U\+S\+B\+Config}}
+\index{load\+U\+S\+B\+Config@{load\+U\+S\+B\+Config}!persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}}
+\subsubsection{\texorpdfstring{load\+U\+S\+B\+Config()}{loadUSBConfig()}}
+{\footnotesize\ttfamily static List$<$\mbox{\hyperlink{classpersistence_1_1_u_s_b_meta_data}{U\+S\+B\+Meta\+Data}}$>$ persistence.\+File\+Manager.\+load\+U\+S\+B\+Config (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Loads a config.\+xml \begin{DoxyReturn}{Returns}
+List of the read data 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classpersistence_1_1_file_manager_a5cc9f22a6f81dbba2ff9cbffd9e0c250_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classpersistence_1_1_file_manager_adfbb7817aa088a174d2a78be57462e71}\label{classpersistence_1_1_file_manager_adfbb7817aa088a174d2a78be57462e71}} 
+\index{persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}!open\+File\+From\+Path@{open\+File\+From\+Path}}
+\index{open\+File\+From\+Path@{open\+File\+From\+Path}!persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}}
+\subsubsection{\texorpdfstring{open\+File\+From\+Path()}{openFileFromPath()}}
+{\footnotesize\ttfamily static String persistence.\+File\+Manager.\+open\+File\+From\+Path (\begin{DoxyParamCaption}\item[{String}]{file\+Location,  }\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{file\+Data }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Opens and decrypts a file from the given filepath using the given information 
+\begin{DoxyParams}{Parameters}
+{\em file\+Location} & file to be opened \\
+\hline
+{\em file\+Data} & file metadata used to decrypt \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+decoded content of the file 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classpersistence_1_1_file_manager_adfbb7817aa088a174d2a78be57462e71_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classpersistence_1_1_file_manager_ab4359d704a98bbf6635b9027c3d137ca}\label{classpersistence_1_1_file_manager_ab4359d704a98bbf6635b9027c3d137ca}} 
+\index{persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}!remove\+Special\+Chars@{remove\+Special\+Chars}}
+\index{remove\+Special\+Chars@{remove\+Special\+Chars}!persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}}
+\subsubsection{\texorpdfstring{remove\+Special\+Chars()}{removeSpecialChars()}}
+{\footnotesize\ttfamily static String persistence.\+File\+Manager.\+remove\+Special\+Chars (\begin{DoxyParamCaption}\item[{String}]{input }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Removes all chars from a string that can not be used in a file name 
+\begin{DoxyParams}{Parameters}
+{\em input} & String to be processed \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+processed String 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classpersistence_1_1_file_manager_a0630ee2ca01aad2ec24cff07a764bbd2}\label{classpersistence_1_1_file_manager_a0630ee2ca01aad2ec24cff07a764bbd2}} 
+\index{persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}!save\+File\+In\+Path@{save\+File\+In\+Path}}
+\index{save\+File\+In\+Path@{save\+File\+In\+Path}!persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}}
+\subsubsection{\texorpdfstring{save\+File\+In\+Path()}{saveFileInPath()}}
+{\footnotesize\ttfamily static void persistence.\+File\+Manager.\+save\+File\+In\+Path (\begin{DoxyParamCaption}\item[{File}]{path,  }\item[{String}]{file\+Content,  }\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{file\+Data }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Writes and encrypts the given content into a file 
+\begin{DoxyParams}{Parameters}
+{\em path} & File to be written \\
+\hline
+{\em file\+Content} & content of the file \\
+\hline
+{\em file\+Data} & metadata of the file \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classpersistence_1_1_file_manager_a0630ee2ca01aad2ec24cff07a764bbd2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classpersistence_1_1_file_manager_a2cdbe54741a0a0af658787da34923a5e}\label{classpersistence_1_1_file_manager_a2cdbe54741a0a0af658787da34923a5e}} 
+\index{persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}!save\+Key@{save\+Key}}
+\index{save\+Key@{save\+Key}!persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}}
+\subsubsection{\texorpdfstring{save\+Key()}{saveKey()}}
+{\footnotesize\ttfamily static void persistence.\+File\+Manager.\+save\+Key (\begin{DoxyParamCaption}\item[{byte \mbox{[}$\,$\mbox{]}}]{key,  }\item[{String}]{hash\+Value,  }\item[{String}]{drive\+Letter }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Saves a key to a .S\+T\+E\+K\+EY file (hash value as name) 
+\begin{DoxyParams}{Parameters}
+{\em key} & Key to be written \\
+\hline
+{\em hash\+Value} & Hash value to be used as name \\
+\hline
+{\em drive\+Letter} & drive letter of the usb drive the file will be written on \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classpersistence_1_1_file_manager_a2cdbe54741a0a0af658787da34923a5e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classpersistence_1_1_file_manager_a3e1b3600f691fcc13014ad944b8c1a0d}\label{classpersistence_1_1_file_manager_a3e1b3600f691fcc13014ad944b8c1a0d}} 
+\index{persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}!write\+Meta\+Data@{write\+Meta\+Data}}
+\index{write\+Meta\+Data@{write\+Meta\+Data}!persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}}
+\subsubsection{\texorpdfstring{write\+Meta\+Data()}{writeMetaData()}}
+{\footnotesize\ttfamily static void persistence.\+File\+Manager.\+write\+Meta\+Data (\begin{DoxyParamCaption}\item[{File}]{file,  }\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{file\+Data }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+Writes the metadata into a file 
+\begin{DoxyParams}{Parameters}
+{\em file} & file whichs metadata will be written \\
+\hline
+{\em file\+Data} & data to write \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classpersistence_1_1_file_manager_a0d94f3c5d697af23544d161541eaed0f}\label{classpersistence_1_1_file_manager_a0d94f3c5d697af23544d161541eaed0f}} 
+\index{persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}!write\+U\+S\+B\+Config@{write\+U\+S\+B\+Config}}
+\index{write\+U\+S\+B\+Config@{write\+U\+S\+B\+Config}!persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}}
+\subsubsection{\texorpdfstring{write\+U\+S\+B\+Config()}{writeUSBConfig()}}
+{\footnotesize\ttfamily static void persistence.\+File\+Manager.\+write\+U\+S\+B\+Config (\begin{DoxyParamCaption}\item[{List$<$ \mbox{\hyperlink{classpersistence_1_1_u_s_b_meta_data}{U\+S\+B\+Meta\+Data}} $>$}]{data\+List }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Write usb config data 
+\begin{DoxyParams}{Parameters}
+{\em data\+List} & data to be written into a config \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classpersistence_1_1_file_manager_a41f3194a363708961b2e56f3f93c3786}\label{classpersistence_1_1_file_manager_a41f3194a363708961b2e56f3f93c3786}} 
+\index{persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}!usb\+Config\+Path@{usb\+Config\+Path}}
+\index{usb\+Config\+Path@{usb\+Config\+Path}!persistence\+::\+File\+Manager@{persistence\+::\+File\+Manager}}
+\subsubsection{\texorpdfstring{usb\+Config\+Path}{usbConfigPath}}
+{\footnotesize\ttfamily final String persistence.\+File\+Manager.\+usb\+Config\+Path = \char`\"{}usb\+Config.\+xml\char`\"{}\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+persistence/\mbox{\hyperlink{_file_manager_8java}{File\+Manager.\+java}}\end{DoxyCompactItemize}

@@ -174,7 +174,6 @@ public class FileManager {
 	
 	/**
 	 * Loads a config.xml 
-	 * @param path Path of the .xml
 	 * @return List of the read data
 	 */	
 	public static List<USBMetaData> loadUSBConfig() throws Exception

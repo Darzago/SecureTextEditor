@@ -15,16 +15,16 @@ public class StopWatch {
 	 */
 	public void stopAndStart()
 	{
-		this.lastTime = System.nanoTime();	
+		this.lastTime = System.currentTimeMillis();	
 	}
 	
 	/**
 	 * Returns the time difference from the last stopped time in s
-	 * @return stopped time in ss
+	 * @return stopped time in s
 	 */
 	public float getTimeInSec()
 	{
-		return (System.nanoTime() - lastTime)/1000000000f;
+		return (System.currentTimeMillis() - lastTime)/1000f;
 	}
 	
 	/**
@@ -32,6 +32,6 @@ public class StopWatch {
 	 * Sets the last stopped time on creation
 	 */
 	public StopWatch() {
-		this.lastTime = System.nanoTime();
+		this.lastTime = System.currentTimeMillis();
 	}
 }

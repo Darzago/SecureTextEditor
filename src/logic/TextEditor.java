@@ -428,12 +428,16 @@ public class TextEditor extends TextArea{
 	/**
 	 * Constructor
 	 * Sets the stage and adds a listener to detect if the content of the text area has changed
-	 * @param _myStage main stage 
-	 * @param _encryptionType currently selected {@link EncryptionType}
-	 * @param _selectedMode currently selected {@link EncryptionMode}
-	 * @param _selectedPadding currently selected {@link PaddingType}
+	 * @param _myStage Main stage
+	 * @param encryptionDropDown Encryption type dropdown menu
+	 * @param encryptionModeDropDown Encryption mode dropdown menu
+	 * @param paddingDropDown Padding dropdown menu
+	 * @param hashFunctionDropDown Hash function dropdown menu
+	 * @param keylengthDropDown KeyLength dropdown menu
+	 * @param usbRegistrationText Text that is shown in the usb window
+	 * @param passwordArea Password field
 	 */
-	public TextEditor(Stage _myStage, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown, ComboBox<KeyLength> keylengthDropDown, Text usbRegistrationText, PasswordField  passwordArea)
+	public TextEditor(Stage _myStage, ComboBox<EncryptionType> encryptionDropDown, ComboBox<EncryptionMode> encryptionModeDropDown,  ComboBox<PaddingType> paddingDropDown, ComboBox<HashFunction> hashFunctionDropDown, ComboBox<KeyLength> keylengthDropDown, Text usbRegistrationText, PasswordField  passwordArea, Text passwordError)
 	{
 		//Used to expand the textarea to the maximum size
 		this.setPrefRowCount(999999);
@@ -458,8 +462,7 @@ public class TextEditor extends TextArea{
 		paddingDropDown.setDisable(true);
 		encryptionModeDropDown.setDisable(true);
 		keyLengthBox.setDisable(true);
-		
-		//TODO own method?
+
 		//Create the Eventhandler that is called when the value of the menu changes. Implements the dropdown logic of the encryptiontype dropdown menu
 		encryptionDropDown.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent t) {
@@ -630,6 +633,15 @@ public class TextEditor extends TextArea{
 		    	  {
 		    		  array[i] = charSequence.charAt(i);
 		    	  }
+		    	  
+		    	if(array.length < 8)
+		    	{
+		    		passwordError.setText("The password should be at least 8 characters long.");
+		    	}
+		    	else
+		    	{
+		    		passwordError.setText("");
+		    	}
 		    	  
 		    	currentFileData.setPassword(array);
 		    }

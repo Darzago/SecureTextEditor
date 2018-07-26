@@ -26,6 +26,7 @@ import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -139,6 +140,8 @@ public class JavaFxMainClass extends Application{
 						
 						Label passwordLabel = new Label("Password: ");
 						PasswordField  passwordArea = new PasswordField();
+						Text passwordErrorText = new Text();
+						passwordErrorText.setFill(Color.RED);
 						
 						//Adds button(s) below the dropdown menus 
 						GridPane encryptionButtonsBox = new GridPane();
@@ -151,7 +154,7 @@ public class JavaFxMainClass extends Application{
 				
 				VBox optionGeneralLayout = new VBox(encryptionGridPane, encryptionButtonsBox);
 				
-				Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 650, 200);
+				Scene encryptionOptionWindow = new Scene(optionGeneralLayout, 750, 220);
 				encryptionOptionStage.setScene(encryptionOptionWindow);
 				encryptionOptionStage.setTitle("Encryption Options");
 				encryptionOptionStage.getIcons().add(new Image("gear-256.png"));
@@ -174,7 +177,7 @@ public class JavaFxMainClass extends Application{
 		
 //Main Stage	 ---------------------------------------------------------------------------------------		
 		
-		editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown, keyLengthDropDown, usbText, passwordArea);
+		editor = new TextEditor(primaryStage, encryptionDropDown, modeDropDown, paddingDropDown, hashFunctionDropDown, keyLengthDropDown, usbText, passwordArea, passwordErrorText);
 		
 		//Sets the general layout of the scene
 		VBox layoutMainWindow = new VBox(menuBar,tabPane, editor);
@@ -289,6 +292,7 @@ public class JavaFxMainClass extends Application{
 					encryptionGridPane.add(passwordArea, 1, 3);
 					encryptionGridPane.add(hashFunctionLabel, 2, 2);
 					encryptionGridPane.add(hashFunctionDropDown, 2, 3);
+					encryptionGridPane.add(passwordErrorText, 1, 4, 2, 1);
 
 					encryptionDropDown.getItems().clear();
 					encryptionDropDown.setValue(EncryptionType.PBEWithMD5AndDES);

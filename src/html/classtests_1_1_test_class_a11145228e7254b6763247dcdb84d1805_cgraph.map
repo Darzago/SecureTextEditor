@@ -1,0 +1,28 @@
+<map id="tests.TestClass.testEncryptDecrypt" name="tests.TestClass.testEncryptDecrypt">
+<area shape="rect" id="node2" href="$classpersistence_1_1_meta_data.html#af99778b26e5d774a56299ec127b9bfa9" title="persistence.MetaData.get\lEncryptionType" alt="" coords="783,5,954,47"/>
+<area shape="rect" id="node3" href="$enumenums_1_1_encryption_type.html#a47a6aef4cb85c8608e6220ee8f4b4d33" title="enums.EncryptionType.toString" alt="" coords="237,689,441,715"/>
+<area shape="rect" id="node4" href="$enumenums_1_1_encryption_type.html#a296c258a5b6eee39b475d946ab29757f" title="enums.EncryptionType.get\lOperationMode" alt="" coords="251,740,428,781"/>
+<area shape="rect" id="node5" href="$classpersistence_1_1_meta_data.html#a3b89a90760bf48f005a18ff0c2b5323c" title="persistence.MetaData.get\lEncryptionMode" alt="" coords="783,71,954,112"/>
+<area shape="rect" id="node6" href="$classpersistence_1_1_meta_data.html#a061742e63ca7dce02b2a0146b760721e" title="persistence.MetaData.get\lPaddingType" alt="" coords="254,805,425,847"/>
+<area shape="rect" id="node7" href="$classpersistence_1_1_meta_data.html#a722b4ec15cf49c53bc490fd1d8df8ec5" title="persistence.MetaData.get\lKeyLength" alt="" coords="254,871,425,912"/>
+<area shape="rect" id="node8" href="$classpersistence_1_1_meta_data.html#a5fdfe20c91b05af14d85f778b4862962" title="persistence.MetaData.set\lUsbData" alt="" coords="254,936,425,977"/>
+<area shape="rect" id="node9" href="$classtests_1_1_stop_watch.html#a0e04959e839d96d5e64c51d7818455a2" title="tests.StopWatch.stopAndStart" alt="" coords="239,1002,439,1029"/>
+<area shape="rect" id="node10" href="$classlogic_1_1_crypto_manager.html#a36145e4757e6a380388baddf5e36e984" title="logic.CryptoManager.encrypt\lString" alt="" coords="245,473,433,515"/>
+<area shape="rect" id="node23" href="$classlogic_1_1_crypto_manager.html#a50efd094cbcfb11a49a74007ddb05155" title="logic.CryptoManager.decrypt\lString" alt="" coords="245,623,433,664"/>
+<area shape="rect" id="node26" href="$classtests_1_1_stop_watch.html#a1603703f4833f56b1a7a3fa1fe1a5535" title="tests.StopWatch.getTimeInSec" alt="" coords="238,1053,441,1079"/>
+<area shape="rect" id="node27" href="$classtests_1_1_test_class.html#aec33554fa3042880887c06901cf1f4cd" title="tests.TestClass.removeSpaces" alt="" coords="238,1103,441,1130"/>
+<area shape="rect" id="node11" href="$classlogic_1_1_crypto_manager.html#a103625add9feb832706c59b3f7708d80" title="logic.CryptoManager.generateHash" alt="" coords="756,787,981,814"/>
+<area shape="rect" id="node12" href="$classlogic_1_1_crypto_manager.html#a769894ae14be3ae193f48941fa38c460" title="logic.CryptoManager.generate\lAsymmetricKeys" alt="" coords="501,473,696,515"/>
+<area shape="rect" id="node13" href="$classlogic_1_1_crypto_manager.html#abb2490bd6132789d350254da3864e768" title="logic.CryptoManager.generate\lCipher" alt="" coords="501,656,696,697"/>
+<area shape="rect" id="node14" href="$classlogic_1_1_crypto_manager.html#ab8b195435e4051b57895f72f4d3d1661" title="logic.CryptoManager.generate\lRandomByteArray" alt="" coords="1029,243,1224,284"/>
+<area shape="rect" id="node15" href="$classlogic_1_1_crypto_manager.html#ae9e89bef6dad93ba25682d76017437bf" title="logic.CryptoManager.generate\lSymmetricKey" alt="" coords="501,356,696,397"/>
+<area shape="rect" id="node16" href="$classlogic_1_1_crypto_manager.html#a2d1e7744033690a5eaaeed1e5a127485" title="logic.CryptoManager.getIv\lIfNeeded" alt="" coords="513,173,684,215"/>
+<area shape="rect" id="node20" href="$classlogic_1_1_crypto_manager.html#acd250bd4f2301a12c018ad2bfb5f9831" title="logic.CryptoManager.apply\lCipher" alt="" coords="511,591,687,632"/>
+<area shape="rect" id="node21" href="$classpersistence_1_1_file_manager.html#a2cdbe54741a0a0af658787da34923a5e" title="persistence.FileManager.saveKey" alt="" coords="490,422,707,449"/>
+<area shape="rect" id="node17" href="$enumenums_1_1_encryption_mode.html#abd079d0267c38ed9c88cb1b49ac2d4ee" title="enums.EncryptionMode.usesIV" alt="" coords="767,137,970,163"/>
+<area shape="rect" id="node18" href="$classlogic_1_1_crypto_manager.html#ab2b0c505d44383d199f21aaa829290c4" title="logic.CryptoManager.generate\lMatchingIV" alt="" coords="771,188,966,229"/>
+<area shape="rect" id="node19" href="$classpersistence_1_1_meta_data.html#a5939dac29afb5346f5753b349f3d43eb" title="persistence.MetaData.setiV" alt="" coords="777,254,960,281"/>
+<area shape="rect" id="node22" href="$classpersistence_1_1_file_manager.html#ab4359d704a98bbf6635b9027c3d137ca" title="persistence.FileManager.remove\lSpecialChars" alt="" coords="764,568,973,609"/>
+<area shape="rect" id="node24" href="$classpersistence_1_1_file_manager.html#adcb4a47e8759e6fa7560fd5c98d26be9" title="persistence.FileManager.get\lKeyFromFile" alt="" coords="505,721,692,763"/>
+<area shape="rect" id="node25" href="$classlogic_1_1_crypto_manager.html#acf7654dc6d2cdab1b9161f428145a6b8" title="logic.CryptoManager.validateHash" alt="" coords="489,838,708,865"/>
+</map>

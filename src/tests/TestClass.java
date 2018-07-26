@@ -52,6 +52,10 @@ public class TestClass {
 		}
 	}
 	
+	/**
+	 * Tests all Hash functions and prints the result on the console
+	 * @throws Exception
+	 */
 	@Test
 	public void testAllHasheFunctions() throws Exception
 	{
@@ -74,6 +78,10 @@ public class TestClass {
 		}
 	}
 	
+	/**
+	 * Tests all possible combinations of EncTypes, Modes, Paddings and Keylenght
+	 * @throws Exception
+	 */
     @Test
     public void testAllEncTypesAndModes() throws Exception
     {
@@ -112,6 +120,11 @@ public class TestClass {
 		}
     }
     
+    /**
+     * Tests all paddings and calls the testAllKeyLength method
+     * @param testData TestData to be used in the test
+     * @throws Exception
+     */
     private void testAllPaddings(MetaData testData) throws Exception
     {
     	for(PaddingType padding : PaddingType.values())
@@ -129,6 +142,11 @@ public class TestClass {
     	}
     }
     
+    /**
+     * Loops through all keylengths and calls the testEncryptDecrypt method
+     * @param testData TestData to be used in the test
+     * @throws Exception
+     */
     private void testAllKeyLengths(MetaData testData) throws Exception
     {
     	for(KeyLength currentLength : KeyLength.getFittingKeyLength(testData.getEncryptionType()))
@@ -139,7 +157,7 @@ public class TestClass {
     }
     
     /**
-     * En and decrypts a test String 
+     * En and decrypts a test String
      * @param testData
      * @throws Exception
      */
@@ -186,23 +204,7 @@ public class TestClass {
     	
     	System.out.println("\t" + stopwatch.getTimeInSec() + "s");
 
-        assertEquals(testString, removeSpaces(resultString));
+        assertEquals(testString, resultString.trim());
     }
     
-    /**
-     * Test method for removing spaces at the end of a string
-     * @param string String with spaces
-     * @return String without spaces
-     */
-    private String removeSpaces(String string)
-    {
-    	for(int i = string.length() -1; i > 0; i--)
-    	{
-    		if(string.charAt(i) != 0)
-    		{
-    			return string.substring(0, i + 1);
-    		}
-    	}
-    	return string;
-    }
 }

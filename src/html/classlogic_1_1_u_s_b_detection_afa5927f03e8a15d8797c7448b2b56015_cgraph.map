@@ -1,0 +1,10 @@
+<map id="logic.USBDetection.run" name="logic.USBDetection.run">
+<area shape="rect" id="node2" href="$classlogic_1_1_u_s_b_detection.html#a684dad305f6e4adf0362e33bbb25d041" title="logic.USBDetection.getCurrent\lDeviceCount" alt="" coords="211,5,409,47"/>
+<area shape="rect" id="node3" href="$classlogic_1_1_u_s_b_detection.html#aa344d4736cf7b1d95e5f3ff36d70de28" title="logic.USBDetection.getUSBList" alt="" coords="457,134,663,161"/>
+<area shape="rect" id="node4" href="$classlogic_1_1_u_s_b_detection.html#a1d7dc58db8f4fd4de5ba1387dc0de92b" title="logic.USBDetection.detect\lUSBDriveLetter" alt="" coords="223,123,397,164"/>
+<area shape="rect" id="node5" href="$classlogic_1_1_u_s_b_detection.html#adfbfb167a4d6cc1a5cb186c0246b131a" title="logic.USBDetection.register\lUSBDevice" alt="" coords="219,253,401,295"/>
+<area shape="rect" id="node9" href="$classlogic_1_1_u_s_b_detection.html#a33eefbd24dcb95bf013fa91b0402c157" title="logic.USBDetection.getNew\lDeviceID" alt="" coords="219,188,401,229"/>
+<area shape="rect" id="node6" href="$classlogic_1_1_text_editor.html#aeb8b26927002020f35d2dc6cc8ececfe" title="logic.TextEditor.register\lUSBDrive" alt="" coords="481,253,639,295"/>
+<area shape="rect" id="node7" href="$classpersistence_1_1_file_manager.html#a0d94f3c5d697af23544d161541eaed0f" title="persistence.FileManager.write\lUSBConfig" alt="" coords="711,224,905,265"/>
+<area shape="rect" id="node8" href="$classlogic_1_1_text_editor.html#a5fc087a73d335d9a76ebff363f073a8d" title="logic.TextEditor.showError" alt="" coords="721,290,895,317"/>
+</map>

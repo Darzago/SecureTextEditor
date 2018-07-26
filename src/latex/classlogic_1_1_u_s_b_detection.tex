@@ -1,0 +1,241 @@
+\hypertarget{classlogic_1_1_u_s_b_detection}{}\section{logic.\+U\+S\+B\+Detection Class Reference}
+\label{classlogic_1_1_u_s_b_detection}\index{logic.\+U\+S\+B\+Detection@{logic.\+U\+S\+B\+Detection}}
+
+
+Inheritance diagram for logic.\+U\+S\+B\+Detection\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=208pt]{classlogic_1_1_u_s_b_detection__inherit__graph}
+\end{center}
+\end{figure}
+
+
+Collaboration diagram for logic.\+U\+S\+B\+Detection\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_u_s_b_detection__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_afa5927f03e8a15d8797c7448b2b56015}{run}} ()
+\item 
+String \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_a1d7dc58db8f4fd4de5ba1387dc0de92b}{detect\+U\+S\+B\+Drive\+Letter}} ()
+\item 
+\mbox{\hyperlink{classlogic_1_1_u_s_b_detection_a4b63c640806fa72a6278f62ae446da76}{U\+S\+B\+Detection}} (\mbox{\hyperlink{classlogic_1_1_text_editor}{Text\+Editor}} \+\_\+callback\+Editor)
+\item 
+boolean \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_af59497baf1a3b965b948103da0098fd5}{is\+Running}} ()
+\item 
+void \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_aa9406feb1bb47a2ea840f352b960bfb8}{set\+Running}} (boolean \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_a9f2381b5bc0bb9c9fee03d4efcfa03cb}{running\+Flag}})
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static int \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_aa344d4736cf7b1d95e5f3ff36d70de28}{get\+U\+S\+B\+List}} ()
+\end{DoxyCompactItemize}
+\subsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_a684dad305f6e4adf0362e33bbb25d041}{get\+Current\+Device\+Count}} ()
+\item 
+int \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_a33eefbd24dcb95bf013fa91b0402c157}{get\+New\+Device\+ID}} ()
+\item 
+void \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_adfbfb167a4d6cc1a5cb186c0246b131a}{register\+U\+S\+B\+Device}} (int found\+Device\+Id, String drive\+Letter)
+\end{DoxyCompactItemize}
+\subsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+String \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_ac59408f84f8634356ebca0e200cd52dc}{drive\+Letters}}
+\item 
+File \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_adf43cb71a6f51974f6d3bb7e5ee0a07f}{external\+Drives}}
+\item 
+boolean \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_a9116f6bee29fd7487d59645730060089}{found\+Drive}}
+\item 
+\mbox{\hyperlink{classlogic_1_1_text_editor}{Text\+Editor}} \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_a6e86a8602e08d2ed9376a865d18d55e8}{call\+Back\+Editor}}
+\item 
+int \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_a6fb3b9b0a01b386c89d2cd1b1ed14207}{min\+Device\+Count}} = Integer.\+M\+A\+X\+\_\+\+V\+A\+L\+UE
+\item 
+int \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_a724f15b2ef5c95e5ed8c1d64e14dc237}{current\+Device\+Count}}
+\item 
+int \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_a7b0efef235f82ac00e21c0ded12f5791}{min\+Device\+List}}
+\item 
+boolean \mbox{\hyperlink{classlogic_1_1_u_s_b_detection_a9f2381b5bc0bb9c9fee03d4efcfa03cb}{running\+Flag}} = true
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Thread Class that is used to detect newly connected U\+SB devices \begin{DoxyAuthor}{Author}
+Joel 
+\end{DoxyAuthor}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_a4b63c640806fa72a6278f62ae446da76}\label{classlogic_1_1_u_s_b_detection_a4b63c640806fa72a6278f62ae446da76}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!U\+S\+B\+Detection@{U\+S\+B\+Detection}}
+\index{U\+S\+B\+Detection@{U\+S\+B\+Detection}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{U\+S\+B\+Detection()}{USBDetection()}}
+{\footnotesize\ttfamily logic.\+U\+S\+B\+Detection.\+U\+S\+B\+Detection (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classlogic_1_1_text_editor}{Text\+Editor}}}]{\+\_\+callback\+Editor }\end{DoxyParamCaption})}
+
+Constructor 
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+callback\+Editor} & Editor from which the thread is started \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_a1d7dc58db8f4fd4de5ba1387dc0de92b}\label{classlogic_1_1_u_s_b_detection_a1d7dc58db8f4fd4de5ba1387dc0de92b}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!detect\+U\+S\+B\+Drive\+Letter@{detect\+U\+S\+B\+Drive\+Letter}}
+\index{detect\+U\+S\+B\+Drive\+Letter@{detect\+U\+S\+B\+Drive\+Letter}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{detect\+U\+S\+B\+Drive\+Letter()}{detectUSBDriveLetter()}}
+{\footnotesize\ttfamily String logic.\+U\+S\+B\+Detection.\+detect\+U\+S\+B\+Drive\+Letter (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns the drive letter of a newly connected device \begin{DoxyReturn}{Returns}
+drive letter of the newly connected drive 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_a684dad305f6e4adf0362e33bbb25d041}\label{classlogic_1_1_u_s_b_detection_a684dad305f6e4adf0362e33bbb25d041}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!get\+Current\+Device\+Count@{get\+Current\+Device\+Count}}
+\index{get\+Current\+Device\+Count@{get\+Current\+Device\+Count}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{get\+Current\+Device\+Count()}{getCurrentDeviceCount()}}
+{\footnotesize\ttfamily int logic.\+U\+S\+B\+Detection.\+get\+Current\+Device\+Count (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Gets the number of currently connected U\+SB devices \begin{DoxyReturn}{Returns}
+number of connected usb devices 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_a33eefbd24dcb95bf013fa91b0402c157}\label{classlogic_1_1_u_s_b_detection_a33eefbd24dcb95bf013fa91b0402c157}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!get\+New\+Device\+ID@{get\+New\+Device\+ID}}
+\index{get\+New\+Device\+ID@{get\+New\+Device\+ID}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{get\+New\+Device\+I\+D()}{getNewDeviceID()}}
+{\footnotesize\ttfamily int logic.\+U\+S\+B\+Detection.\+get\+New\+Device\+ID (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Returns the hash of a newly connected usb \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_u_s_b_detection_a33eefbd24dcb95bf013fa91b0402c157_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_aa344d4736cf7b1d95e5f3ff36d70de28}\label{classlogic_1_1_u_s_b_detection_aa344d4736cf7b1d95e5f3ff36d70de28}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!get\+U\+S\+B\+List@{get\+U\+S\+B\+List}}
+\index{get\+U\+S\+B\+List@{get\+U\+S\+B\+List}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{get\+U\+S\+B\+List()}{getUSBList()}}
+{\footnotesize\ttfamily static int \mbox{[}$\,$\mbox{]} logic.\+U\+S\+B\+Detection.\+get\+U\+S\+B\+List (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Gets a list of all connected usb devices \begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_af59497baf1a3b965b948103da0098fd5}\label{classlogic_1_1_u_s_b_detection_af59497baf1a3b965b948103da0098fd5}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!is\+Running@{is\+Running}}
+\index{is\+Running@{is\+Running}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{is\+Running()}{isRunning()}}
+{\footnotesize\ttfamily boolean logic.\+U\+S\+B\+Detection.\+is\+Running (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+the running\+Flag 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_adfbfb167a4d6cc1a5cb186c0246b131a}\label{classlogic_1_1_u_s_b_detection_adfbfb167a4d6cc1a5cb186c0246b131a}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!register\+U\+S\+B\+Device@{register\+U\+S\+B\+Device}}
+\index{register\+U\+S\+B\+Device@{register\+U\+S\+B\+Device}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{register\+U\+S\+B\+Device()}{registerUSBDevice()}}
+{\footnotesize\ttfamily void logic.\+U\+S\+B\+Detection.\+register\+U\+S\+B\+Device (\begin{DoxyParamCaption}\item[{int}]{found\+Device\+Id,  }\item[{String}]{drive\+Letter }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+Used to register a newly found usb drive 
+\begin{DoxyParams}{Parameters}
+{\em found\+Device\+Id} & hash of the drive \\
+\hline
+{\em drive\+Letter} & drive letter of the drive \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_u_s_b_detection_adfbfb167a4d6cc1a5cb186c0246b131a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_afa5927f03e8a15d8797c7448b2b56015}\label{classlogic_1_1_u_s_b_detection_afa5927f03e8a15d8797c7448b2b56015}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!run@{run}}
+\index{run@{run}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily void logic.\+U\+S\+B\+Detection.\+run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{classlogic_1_1_u_s_b_detection_afa5927f03e8a15d8797c7448b2b56015_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_aa9406feb1bb47a2ea840f352b960bfb8}\label{classlogic_1_1_u_s_b_detection_aa9406feb1bb47a2ea840f352b960bfb8}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!set\+Running@{set\+Running}}
+\index{set\+Running@{set\+Running}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{set\+Running()}{setRunning()}}
+{\footnotesize\ttfamily void logic.\+U\+S\+B\+Detection.\+set\+Running (\begin{DoxyParamCaption}\item[{boolean}]{running\+Flag }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em running\+Flag} & the running\+Flag to set \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_a6e86a8602e08d2ed9376a865d18d55e8}\label{classlogic_1_1_u_s_b_detection_a6e86a8602e08d2ed9376a865d18d55e8}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!call\+Back\+Editor@{call\+Back\+Editor}}
+\index{call\+Back\+Editor@{call\+Back\+Editor}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{call\+Back\+Editor}{callBackEditor}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classlogic_1_1_text_editor}{Text\+Editor}} logic.\+U\+S\+B\+Detection.\+call\+Back\+Editor\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_a724f15b2ef5c95e5ed8c1d64e14dc237}\label{classlogic_1_1_u_s_b_detection_a724f15b2ef5c95e5ed8c1d64e14dc237}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!current\+Device\+Count@{current\+Device\+Count}}
+\index{current\+Device\+Count@{current\+Device\+Count}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{current\+Device\+Count}{currentDeviceCount}}
+{\footnotesize\ttfamily int logic.\+U\+S\+B\+Detection.\+current\+Device\+Count\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_ac59408f84f8634356ebca0e200cd52dc}\label{classlogic_1_1_u_s_b_detection_ac59408f84f8634356ebca0e200cd52dc}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!drive\+Letters@{drive\+Letters}}
+\index{drive\+Letters@{drive\+Letters}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{drive\+Letters}{driveLetters}}
+{\footnotesize\ttfamily String \mbox{[}$\,$\mbox{]} logic.\+U\+S\+B\+Detection.\+drive\+Letters\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_adf43cb71a6f51974f6d3bb7e5ee0a07f}\label{classlogic_1_1_u_s_b_detection_adf43cb71a6f51974f6d3bb7e5ee0a07f}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!external\+Drives@{external\+Drives}}
+\index{external\+Drives@{external\+Drives}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{external\+Drives}{externalDrives}}
+{\footnotesize\ttfamily File \mbox{[}$\,$\mbox{]} logic.\+U\+S\+B\+Detection.\+external\+Drives\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_a9116f6bee29fd7487d59645730060089}\label{classlogic_1_1_u_s_b_detection_a9116f6bee29fd7487d59645730060089}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!found\+Drive@{found\+Drive}}
+\index{found\+Drive@{found\+Drive}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{found\+Drive}{foundDrive}}
+{\footnotesize\ttfamily boolean \mbox{[}$\,$\mbox{]} logic.\+U\+S\+B\+Detection.\+found\+Drive\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_a6fb3b9b0a01b386c89d2cd1b1ed14207}\label{classlogic_1_1_u_s_b_detection_a6fb3b9b0a01b386c89d2cd1b1ed14207}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!min\+Device\+Count@{min\+Device\+Count}}
+\index{min\+Device\+Count@{min\+Device\+Count}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{min\+Device\+Count}{minDeviceCount}}
+{\footnotesize\ttfamily int logic.\+U\+S\+B\+Detection.\+min\+Device\+Count = Integer.\+M\+A\+X\+\_\+\+V\+A\+L\+UE\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_a7b0efef235f82ac00e21c0ded12f5791}\label{classlogic_1_1_u_s_b_detection_a7b0efef235f82ac00e21c0ded12f5791}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!min\+Device\+List@{min\+Device\+List}}
+\index{min\+Device\+List@{min\+Device\+List}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{min\+Device\+List}{minDeviceList}}
+{\footnotesize\ttfamily int \mbox{[}$\,$\mbox{]} logic.\+U\+S\+B\+Detection.\+min\+Device\+List\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{classlogic_1_1_u_s_b_detection_a9f2381b5bc0bb9c9fee03d4efcfa03cb}\label{classlogic_1_1_u_s_b_detection_a9f2381b5bc0bb9c9fee03d4efcfa03cb}} 
+\index{logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}!running\+Flag@{running\+Flag}}
+\index{running\+Flag@{running\+Flag}!logic\+::\+U\+S\+B\+Detection@{logic\+::\+U\+S\+B\+Detection}}
+\subsubsection{\texorpdfstring{running\+Flag}{runningFlag}}
+{\footnotesize\ttfamily boolean logic.\+U\+S\+B\+Detection.\+running\+Flag = true\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+logic/\mbox{\hyperlink{_u_s_b_detection_8java}{U\+S\+B\+Detection.\+java}}\end{DoxyCompactItemize}

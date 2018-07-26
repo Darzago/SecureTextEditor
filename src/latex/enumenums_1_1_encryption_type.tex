@@ -1,0 +1,158 @@
+\hypertarget{enumenums_1_1_encryption_type}{}\section{enums.\+Encryption\+Type Enum Reference}
+\label{enumenums_1_1_encryption_type}\index{enums.\+Encryption\+Type@{enums.\+Encryption\+Type}}
+
+
+Collaboration diagram for enums.\+Encryption\+Type\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=225pt]{enumenums_1_1_encryption_type__coll__graph}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{enumenums_1_1_encryption_type_a1afa9d50b477f0206b5143a7d6b484a4}{get\+P\+B\+E\+Salt\+Length}} ()
+\item 
+\mbox{\hyperlink{enumenums_1_1_operation_mode}{Operation\+Mode}} \mbox{\hyperlink{enumenums_1_1_encryption_type_a296c258a5b6eee39b475d946ab29757f}{get\+Operation\+Mode}} ()
+\item 
+String \mbox{\hyperlink{enumenums_1_1_encryption_type_a47a6aef4cb85c8608e6220ee8f4b4d33}{to\+String}} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}} \mbox{[}$\,$\mbox{]} \mbox{\hyperlink{enumenums_1_1_encryption_type_add4096e0732de7639893f5811f013377}{get\+Values\+By\+Operation}} (\mbox{\hyperlink{enumenums_1_1_operation_mode}{Operation\+Mode}} operation)
+\item 
+static \mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}} \mbox{\hyperlink{enumenums_1_1_encryption_type_aea9576b120c7941c9e2e96ee6e0d2db7}{filtered\+Value\+Of}} (String arg)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{enumenums_1_1_encryption_type_a00696b3ecf5fa1be2d7148d244a9755f}{none}}
+\item 
+\mbox{\hyperlink{enumenums_1_1_encryption_type_a04b61e8116df22daab2d12f3e62b66cc}{A\+ES}}
+\item 
+\mbox{\hyperlink{enumenums_1_1_encryption_type_acc538687d6ca6c0f552c8a9ac4cf52c3}{D\+ES}}
+\item 
+\mbox{\hyperlink{enumenums_1_1_encryption_type_a4b6133b88233bcbe3fb031c306aadebb}{R\+SA}}
+\item 
+\mbox{\hyperlink{enumenums_1_1_encryption_type_a458a9c9b211fde2cdad29a8441c1d3c8}{A\+R\+C4}}
+\item 
+\mbox{\hyperlink{enumenums_1_1_encryption_type_abe0431eb5e6eefadb3007f7c6ef75660}{P\+B\+E\+With\+M\+D5\+And\+D\+ES}}
+\item 
+\mbox{\hyperlink{enumenums_1_1_encryption_type_aa05722ff606c8a5e5a6d331fd791f6a6}{P\+B\+E\+With\+S\+H\+A\+And40\+Bit\+R\+C4}}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Enum that represents encryption types \begin{DoxyAuthor}{Author}
+Joel 
+\end{DoxyAuthor}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_aea9576b120c7941c9e2e96ee6e0d2db7}\label{enumenums_1_1_encryption_type_aea9576b120c7941c9e2e96ee6e0d2db7}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!filtered\+Value\+Of@{filtered\+Value\+Of}}
+\index{filtered\+Value\+Of@{filtered\+Value\+Of}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{filtered\+Value\+Of()}{filteredValueOf()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}} enums.\+Encryption\+Type.\+filtered\+Value\+Of (\begin{DoxyParamCaption}\item[{String}]{arg }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Value\+Of method with the special case P\+B\+E\+With\+S\+H\+A256\+And128\+Bit\+A\+E\+S-\/\+C\+B\+C-\/\+BC because \textquotesingle{}-\/\textquotesingle{} can not be used in Strings 
+\begin{DoxyParams}{Parameters}
+{\em arg} & String to be converted to an enum \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+encryption type 
+\end{DoxyReturn}
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_a296c258a5b6eee39b475d946ab29757f}\label{enumenums_1_1_encryption_type_a296c258a5b6eee39b475d946ab29757f}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!get\+Operation\+Mode@{get\+Operation\+Mode}}
+\index{get\+Operation\+Mode@{get\+Operation\+Mode}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{get\+Operation\+Mode()}{getOperationMode()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{enumenums_1_1_operation_mode}{Operation\+Mode}} enums.\+Encryption\+Type.\+get\+Operation\+Mode (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns the Operation mode of this encryption type \begin{DoxyReturn}{Returns}
+Opertaion mode of this type 
+\end{DoxyReturn}
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_a1afa9d50b477f0206b5143a7d6b484a4}\label{enumenums_1_1_encryption_type_a1afa9d50b477f0206b5143a7d6b484a4}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!get\+P\+B\+E\+Salt\+Length@{get\+P\+B\+E\+Salt\+Length}}
+\index{get\+P\+B\+E\+Salt\+Length@{get\+P\+B\+E\+Salt\+Length}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{get\+P\+B\+E\+Salt\+Length()}{getPBESaltLength()}}
+{\footnotesize\ttfamily int enums.\+Encryption\+Type.\+get\+P\+B\+E\+Salt\+Length (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Returns the fitting salt length for an encryption type \begin{DoxyReturn}{Returns}
+fitting Salt length 
+\end{DoxyReturn}
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_add4096e0732de7639893f5811f013377}\label{enumenums_1_1_encryption_type_add4096e0732de7639893f5811f013377}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!get\+Values\+By\+Operation@{get\+Values\+By\+Operation}}
+\index{get\+Values\+By\+Operation@{get\+Values\+By\+Operation}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{get\+Values\+By\+Operation()}{getValuesByOperation()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{enumenums_1_1_encryption_type}{Encryption\+Type}} \mbox{[}$\,$\mbox{]} enums.\+Encryption\+Type.\+get\+Values\+By\+Operation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{enumenums_1_1_operation_mode}{Operation\+Mode}}}]{operation }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Returns all encryption typesof the passed operation mode 
+\begin{DoxyParams}{Parameters}
+{\em operation} & operation \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Array of all encryption types of the corresponding operation 
+\end{DoxyReturn}
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_a47a6aef4cb85c8608e6220ee8f4b4d33}\label{enumenums_1_1_encryption_type_a47a6aef4cb85c8608e6220ee8f4b4d33}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!to\+String@{to\+String}}
+\index{to\+String@{to\+String}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{to\+String()}{toString()}}
+{\footnotesize\ttfamily String enums.\+Encryption\+Type.\+to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+To\+String method with the special case P\+B\+E\+With\+S\+H\+A256\+And128\+Bit\+A\+E\+S-\/\+C\+B\+C-\/\+BC because \textquotesingle{}-\/\textquotesingle{} can not be used in Strings \begin{DoxyReturn}{Returns}
+type as a string that can be used ti init a cipher 
+\end{DoxyReturn}
+
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_a04b61e8116df22daab2d12f3e62b66cc}\label{enumenums_1_1_encryption_type_a04b61e8116df22daab2d12f3e62b66cc}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!A\+ES@{A\+ES}}
+\index{A\+ES@{A\+ES}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{A\+ES}{AES}}
+{\footnotesize\ttfamily enums.\+Encryption\+Type.\+A\+ES}
+
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_a458a9c9b211fde2cdad29a8441c1d3c8}\label{enumenums_1_1_encryption_type_a458a9c9b211fde2cdad29a8441c1d3c8}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!A\+R\+C4@{A\+R\+C4}}
+\index{A\+R\+C4@{A\+R\+C4}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{A\+R\+C4}{ARC4}}
+{\footnotesize\ttfamily enums.\+Encryption\+Type.\+A\+R\+C4}
+
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_acc538687d6ca6c0f552c8a9ac4cf52c3}\label{enumenums_1_1_encryption_type_acc538687d6ca6c0f552c8a9ac4cf52c3}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!D\+ES@{D\+ES}}
+\index{D\+ES@{D\+ES}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{D\+ES}{DES}}
+{\footnotesize\ttfamily enums.\+Encryption\+Type.\+D\+ES}
+
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_a00696b3ecf5fa1be2d7148d244a9755f}\label{enumenums_1_1_encryption_type_a00696b3ecf5fa1be2d7148d244a9755f}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!none@{none}}
+\index{none@{none}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{none}{none}}
+{\footnotesize\ttfamily enums.\+Encryption\+Type.\+none}
+
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_abe0431eb5e6eefadb3007f7c6ef75660}\label{enumenums_1_1_encryption_type_abe0431eb5e6eefadb3007f7c6ef75660}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!P\+B\+E\+With\+M\+D5\+And\+D\+ES@{P\+B\+E\+With\+M\+D5\+And\+D\+ES}}
+\index{P\+B\+E\+With\+M\+D5\+And\+D\+ES@{P\+B\+E\+With\+M\+D5\+And\+D\+ES}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{P\+B\+E\+With\+M\+D5\+And\+D\+ES}{PBEWithMD5AndDES}}
+{\footnotesize\ttfamily enums.\+Encryption\+Type.\+P\+B\+E\+With\+M\+D5\+And\+D\+ES}
+
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_aa05722ff606c8a5e5a6d331fd791f6a6}\label{enumenums_1_1_encryption_type_aa05722ff606c8a5e5a6d331fd791f6a6}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!P\+B\+E\+With\+S\+H\+A\+And40\+Bit\+R\+C4@{P\+B\+E\+With\+S\+H\+A\+And40\+Bit\+R\+C4}}
+\index{P\+B\+E\+With\+S\+H\+A\+And40\+Bit\+R\+C4@{P\+B\+E\+With\+S\+H\+A\+And40\+Bit\+R\+C4}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{P\+B\+E\+With\+S\+H\+A\+And40\+Bit\+R\+C4}{PBEWithSHAAnd40BitRC4}}
+{\footnotesize\ttfamily enums.\+Encryption\+Type.\+P\+B\+E\+With\+S\+H\+A\+And40\+Bit\+R\+C4}
+
+\mbox{\Hypertarget{enumenums_1_1_encryption_type_a4b6133b88233bcbe3fb031c306aadebb}\label{enumenums_1_1_encryption_type_a4b6133b88233bcbe3fb031c306aadebb}} 
+\index{enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}!R\+SA@{R\+SA}}
+\index{R\+SA@{R\+SA}!enums\+::\+Encryption\+Type@{enums\+::\+Encryption\+Type}}
+\subsubsection{\texorpdfstring{R\+SA}{RSA}}
+{\footnotesize\ttfamily enums.\+Encryption\+Type.\+R\+SA}
+
+
+
+The documentation for this enum was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+enums/\mbox{\hyperlink{_encryption_type_8java}{Encryption\+Type.\+java}}\end{DoxyCompactItemize}
