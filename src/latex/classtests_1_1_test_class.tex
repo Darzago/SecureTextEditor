@@ -2,7 +2,8 @@
 \label{classtests_1_1_test_class}\index{tests.\+Test\+Class@{tests.\+Test\+Class}}
 
 
-Collaboration diagram for tests.\+Test\+Class\+:\nopagebreak
+Collaboration diagram for tests.\+Test\+Class\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -26,8 +27,6 @@ void \mbox{\hyperlink{classtests_1_1_test_class_a11145228e7254b6763247dcdb84d180
 void \mbox{\hyperlink{classtests_1_1_test_class_ad9f19e80ff161cfedfbfe4ba527c0074}{test\+All\+Paddings}} (\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} test\+Data)  throws Exception     
 \item 
 void \mbox{\hyperlink{classtests_1_1_test_class_a8bf4e8d943fa1d61fbaa615dcefeca69}{test\+All\+Key\+Lengths}} (\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}} test\+Data)  throws Exception     
-\item 
-String \mbox{\hyperlink{classtests_1_1_test_class_aec33554fa3042880887c06901cf1f4cd}{remove\+Spaces}} (String string)
 \end{DoxyCompactItemize}
 
 
@@ -44,27 +43,19 @@ Joel
 \subsubsection{\texorpdfstring{clear\+Keys()}{clearKeys()}}
 {\footnotesize\ttfamily void tests.\+Test\+Class.\+clear\+Keys (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
 
-Clears all generated keys after the test \mbox{\Hypertarget{classtests_1_1_test_class_aec33554fa3042880887c06901cf1f4cd}\label{classtests_1_1_test_class_aec33554fa3042880887c06901cf1f4cd}} 
-\index{tests\+::\+Test\+Class@{tests\+::\+Test\+Class}!remove\+Spaces@{remove\+Spaces}}
-\index{remove\+Spaces@{remove\+Spaces}!tests\+::\+Test\+Class@{tests\+::\+Test\+Class}}
-\subsubsection{\texorpdfstring{remove\+Spaces()}{removeSpaces()}}
-{\footnotesize\ttfamily String tests.\+Test\+Class.\+remove\+Spaces (\begin{DoxyParamCaption}\item[{String}]{string }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
-
-Test method for removing spaces at the end of a string 
-\begin{DoxyParams}{Parameters}
-{\em string} & String with spaces \\
-\hline
-\end{DoxyParams}
-\begin{DoxyReturn}{Returns}
-String without spaces 
-\end{DoxyReturn}
-\mbox{\Hypertarget{classtests_1_1_test_class_a85be535c071d279d8d7bc1a40201dcff}\label{classtests_1_1_test_class_a85be535c071d279d8d7bc1a40201dcff}} 
+Clears all generated keys after the test \mbox{\Hypertarget{classtests_1_1_test_class_a85be535c071d279d8d7bc1a40201dcff}\label{classtests_1_1_test_class_a85be535c071d279d8d7bc1a40201dcff}} 
 \index{tests\+::\+Test\+Class@{tests\+::\+Test\+Class}!test\+All\+Enc\+Types\+And\+Modes@{test\+All\+Enc\+Types\+And\+Modes}}
 \index{test\+All\+Enc\+Types\+And\+Modes@{test\+All\+Enc\+Types\+And\+Modes}!tests\+::\+Test\+Class@{tests\+::\+Test\+Class}}
 \subsubsection{\texorpdfstring{test\+All\+Enc\+Types\+And\+Modes()}{testAllEncTypesAndModes()}}
 {\footnotesize\ttfamily void tests.\+Test\+Class.\+test\+All\+Enc\+Types\+And\+Modes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws Exception}
 
-Here is the call graph for this function\+:\nopagebreak
+Tests all possible combinations of Enc\+Types, Modes, Paddings and Keylenght 
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -77,7 +68,13 @@ Here is the call graph for this function\+:\nopagebreak
 \subsubsection{\texorpdfstring{test\+All\+Hashe\+Functions()}{testAllHasheFunctions()}}
 {\footnotesize\ttfamily void tests.\+Test\+Class.\+test\+All\+Hashe\+Functions (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws Exception}
 
-Here is the call graph for this function\+:\nopagebreak
+Tests all Hash functions and prints the result on the console 
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -90,7 +87,18 @@ Here is the call graph for this function\+:\nopagebreak
 \subsubsection{\texorpdfstring{test\+All\+Key\+Lengths()}{testAllKeyLengths()}}
 {\footnotesize\ttfamily void tests.\+Test\+Class.\+test\+All\+Key\+Lengths (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{test\+Data }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the call graph for this function\+:\nopagebreak
+Loops through all keylengths and calls the test\+Encrypt\+Decrypt method 
+\begin{DoxyParams}{Parameters}
+{\em test\+Data} & Test\+Data to be used in the test \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -103,7 +111,18 @@ Here is the call graph for this function\+:\nopagebreak
 \subsubsection{\texorpdfstring{test\+All\+Paddings()}{testAllPaddings()}}
 {\footnotesize\ttfamily void tests.\+Test\+Class.\+test\+All\+Paddings (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classpersistence_1_1_meta_data}{Meta\+Data}}}]{test\+Data }\end{DoxyParamCaption}) throws Exception\hspace{0.3cm}{\ttfamily [private]}}
 
-Here is the call graph for this function\+:\nopagebreak
+Tests all paddings and calls the test\+All\+Key\+Length method 
+\begin{DoxyParams}{Parameters}
+{\em test\+Data} & Test\+Data to be used in the test \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Exception} & \\
+\hline
+\end{DoxyExceptions}
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode
@@ -126,7 +145,8 @@ En and decrypts a test String
 {\em Exception} & \\
 \hline
 \end{DoxyExceptions}
-Here is the call graph for this function\+:\nopagebreak
+Here is the call graph for this function\+:
+\nopagebreak
 \begin{figure}[H]
 \begin{center}
 \leavevmode

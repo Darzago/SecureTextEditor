@@ -10,7 +10,6 @@
 <area shape="rect" id="node10" href="$classlogic_1_1_crypto_manager.html#a36145e4757e6a380388baddf5e36e984" title="logic.CryptoManager.encrypt\lString" alt="" coords="245,473,433,515"/>
 <area shape="rect" id="node23" href="$classlogic_1_1_crypto_manager.html#a50efd094cbcfb11a49a74007ddb05155" title="logic.CryptoManager.decrypt\lString" alt="" coords="245,623,433,664"/>
 <area shape="rect" id="node26" href="$classtests_1_1_stop_watch.html#a1603703f4833f56b1a7a3fa1fe1a5535" title="tests.StopWatch.getTimeInSec" alt="" coords="238,1053,441,1079"/>
-<area shape="rect" id="node27" href="$classtests_1_1_test_class.html#aec33554fa3042880887c06901cf1f4cd" title="tests.TestClass.removeSpaces" alt="" coords="238,1103,441,1130"/>
 <area shape="rect" id="node11" href="$classlogic_1_1_crypto_manager.html#a103625add9feb832706c59b3f7708d80" title="logic.CryptoManager.generateHash" alt="" coords="756,787,981,814"/>
 <area shape="rect" id="node12" href="$classlogic_1_1_crypto_manager.html#a769894ae14be3ae193f48941fa38c460" title="logic.CryptoManager.generate\lAsymmetricKeys" alt="" coords="501,473,696,515"/>
 <area shape="rect" id="node13" href="$classlogic_1_1_crypto_manager.html#abb2490bd6132789d350254da3864e768" title="logic.CryptoManager.generate\lCipher" alt="" coords="501,656,696,697"/>

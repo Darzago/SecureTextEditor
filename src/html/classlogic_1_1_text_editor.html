@@ -109,8 +109,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ae11be4a147a095ce667576ce50f210b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeb8b26927002020f35d2dc6cc8ececfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlogic_1_1_text_editor.html#aeb8b26927002020f35d2dc6cc8ececfe">registerUSBDrive</a> (int foundDeviceId, String driveLetter)</td></tr>
 <tr class="separator:aeb8b26927002020f35d2dc6cc8ececfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ee7c49f953dac5de4dfbd8e8c350e76"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlogic_1_1_text_editor.html#a1ee7c49f953dac5de4dfbd8e8c350e76">TextEditor</a> (Stage _myStage, ComboBox&lt; <a class="el" href="enumenums_1_1_encryption_type.html">EncryptionType</a> &gt; encryptionDropDown, ComboBox&lt; <a class="el" href="enumenums_1_1_encryption_mode.html">EncryptionMode</a> &gt; encryptionModeDropDown, ComboBox&lt; <a class="el" href="enumenums_1_1_padding_type.html">PaddingType</a> &gt; paddingDropDown, ComboBox&lt; <a class="el" href="enumenums_1_1_hash_function.html">HashFunction</a> &gt; hashFunctionDropDown, ComboBox&lt; <a class="el" href="enumenums_1_1_key_length.html">KeyLength</a> &gt; keylengthDropDown, Text <a class="el" href="classlogic_1_1_text_editor.html#ac75c41480833a18c2cfd0f569cf10a45">usbRegistrationText</a>, PasswordField passwordArea)</td></tr>
-<tr class="separator:a1ee7c49f953dac5de4dfbd8e8c350e76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bea784ecea25cb30c6229ff87f42aa6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlogic_1_1_text_editor.html#a3bea784ecea25cb30c6229ff87f42aa6">TextEditor</a> (Stage _myStage, ComboBox&lt; <a class="el" href="enumenums_1_1_encryption_type.html">EncryptionType</a> &gt; encryptionDropDown, ComboBox&lt; <a class="el" href="enumenums_1_1_encryption_mode.html">EncryptionMode</a> &gt; encryptionModeDropDown, ComboBox&lt; <a class="el" href="enumenums_1_1_padding_type.html">PaddingType</a> &gt; paddingDropDown, ComboBox&lt; <a class="el" href="enumenums_1_1_hash_function.html">HashFunction</a> &gt; hashFunctionDropDown, ComboBox&lt; <a class="el" href="enumenums_1_1_key_length.html">KeyLength</a> &gt; keylengthDropDown, Text <a class="el" href="classlogic_1_1_text_editor.html#ac75c41480833a18c2cfd0f569cf10a45">usbRegistrationText</a>, PasswordField passwordArea, Text passwordError)</td></tr>
+<tr class="separator:a3bea784ecea25cb30c6229ff87f42aa6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f6a603d1650e3a718598a46c64c3c6d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlogic_1_1_text_editor.html#a2f6a603d1650e3a718598a46c64c3c6d">startUSBDetection</a> ()</td></tr>
 <tr class="separator:a2f6a603d1650e3a718598a46c64c3c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f0bfd6368a5cb94a2b0fe8699892772"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classlogic_1_1_text_editor.html#a6f0bfd6368a5cb94a2b0fe8699892772">stopUSBDetection</a> ()</td></tr>
@@ -178,8 +178,8 @@ Private Attributes</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements the logic of the editor </p><dl class="section author"><dt>Author</dt><dd>Joel </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1ee7c49f953dac5de4dfbd8e8c350e76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ee7c49f953dac5de4dfbd8e8c350e76">&#9670;&nbsp;</a></span>TextEditor()</h2>
+<a id="a3bea784ecea25cb30c6229ff87f42aa6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bea784ecea25cb30c6229ff87f42aa6">&#9670;&nbsp;</a></span>TextEditor()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -230,7 +230,13 @@ Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">PasswordField&#160;</td>
-          <td class="paramname"><em>passwordArea</em>&#160;</td>
+          <td class="paramname"><em>passwordArea</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Text&#160;</td>
+          <td class="paramname"><em>passwordError</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -255,8 +261,8 @@ Private Attributes</h2></td></tr>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classlogic_1_1_text_editor_a1ee7c49f953dac5de4dfbd8e8c350e76_cgraph.png" border="0" usemap="#classlogic_1_1_text_editor_a1ee7c49f953dac5de4dfbd8e8c350e76_cgraph" alt=""/></div>
-<map name="classlogic_1_1_text_editor_a1ee7c49f953dac5de4dfbd8e8c350e76_cgraph" id="classlogic_1_1_text_editor_a1ee7c49f953dac5de4dfbd8e8c350e76_cgraph">
+<div class="center"><img src="classlogic_1_1_text_editor_a3bea784ecea25cb30c6229ff87f42aa6_cgraph.png" border="0" usemap="#classlogic_1_1_text_editor_a3bea784ecea25cb30c6229ff87f42aa6_cgraph" alt=""/></div>
+<map name="classlogic_1_1_text_editor_a3bea784ecea25cb30c6229ff87f42aa6_cgraph" id="classlogic_1_1_text_editor_a3bea784ecea25cb30c6229ff87f42aa6_cgraph">
 <area shape="rect" id="node2" href="classlogic_1_1_text_editor.html#a3e994bcaa8e3e6983c8867003347af20" title="logic.TextEditor.updateTitle" alt="" coords="235,5,413,32"/>
 <area shape="rect" id="node3" href="classpersistence_1_1_meta_data.html#a7406483df8ef635af814afc53a6dcca6" title="persistence.MetaData.set\lEncryptionType" alt="" coords="239,57,409,98"/>
 <area shape="rect" id="node4" href="enumenums_1_1_key_length.html#afcdc6e370c70b47131b467b708c30f2f" title="enums.KeyLength.getFitting\lKeyLength" alt="" coords="231,122,417,163"/>

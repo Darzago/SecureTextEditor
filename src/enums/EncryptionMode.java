@@ -5,7 +5,7 @@ package enums;
  * @author Joel
  */
 public enum EncryptionMode {
-ECB, CBC, CTS, CTR, OFB, CFB, CFB8, GCM, OpenPGPCFB,None;
+ECB, CBC, CTS, CTR, OFB, CFB, CFB8, GCM, OpenPGPCFB, None;
 
 	/**
 	 * Returns if the Mode uses an IV

@@ -173,7 +173,7 @@ public class FileManager {
 	}
 	
 	/**
-	 * Loads a config.xml 
+	 * Loads a config.xml <
 	 * @return List of the read data
 	 */	
 	public static List<USBMetaData> loadUSBConfig() throws Exception
